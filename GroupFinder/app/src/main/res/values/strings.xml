@@ -30,10 +30,9 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
     <!-- Default group list item text-->
     <string name="default_item_text">Default text</string>
-    <string name="textview">\@string/default_item_text</string>
+    <string name="text_view">\@string/default_item_text</string>
     <string name="mainInfoGroupTextView">\@string/default_item_text</string>
     <string name="groupImage">\@string/default_item_text</string>
-
     <string-array name="test_groups_names">
         <item>física III(F328)</item>
         <item>Calculo II(MA211)</item>

@@ -110,7 +110,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         var cancel = false
         var focusView: View? = null
 
-        // Check for a valid password, if the user entered one.
+        // Check for a valid password, if the User entered one.
         if (!TextUtils.isEmpty(passwordStr) && !isPasswordValid(passwordStr)) {
             password.error = getString(R.string.error_invalid_password)
             focusView = password
@@ -134,7 +134,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             focusView?.requestFocus()
         } else {
             // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
+            // perform the User login attempt.
             showProgress(true)
             mAuthTask = UserLoginTask(emailStr, passwordStr)
             mAuthTask!!.execute(null as Void?)
@@ -192,7 +192,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
     override fun onCreateLoader(i: Int, bundle: Bundle?): Loader<Cursor> {
         return CursorLoader(
             this,
-            // Retrieve data rows for the device user's 'profile' contact.
+            // Retrieve data rows for the device User's 'profile' contact.
             Uri.withAppendedPath(
                 ContactsContract.Profile.CONTENT_URI,
                 ContactsContract.Contacts.Data.CONTENT_DIRECTORY
@@ -205,7 +205,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             ),
 
             // Show primary email addresses first. Note that there won't be
-            // a primary email address if the user hasn't specified one.
+            // a primary email address if the User hasn't specified one.
             ContactsContract.Contacts.Data.IS_PRIMARY + " DESC"
         )
     }
@@ -246,7 +246,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
     /**
      * Represents an asynchronous login/registration task used to authenticate
-     * the user.
+     * the User.
      */
     inner class UserLoginTask internal constructor(private val mEmail: String, private val mPassword: String) :
         AsyncTask<Void, Void, Boolean>() {
@@ -297,7 +297,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         private val REQUEST_READ_CONTACTS = 0
 
         /**
-         * A dummy authentication store containing known user names and passwords.
+         * A dummy authentication store containing known User names and passwords.
          * TODO: remove after connecting to a real authentication system.
          */
         private val DUMMY_CREDENTIALS = arrayOf("foo@example.com:hello", "bar@example.com:world")

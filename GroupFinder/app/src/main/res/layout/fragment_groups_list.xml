@@ -3,12 +3,12 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/Glist"
+        android:id="@+id/groups_recycler_view"
         android:name="com.example.groupfinder.myGroupsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         app:layoutManager="LinearLayoutManager"
         tools:context=".groupsFragment"
-        tools:listitem="@layout/group_list_view_item"/>
+        tools:listitem="@layout/fragment_groups_item"/>
