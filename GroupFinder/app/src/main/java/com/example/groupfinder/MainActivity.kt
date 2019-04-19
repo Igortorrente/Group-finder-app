@@ -10,6 +10,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var profileFragment: profileFragment
     lateinit var groupsFragment: groupsFragment
 
+
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.my_groups_navigation -> {

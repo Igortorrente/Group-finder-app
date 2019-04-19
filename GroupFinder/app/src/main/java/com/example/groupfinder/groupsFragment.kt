@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.groupfinder.base_classes.group
-import com.example.groupfinder.base_classes.group.groupItem
+import com.example.groupfinder.base_classes.API
+import com.example.groupfinder.base_classes.groupItem
 
 /**
  * A fragment representing a list of Items.
@@ -21,6 +21,7 @@ class groupsFragment : Fragment(){
 
     // TODO: Customize parameters
     private var columnCount = 1
+    private var api = API("dummy")
 
     private var listener: OnListFragmentInteractionListener? = null
 
@@ -45,7 +46,8 @@ class groupsFragment : Fragment(){
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = GroupsRecyclerViewAdapter(group.ITEMS, listener)
+
+                adapter = GroupsRecyclerViewAdapter(api.getUserGroups("dummy"), listener)
             }
         }
         return view
