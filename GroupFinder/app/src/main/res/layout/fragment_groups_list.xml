@@ -10,5 +10,5 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".groupsFragment"
+        tools:context=".groupListFragment"
         tools:listitem="@layout/fragment_groups_item"/>

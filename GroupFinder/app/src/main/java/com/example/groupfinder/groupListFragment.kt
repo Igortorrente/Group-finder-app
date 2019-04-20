@@ -15,9 +15,9 @@ import com.example.groupfinder.base_classes.groupItem
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
- * [groupsFragment.OnListFragmentInteractionListener] interface.
+ * [groupListFragment.OnListFragmentInteractionListener] interface.
  */
-class groupsFragment : Fragment(){
+class groupListFragment : Fragment(){
 
     // TODO: Customize parameters
     private var columnCount = 1
@@ -91,7 +91,7 @@ class groupsFragment : Fragment(){
         // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
-            groupsFragment().apply {
+            groupListFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }

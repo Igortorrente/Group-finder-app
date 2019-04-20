@@ -1,5 +1,6 @@
 package com.example.groupfinder
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.groupfinder.base_classes.groupItem
-import com.example.groupfinder.groupsFragment.OnListFragmentInteractionListener
+import com.example.groupfinder.groupListFragment.OnListFragmentInteractionListener
 import kotlinx.android.synthetic.main.fragment_groups_item.view.*
 
 /**
@@ -28,6 +29,8 @@ class GroupsRecyclerViewAdapter(
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
+            val intent = Intent(v.context, groupActivity::class.java)
+            v.context.startActivity(intent)
         }
     }
 

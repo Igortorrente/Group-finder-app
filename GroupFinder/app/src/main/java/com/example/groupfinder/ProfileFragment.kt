@@ -35,6 +35,12 @@ class profileFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        /*
+        editProfileButton.setOnClickListener { v ->
+            val intent = Intent(v.context, profileEditActivity::class.java)
+            v.context.startActivity(intent)
+        }
+        */
     }
 
     override fun onCreateView(

@@ -10,14 +10,13 @@
     <string name="text_view_ra">RA</string>
     <string name="text_view_email">Email</string>
     <string name="text_view_interest">Interesse</string>
-    <!-- Strings hists related to profile -->
+    <!-- Strings hints related to profile -->
     <string name="hint_profile_name_edit_text">Seu nome</string>
     <string name="hint_course_edit_text">Ex: Engenharia de alimentos</string>
-    <string name="hint_ra_edit_text">999999</string>
+    <string name="hint_ra_edit_text">Ex: 999999</string>
     <string name="hint_email_edit_text">Unicamp email: ra999999@dac.unicamp.br</string>
-    <string name="hint_phone_edit_text">(11) 999999999</string>
-    <string name="hint_interest_edit_text">F328</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="hint_phone_edit_text">Ex: (11) 999999999</string>
+    <string name="hint_interest_edit_text">Ex: F328</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
@@ -28,21 +27,27 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
+    <!-- Strings text related to group Activity -->
+    <string name="text_main_subject">Assunto Principal</string>
+    <string name="text_location">Local</string>
+    <string name="text_begin">Início</string>
+    <string name="text_ends">Fim</string>
+    <string name="text_descrition">Descrição</string>
+    <string name="text_content">Conteúdo</string>
+    <!-- Strings hints related to group Activity -->
+    <string name="hint_main_subject">Ex: Física experimental III (F329)</string>
+    <string name="hint_location">Ex: Casa branca</string>
+    <string name="hint_begin">Ex: Qui 23 de Mar 00:00</string>
+    <string name="hint_ends">Ex: Qui 23 de Mar 23:59</string>
+    <string name="hint_descrition">Ex: Grupo de estudo para a primeira prova</string>
+    <string name="hint_content">Física (Haliday) http://bla.com</string>
     <!-- Default group list item text-->
+    <string name="title_activity_login">Sign in</string>
     <string name="default_item_text">Default text</string>
     <string name="text_view">\@string/default_item_text</string>
     <string name="mainInfoGroupTextView">\@string/default_item_text</string>
     <string name="groupImage">\@string/default_item_text</string>
-    <string-array name="test_groups_names">
-        <item>física III(F328)</item>
-        <item>Calculo II(MA211)</item>
-        <item>Álgebra Linear(MA327)</item>
-    </string-array>
-    <string-array name="test_groups_Description">
-        <item>Blablablabla</item>
-        <item>Blebleble</item>
-        <item>Blobloblo</item>
-    </string-array>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
