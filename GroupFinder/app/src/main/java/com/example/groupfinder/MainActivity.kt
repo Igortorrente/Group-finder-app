@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
     lateinit var profileFragment: profileFragment
     lateinit var groupListFragment: groupListFragment
+    lateinit var suggestionListFragment: groupListFragment
 
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -25,8 +26,8 @@ class MainActivity : AppCompatActivity() {
             R.id.sugestions_navigation -> {
                 supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.container, groupListFragment)
-                    .addToBackStack(groupListFragment.toString())
+                    .replace(R.id.container, suggestionListFragment)
+                    .addToBackStack(suggestionListFragment.toString())
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit()
                 return@OnNavigationItemSelectedListener true
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         profileFragment = profileFragment()
         groupListFragment = groupListFragment()
+        suggestionListFragment = groupListFragment()
 
         supportFragmentManager
             .beginTransaction()
