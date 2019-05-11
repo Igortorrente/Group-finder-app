@@ -43,29 +43,12 @@ class profileFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
-        /*var state = checkNotNull(editProfileButton)
-
-        editProfileButton.setOnClickListener { v ->
-            Toast.makeText(v.context, "Test", Toast.LENGTH_LONG).show()
-        }*/
-
-        /* editProfileButton.hide() */
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        /*var layout = inflater.inflate(R.layout.fragment_profile, container, false)
-
-        var editProfileBtn = layout.findViewById<Button>(R.id.editProfileButton)
-
-        editProfileBtn.setOnClickListener { v ->
-            val intent = Intent(v.context, profileEditActivity::class.java)
-            v.context.startActivity(intent)
-        }*/
 
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }

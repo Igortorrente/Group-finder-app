@@ -44,14 +44,7 @@ class MainActivity : AppCompatActivity() {
                     .commit()
 
                 layoutInflater.inflate(R.layout.fragment_profile, container, false)
-
-                /*var editProfileBtn = profileView.findViewById<Button>(R.id.editProfileButton)
-
-                editProfileBtn.setOnClickListener { v ->
-                    val intent = Intent(v.context, profileEditActivity::class.java)
-                    v.context.startActivity(intent)
-                }*/
-
+                
                 return@OnNavigationItemSelectedListener true
             }
         }
