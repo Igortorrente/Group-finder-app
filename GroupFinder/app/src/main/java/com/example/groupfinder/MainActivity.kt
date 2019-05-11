@@ -1,10 +1,13 @@
 package com.example.groupfinder
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var profileFragment: profileFragment
@@ -39,7 +42,16 @@ class MainActivity : AppCompatActivity() {
                     .addToBackStack(profileFragment.toString())
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit()
+
                 layoutInflater.inflate(R.layout.fragment_profile, container, false)
+
+                /*var editProfileBtn = profileView.findViewById<Button>(R.id.editProfileButton)
+
+                editProfileBtn.setOnClickListener { v ->
+                    val intent = Intent(v.context, profileEditActivity::class.java)
+                    v.context.startActivity(intent)
+                }*/
+
                 return@OnNavigationItemSelectedListener true
             }
         }

@@ -17,7 +17,7 @@ import com.example.groupfinder.base_classes.groupItem
  * Activities containing this fragment MUST implement the
  * [groupListFragment.OnListFragmentInteractionListener] interface.
  */
-class groupListFragment : Fragment(){
+class groupListFragment : Fragment() {
 
     // TODO: Customize parameters
     private var columnCount = 1

@@ -1,12 +1,18 @@
 package com.example.groupfinder
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.Toast
+import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -31,16 +37,20 @@ class profileFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        /*
+
+        /*var state = checkNotNull(editProfileButton)
+
         editProfileButton.setOnClickListener { v ->
-            val intent = Intent(v.context, profileEditActivity::class.java)
-            v.context.startActivity(intent)
-        }
-        */
+            Toast.makeText(v.context, "Test", Toast.LENGTH_LONG).show()
+        }*/
+
+        /* editProfileButton.hide() */
+
     }
 
     override fun onCreateView(
@@ -48,6 +58,15 @@ class profileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        /*var layout = inflater.inflate(R.layout.fragment_profile, container, false)
+
+        var editProfileBtn = layout.findViewById<Button>(R.id.editProfileButton)
+
+        editProfileBtn.setOnClickListener { v ->
+            val intent = Intent(v.context, profileEditActivity::class.java)
+            v.context.startActivity(intent)
+        }*/
+
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
@@ -63,6 +82,16 @@ class profileFragment : Fragment() {
         } else {
             //throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
         }
+    }
+
+    override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        editProfileButton.setOnClickListener { v ->
+            val intent = Intent(v.context, profileEditActivity::class.java)
+            v.context.startActivity(intent)
+        }
+
     }
 
     override fun onDetach() {
