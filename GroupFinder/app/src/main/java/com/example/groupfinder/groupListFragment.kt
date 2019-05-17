@@ -21,7 +21,6 @@ class groupListFragment : Fragment(){
 
     // TODO: Customize parameters
     private var columnCount = 1
-    private var api = API("dummy")
 
     private var listener: OnListFragmentInteractionListener? = null
 
@@ -47,7 +46,7 @@ class groupListFragment : Fragment(){
                     else -> GridLayoutManager(context, columnCount)
                 }
 
-                adapter = GroupsRecyclerViewAdapter(api.getUserGroups("dummy"), listener)
+                adapter = GroupsRecyclerViewAdapter(API.getUserGroups("dummy"), listener)
             }
         }
         return view
