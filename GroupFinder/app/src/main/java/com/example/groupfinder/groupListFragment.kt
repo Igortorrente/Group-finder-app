@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.groupfinder.base_classes.API
-import com.example.groupfinder.base_classes.groupItem
+import com.example.groupfinder.base_classes.UserMeetings
 
 /**
  * A fragment representing a list of Items.
@@ -79,7 +79,7 @@ class groupListFragment : Fragment(){
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: groupItem?)
+        fun onListFragmentInteraction(item: UserMeetings?)
     }
 
     companion object {

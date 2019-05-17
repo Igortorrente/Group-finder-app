@@ -1,36 +1,34 @@
 package com.example.groupfinder.base_classes
 
-import com.example.groupfinder.R
-
 
 class API (serverAddress: String){
     companion object {
         // TODO: Check this parameter
-        fun getUserGroups(userID: String): List<groupItem>{
+        fun getUserGroups(userID: String): List<UserMeetings>{
             // TODO: change this dummy return:
-            var groups : List<groupItem> = emptyList()
-            groups = groups + groupItem("FISICA III(F329)", " unicamp",
-                "Em 5 minutos", "", "", R.drawable.gde)
-            groups = groups + groupItem("Calculo III", "unicamp",
-                "Em 5 minutos", "", "", R.drawable.gde)
-            groups = groups + groupItem("Dummy", "unicamp",
-                "Em 5 minutos", "", "", R.drawable.gde)
-            groups = groups + groupItem("Dummy2", "unicamp",
-                "Em 5 minutos", "", "", R.drawable.gde)
+            var groups : List<UserMeetings> = emptyList()
+            groups = groups + UserMeetings(1, "FISICA III(F329)", " unicamp",
+                10, 12, 15, 100, "oi")
+            groups = groups + UserMeetings(2, "Calculo III", "unicamp",
+                10, 12, 15, 100, "oi")
+            groups = groups + UserMeetings(3, "Dummy", "unicamp",
+                10, 12, 15, 100, "oi")
+            groups = groups + UserMeetings(4, "Dummy2", "unicamp",
+                10, 12, 15, 100, "oi")
 
             return groups
         }
-        fun getUserSugestions(userID: String): List<groupItem>{
+        fun getUserSugestions(userID: String): List<UserMeetings>{
             // TODO: change this dummy return:
-            var groups : List<groupItem> = emptyList()
-            groups = groups + groupItem("MC102", " unicamp",
-                "Em 5 minutos", "", "", R.drawable.gde)
-            groups = groups + groupItem("Estrutura de dados(MC202)", "unicamp",
-                "Em 5 minutos", "", "", R.drawable.gde)
-            groups = groups + groupItem("Dummy", "unicamp",
-                "Em 5 minutos", "", "", R.drawable.gde)
-            groups = groups + groupItem("Dummy2", "unicamp",
-                "Em 5 minutos", "", "", R.drawable.gde)
+            var groups : List<UserMeetings> = emptyList()
+            groups = groups + UserMeetings(1, "FISICA III(F329)", " unicamp",
+                10, 12, 15, 100, "oi")
+            groups = groups + UserMeetings(2, "Calculo III", "unicamp",
+                10, 12, 15, 100, "oi")
+            groups = groups + UserMeetings(3, "Dummy", "unicamp",
+                10, 12, 15, 100, "oi")
+            groups = groups + UserMeetings(4, "Dummy2", "unicamp",
+                10, 12, 15, 100, "oi")
 
             return groups
         }
