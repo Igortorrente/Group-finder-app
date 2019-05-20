@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.groupfinder.base_classes.groupItem
+import com.example.groupfinder.base_classes.UserMeetings
 import com.example.groupfinder.groupListFragment.OnListFragmentInteractionListener
 import kotlinx.android.synthetic.main.fragment_groups_item.view.*
 
@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_groups_item.view.*
  * TODO: Replace the implementation with code for your data type.
  */
 class GroupsRecyclerViewAdapter(
-    private val mValues: List<groupItem>,
+    private val mValues: List<UserMeetings>,
     private val mListener: OnListFragmentInteractionListener?
 ) : RecyclerView.Adapter<GroupsRecyclerViewAdapter.ViewHolder>() {
 
@@ -25,7 +25,7 @@ class GroupsRecyclerViewAdapter(
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as groupItem
+            val item = v.tag as UserMeetings
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
@@ -42,9 +42,9 @@ class GroupsRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
-        holder.mainSubjectView.text = item.mainSubject
-        holder.placeView.text = item.place
-        holder.imageView.setImageResource(item.image)
+        holder.mainSubjectView.text = item.subject
+        holder.placeView.text = item.location_description
+        holder.imageView.setImageResource(R.drawable.gde)
 
         with(holder.mView) {
             tag = item
