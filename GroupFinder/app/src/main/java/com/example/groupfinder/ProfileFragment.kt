@@ -11,6 +11,8 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
+import com.example.groupfinder.base_classes.ApiHandler
+import com.example.groupfinder.base_classes.ApiUser
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 
@@ -71,8 +73,12 @@ class profileFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         editProfileButton.setOnClickListener { v ->
-            val intent = Intent(v.context, profileEditActivity::class.java)
-            v.context.startActivity(intent)
+            /* val intent = Intent(v.context, profileEditActivity::class.java)
+            v.context.startActivity(intent) */
+
+            val handler = ApiHandler()
+            handler.setContext(v.context)
+            handler.userAuth(ApiUser(ra = 177953, senha = "12345"))
         }
 
     }

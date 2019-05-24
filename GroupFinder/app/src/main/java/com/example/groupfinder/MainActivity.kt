@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
+import com.example.groupfinder.base_classes.ApiHandler
+import com.example.groupfinder.base_classes.ApiUser
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -67,6 +69,8 @@ class MainActivity : AppCompatActivity() {
             .addToBackStack(groupListFragment.toString())
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             .commit()
+
+        //177953
 
     }
 
