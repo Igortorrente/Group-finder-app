@@ -1,10 +1,12 @@
 package com.example.groupfinder.base_classes
 
+import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
 
-// User info
-@Entity(tableName = "User")
+// UserRepo info
+@Entity(tableName = "UserRepo")
 data class userData(
     @PrimaryKey val ra: Int,
     val name: String,
@@ -12,7 +14,7 @@ data class userData(
     val password:String
 )
 
-// User classes table
+// UserRepo classes table
 @Entity
 data class Classes(
     @PrimaryKey @ColumnInfo(name = "class_id") val id: Int,
@@ -47,52 +49,76 @@ data class Contents(
 interface UserDao{
     // Meeting Queries
     @Query("SELECT * FROM Meetings")
-    fun getAllMeeting(): List<UserMeetings>
+    fun getAllMeeting(): LiveData<MutableList<UserMeetings>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertMeeting(meeting: UserMeetings)
+    fun insertMeeting(meeting: UserMeetings): Long
 
-    @Update
-    fun updateMeet(meeting: UserMeetings)
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    fun updateMeet(meeting: UserMeetings): Long
 
     @Delete
-    fun deleteMeetings(meeting: List<UserMeetings>)
+    fun deleteMeetings(meeting: UserMeetings): Long
 
     // Meeting content
+    @Query("SELECT * FROM Contents WHERE content_id LIKE :id")
+    fun getAllMeetingContent(id: Int):  LiveData<MutableList<Contents>>
+
+    @Query("SELECT * FROM Contents")
+    fun getAllContents():  LiveData<MutableList<Contents>>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertMeetContents(contents: List<Contents>)
+    fun insertMeetContents(content: Contents): Long
 
     @Delete
-    fun deleteMeetContent(contents: List<Contents>)
+    fun deleteMeetContents(content: Contents): Long
 
-    @Update
-    fun updateMeetContent(contents: List<Contents>)
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    fun updateMeetContents(content: Contents): Long
 
     // Class Queries
     @Query("SELECT * FROM Classes")
-    fun getAllUserClasses(): List<Classes>
+    fun getAllUserClasses(): LiveData<List<Classes>>
 
     @Delete
-    fun deleteUserClass(userClass: Classes)
+    fun deleteUserClass(userClass: Classes): Long
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertUserClass(userClass: Classes)
+    fun insertUserClass(userClass: Classes): Long
 
-    @Update
-    fun updateUserClass(userClass: Classes)
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    fun updateUserClass(userClass: Classes): Long
 
-    // User Queries
-    @Query("SELECT * FROM User")
-    fun getUserData(): List<userData>
+    // UserRepo Queries
+    @Query("SELECT * FROM UserRepo")
+    fun getUserData(): LiveData<userData>
 
-    @Update
-    fun updateUserData(userData: userData)
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    fun updateUserData(userData: userData): Long
 
-    @Insert
-    fun insetUserData(userData: userData)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insetUserData(userData: userData): Long
 }
 
 @Database(entities = arrayOf(userData::class, Classes::class,
-    UserMeetings::class, Contents::class), version = 1)
-abstract class userDatabase : RoomDatabase(){
+    UserMeetings::class, Contents::class), version = 0)
+abstract class UserDatabase : RoomDatabase(){
+    abstract fun userDataDao(): UserDao
+    companion object {
+        @Volatile
+        private var INSTANCE: UserDatabase? = null
+
+        fun getDatabase(context: Context): UserDatabase {
+            val tempInstance = INSTANCE
+            if (tempInstance != null) {
+                return tempInstance
+            }
+            synchronized(this) {
+                val instance = Room.databaseBuilder(context.applicationContext,
+                    UserDatabase::class.java,"rename-me.db").build()
+                INSTANCE = instance
+                return instance
+            }
+        }
+    }
 }
