@@ -1,5 +1,9 @@
 package com.example.groupfinder.base_classes
 
+import retrofit2.Call
+import retrofit2.http.Body
+import retrofit2.http.POST
+
 // Contains all calls to the API
 interface ApiService {
 

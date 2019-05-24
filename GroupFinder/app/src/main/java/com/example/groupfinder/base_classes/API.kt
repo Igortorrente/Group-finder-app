@@ -1,5 +1,7 @@
 package com.example.groupfinder.base_classes
 
+import com.example.groupfinder.R
+
 
 class API (serverAddress: String){
 
