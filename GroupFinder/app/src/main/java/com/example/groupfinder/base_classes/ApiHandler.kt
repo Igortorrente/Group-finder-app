@@ -8,6 +8,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ApiUser(val ra: Int, val nome: String? = "", val curso: String? = "", val senha:String)
+class ApiGroup()
 
 // Makes and handles calls to the API Service 
 class ApiHandler {
@@ -24,6 +25,8 @@ class ApiHandler {
 
                 when (responseCode) {
                     200 -> {
+                        // TODO: Implement proper code for handling successful login
+                        // (store student RA in database and start main activity?)
                         Toast.makeText(context, "200 OK", Toast.LENGTH_LONG).show()
                     }
                     404 -> {
