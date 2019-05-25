@@ -20,12 +20,12 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
     }
 
     @WorkerThread
-    fun updateMeet(meeting: UserMeetings): Long{
+    fun updateMeet(meeting: UserMeetings): Int {
         return userDao.updateMeet(meeting)
     }
 
     @WorkerThread
-    fun deleteMeetings(meeting: UserMeetings): Long{
+    fun deleteMeetings(meeting: UserMeetings): Int {
         return userDao.deleteMeetings(meeting)
     }
 
@@ -46,12 +46,12 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
     }
 
     @WorkerThread
-    fun deleteMeetContents(content: Contents): Long{
+    fun deleteMeetContents(content: Contents): Int {
         return userDao.deleteMeetContents(content)
     }
 
     @WorkerThread
-    fun updateMeetContents(content: Contents): Long{
+    fun updateMeetContents(content: Contents): Int {
         return userDao.updateMeetContents(content)
     }
 
@@ -62,7 +62,7 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
     }
 
     @WorkerThread
-    fun deleteUserClass(userClass: Classes): Long{
+    fun deleteUserClass(userClass: Classes): Int {
         return userDao.deleteUserClass(userClass)
     }
 
@@ -72,7 +72,7 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
     }
 
     @WorkerThread
-    fun updateUserClass(userClass: Classes): Long{
+    fun updateUserClass(userClass: Classes): Int {
         return userDao.updateUserClass(userClass)
     }
 
@@ -83,7 +83,7 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
     }
 
     @WorkerThread
-    fun updateUserData(userData: userData): Long{
+    fun updateUserData(userData: userData): Int {
         return userDao.updateUserData(userData)
     }
 

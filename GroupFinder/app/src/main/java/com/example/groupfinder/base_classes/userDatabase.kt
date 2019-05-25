@@ -55,10 +55,10 @@ interface UserDao{
     fun insertMeeting(meeting: UserMeetings): Long
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    fun updateMeet(meeting: UserMeetings): Long
+    fun updateMeet(meeting: UserMeetings): Int
 
     @Delete
-    fun deleteMeetings(meeting: UserMeetings): Long
+    fun deleteMeetings(meeting: UserMeetings): Int
 
     // Meeting content
     @Query("SELECT * FROM Contents WHERE content_id LIKE :id")
@@ -71,37 +71,37 @@ interface UserDao{
     fun insertMeetContents(content: Contents): Long
 
     @Delete
-    fun deleteMeetContents(content: Contents): Long
+    fun deleteMeetContents(content: Contents): Int
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    fun updateMeetContents(content: Contents): Long
+    fun updateMeetContents(content: Contents): Int
 
     // Class Queries
     @Query("SELECT * FROM Classes")
     fun getAllUserClasses(): LiveData<List<Classes>>
 
     @Delete
-    fun deleteUserClass(userClass: Classes): Long
+    fun deleteUserClass(userClass: Classes): Int
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertUserClass(userClass: Classes): Long
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    fun updateUserClass(userClass: Classes): Long
+    fun updateUserClass(userClass: Classes): Int
 
     // UserRepo Queries
     @Query("SELECT * FROM UserRepo")
     fun getUserData(): LiveData<userData>
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    fun updateUserData(userData: userData): Long
+    fun updateUserData(userData: userData): Int
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insetUserData(userData: userData): Long
 }
 
 @Database(entities = arrayOf(userData::class, Classes::class,
-    UserMeetings::class, Contents::class), version = 0)
+    UserMeetings::class, Contents::class), version = 1, exportSchema = false)
 abstract class UserDatabase : RoomDatabase(){
     abstract fun userDataDao(): UserDao
     companion object {
