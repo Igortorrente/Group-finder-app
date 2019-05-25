@@ -22,5 +22,5 @@ interface ApiService {
     fun userData(@Path("ra") ra: Int): Call<ApiUser>
 
     @GET("user/{ra}/groups")
-    fun userGroups(@Path("ra") ra: Int): Call<ApiGroup>
+    fun userGroups(@Path("ra") ra: Int): Call<List<ApiGroup>>
 }
