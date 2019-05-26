@@ -2,11 +2,12 @@ package com.example.groupfinder.base_classes
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
 
 // UserRepo info
-@Entity(tableName = "UserRepo")
+@Entity(tableName = "UserData")
 data class userData(
     @PrimaryKey val ra: Int,
     val name: String,
@@ -78,7 +79,7 @@ interface UserDao{
 
     // Class Queries
     @Query("SELECT * FROM Classes")
-    fun getAllUserClasses(): LiveData<List<Classes>>
+    fun getAllUserClasses(): LiveData<MutableList<Classes>>
 
     @Delete
     fun deleteUserClass(userClass: Classes): Int
@@ -89,8 +90,8 @@ interface UserDao{
     @Update(onConflict = OnConflictStrategy.IGNORE)
     fun updateUserClass(userClass: Classes): Int
 
-    // UserRepo Queries
-    @Query("SELECT * FROM UserRepo")
+    // UserData Queries
+    @Query("SELECT * FROM UserData")
     fun getUserData(): LiveData<userData>
 
     @Update(onConflict = OnConflictStrategy.IGNORE)

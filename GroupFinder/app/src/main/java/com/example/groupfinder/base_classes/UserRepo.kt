@@ -41,23 +41,23 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
     }
 
     @WorkerThread
-    fun insertMeetContents(content: Contents): Long{
+    fun insertMeetingsContents(content: Contents): Long{
         return userDao.insertMeetContents(content)
     }
 
     @WorkerThread
-    fun deleteMeetContents(content: Contents): Int {
+    fun deleteMeetingsContents(content: Contents): Int {
         return userDao.deleteMeetContents(content)
     }
 
     @WorkerThread
-    fun updateMeetContents(content: Contents): Int {
+    fun updateMeetingsContents(content: Contents): Int {
         return userDao.updateMeetContents(content)
     }
 
     // Class Queries
     @WorkerThread
-    fun getAllUserClasses(): LiveData<List<Classes>>{
+    fun getAllUserClasses(): LiveData<MutableList<Classes>>{
         return userDao.getAllUserClasses()
     }
 
