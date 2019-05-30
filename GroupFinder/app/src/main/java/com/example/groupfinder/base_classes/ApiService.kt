@@ -1,6 +1,7 @@
 package com.example.groupfinder.base_classes
 
 import com.google.gson.JsonObject
+import kotlinx.coroutines.Deferred
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -19,8 +20,8 @@ interface ApiService {
     fun userRegister(@Body user: ApiUser): Call<JsonObject>
 
     @GET("user/{ra}")
-    fun userData(@Path("ra") ra: Int): Call<ApiUser>
+    fun userData(@Path("ra") ra: Int): Deferred<userData>
 
     @GET("user/{ra}/groups")
-    fun userGroups(@Path("ra") ra: Int): Call<List<ApiGroup>>
+    fun userGroups(@Path("ra") ra: Int): Deferred<List<UserMeetings>>
 }
