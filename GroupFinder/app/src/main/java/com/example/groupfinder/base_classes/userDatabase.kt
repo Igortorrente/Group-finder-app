@@ -52,11 +52,8 @@ interface UserDao{
     @Query("SELECT * FROM Meetings")
     fun getAllMeeting(): LiveData<MutableList<UserMeetings>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertMeeting(meeting: UserMeetings): Long
-
-    @Update(onConflict = OnConflictStrategy.IGNORE)
-    fun updateMeet(meeting: UserMeetings): Int
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun upsertMeeting(meeting: UserMeetings): Long
 
     @Delete
     fun deleteMeetings(meeting: UserMeetings): Int
@@ -68,14 +65,11 @@ interface UserDao{
     @Query("SELECT * FROM Contents")
     fun getAllContents():  LiveData<MutableList<Contents>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertMeetContents(content: Contents): Long
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun upsertMeetContent(content: Contents): Long
 
     @Delete
     fun deleteMeetContents(content: Contents): Int
-
-    @Update(onConflict = OnConflictStrategy.IGNORE)
-    fun updateMeetContents(content: Contents): Int
 
     // Class Queries
     @Query("SELECT * FROM Classes")
@@ -84,21 +78,15 @@ interface UserDao{
     @Delete
     fun deleteUserClass(userClass: Classes): Int
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertUserClass(userClass: Classes): Long
-
-    @Update(onConflict = OnConflictStrategy.IGNORE)
-    fun updateUserClass(userClass: Classes): Int
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun upsertUserClass(userClass: Classes): Long
 
     // UserData Queries
     @Query("SELECT * FROM UserData")
     fun getUserData(): LiveData<userData>
 
-    @Update(onConflict = OnConflictStrategy.IGNORE)
-    fun updateUserData(userData: userData): Int
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insetUserData(userData: userData): Long
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun upsertUserData(userData: userData): Long
 }
 
 @Database(entities = arrayOf(userData::class, Classes::class,
@@ -115,6 +103,7 @@ abstract class UserDatabase : RoomDatabase(){
                 return tempInstance
             }
             synchronized(this) {
+                TODO("Rename databse")
                 val instance = Room.databaseBuilder(context.applicationContext,
                     UserDatabase::class.java,"rename-me.db").build()
                 INSTANCE = instance
