@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">GroupFinder</string>
     <string name="title_groups">Grupos</string>
-    <string name="title_recomendations">Recomendações</string>
+    <string name="title_recomendations">Sugestões</string>
     <string name="title_Profile">Perfil</string>
     <!-- Strings text related to profile -->
     <string name="text_view_name">Nome</string>
