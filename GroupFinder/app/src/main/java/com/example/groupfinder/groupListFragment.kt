@@ -2,14 +2,18 @@ package com.example.groupfinder
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.groupfinder.base_classes.API
+import com.example.groupfinder.base_classes.FinderViewModel
 import com.example.groupfinder.base_classes.UserMeetings
 
 /**
@@ -21,8 +25,8 @@ class groupListFragment : Fragment() {
 
     // TODO: Customize parameters
     private var columnCount = 1
-
     private var listener: OnListFragmentInteractionListener? = null
+    private lateinit var finderViewModel: FinderViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +34,14 @@ class groupListFragment : Fragment() {
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
+
+        finderViewModel = activity?.run {
+            ViewModelProviders.of(this).get(FinderViewModel::class.java)
+        }!!
+
+        finderViewModel.repo.modUserMeetings.observe(this, Observer { meets ->
+            Log.d("database", meets.toString())
+        })
     }
 
     override fun onCreateView(

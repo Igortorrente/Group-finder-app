@@ -1,10 +1,14 @@
 package com.example.groupfinder.base_classes
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
+import androidx.sqlite.db.SupportSQLiteDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 // UserRepo info
 @Entity(tableName = "UserData")
@@ -35,11 +39,8 @@ data class UserMeetings(
     val location_description: String
 )
 
-@Entity(foreignKeys = arrayOf(ForeignKey(
-            entity = UserMeetings::class,
-            parentColumns = arrayOf("meet_id"),
-            childColumns = arrayOf("content_id"),
-            onDelete = CASCADE)))
+@Entity(foreignKeys = arrayOf(ForeignKey(entity = UserMeetings::class, parentColumns = arrayOf("meet_id"),
+            childColumns = arrayOf("content_id"), onDelete = CASCADE)))
 data class Contents(
     @PrimaryKey @ColumnInfo(name = "content_id") val id: Int,
     val description: String,
@@ -50,7 +51,7 @@ data class Contents(
 interface UserDao{
     // Meeting Queries
     @Query("SELECT * FROM Meetings")
-    fun getAllMeeting(): LiveData<MutableList<UserMeetings>>
+    fun getAllMeeting(): LiveData<List<UserMeetings>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun upsertMeeting(meeting: UserMeetings): Long
@@ -60,10 +61,10 @@ interface UserDao{
 
     // Meeting content
     @Query("SELECT * FROM Contents WHERE content_id LIKE :id")
-    fun getAllMeetingContent(id: Int):  LiveData<MutableList<Contents>>
+    fun getAllMeetingContent(id: Int): LiveData<List<Contents>>
 
     @Query("SELECT * FROM Contents")
-    fun getAllContents():  LiveData<MutableList<Contents>>
+    fun getAllContents(): LiveData<List<Contents>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun upsertMeetContent(content: Contents): Long
@@ -73,7 +74,7 @@ interface UserDao{
 
     // Class Queries
     @Query("SELECT * FROM Classes")
-    fun getAllUserClasses(): LiveData<MutableList<Classes>>
+    fun getAllUserClasses(): LiveData<List<Classes>>
 
     @Delete
     fun deleteUserClass(userClass: Classes): Int
@@ -92,22 +93,41 @@ interface UserDao{
 @Database(entities = arrayOf(userData::class, Classes::class,
     UserMeetings::class, Contents::class), version = 1, exportSchema = false)
 abstract class UserDatabase : RoomDatabase(){
+
     abstract fun userDataDao(): UserDao
+
     companion object {
         @Volatile
         private var INSTANCE: UserDatabase? = null
+        @SuppressLint("StaticFieldLeak")
 
-        fun getDatabase(context: Context): UserDatabase {
+        fun getDatabase(context: Context, scope: CoroutineScope): UserDatabase {
             val tempInstance = INSTANCE
             if (tempInstance != null) {
                 return tempInstance
             }
             synchronized(this) {
-                TODO("Rename databse")
                 val instance = Room.databaseBuilder(context.applicationContext,
-                    UserDatabase::class.java,"rename-me.db").build()
+                    UserDatabase::class.java,"rename-me").fallbackToDestructiveMigration()
+                    .addCallback(DatabaseCallback(scope)).build()
                 INSTANCE = instance
                 return instance
+            }
+        }
+        private class DatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
+            /**
+             * Override the onOpen method to populate the database.
+             * For this sample, we clear the database every time it is created or opened.
+             */
+            override fun onOpen(db: SupportSQLiteDatabase) {
+                super.onOpen(db)
+                // If you want to keep the data through app restarts,
+                // comment out the following line.
+                INSTANCE?.let { database ->
+                    scope.launch {
+                        Log.d("database", "Pass callback")
+                    }
+                }
             }
         }
     }
