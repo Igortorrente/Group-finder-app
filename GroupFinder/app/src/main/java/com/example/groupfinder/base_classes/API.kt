@@ -2,6 +2,10 @@ package com.example.groupfinder.base_classes
 
 import com.example.groupfinder.R
 
+class ApiGroupArgument(
+    val ra: Int,
+    val group: UserMeetings
+)
 
 class API (serverAddress: String){
 
