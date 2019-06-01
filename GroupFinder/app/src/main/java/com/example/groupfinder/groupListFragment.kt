@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.groupfinder.base_classes.API
 import com.example.groupfinder.base_classes.FinderViewModel
-import com.example.groupfinder.base_classes.UserMeetings
+import com.example.groupfinder.base_classes.UserGroups
 
 /**
  * A fragment representing a list of Items.
@@ -39,10 +39,11 @@ class groupListFragment : Fragment() {
             ViewModelProviders.of(this).get(FinderViewModel::class.java)
         }!!
 
-        finderViewModel.repo.modUserMeetings.observe(this, Observer { meets ->
+        finderViewModel.repo.userGroups.observe(this, Observer { meets ->
             Log.d("database", meets.toString())
         })
-    }
+
+}
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -91,7 +92,7 @@ class groupListFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: UserMeetings?)
+        fun onListFragmentInteraction(item: UserGroups?)
     }
 
     companion object {

@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.groupfinder.base_classes.UserMeetings
+import com.example.groupfinder.base_classes.UserGroups
 import com.example.groupfinder.groupListFragment.OnListFragmentInteractionListener
-import kotlinx.android.synthetic.main.fragment_groups_item.view.*
+import kotlinx.android.synthetic.main.recyclerview_groups_item.view.*
 
 /**
  * [RecyclerView.Adapter] that can display a [groupItem] and makes a call to the
@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_groups_item.view.*
  * TODO: Replace the implementation with code for your data type.
  */
 class GroupsRecyclerViewAdapter(
-    private val mValues: List<UserMeetings>,
+    private val mValues: List<UserGroups>,
     private val mListener: OnListFragmentInteractionListener?
 ) : RecyclerView.Adapter<GroupsRecyclerViewAdapter.ViewHolder>() {
 
@@ -25,7 +25,7 @@ class GroupsRecyclerViewAdapter(
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as UserMeetings
+            val item = v.tag as UserGroups
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
@@ -36,7 +36,7 @@ class GroupsRecyclerViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_groups_item, parent, false)
+            .inflate(R.layout.recyclerview_groups_item, parent, false)
         return ViewHolder(view)
     }
 

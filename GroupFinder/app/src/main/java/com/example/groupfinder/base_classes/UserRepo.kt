@@ -6,15 +6,15 @@ import androidx.lifecycle.MutableLiveData
 
 class UserRepo(private val userDao: UserDao) : android.app.Application(){
 
-    var modUserMeetings: MutableLiveData<List<UserMeetings>> = MutableLiveData<List<UserMeetings>>()
+    var modUserGroups: MutableLiveData<List<UserGroups>> = MutableLiveData<List<UserGroups>>()
     var modUserClasses: MutableLiveData<List<Classes>> = MutableLiveData<List<Classes>>()
     var modAllUserContents: MutableLiveData<List<Contents>> = MutableLiveData<List<Contents>>()
-    var modUserInfo: MutableLiveData<userData> = MutableLiveData<userData>()
+    var modUserInfo: MutableLiveData<UserData> = MutableLiveData<UserData>()
 
-    val userMeetings: LiveData<List<UserMeetings>> get() = modUserMeetings
+    val userGroups: LiveData<List<UserGroups>> get() = modUserGroups
     val userClasses: LiveData<List<Classes>> get() = modUserClasses
     val allUserContents: LiveData<List<Contents>> get() = modAllUserContents
-    val userInfo: LiveData<userData> get() = modUserInfo
+    val userInfo: LiveData<UserData> get() = modUserInfo
 
     /* TODO methods getAll*:
     // Check if database are updated
@@ -23,7 +23,7 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
     // delete all data that is not in the fetch */
     // Meeting Queries
     @WorkerThread
-    suspend fun getAllMeetings(): LiveData<List<UserMeetings>>{
+    fun getAllMeetings(): LiveData<List<UserGroups>>{
         // TODO: Check if db are updated
         /*
         val groups = API.getUserGroups("oi")
@@ -37,8 +37,8 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
         }
         val bla =
         Log.d("meet", bla.value.toString())*/
-        modUserMeetings = MutableLiveData<List<UserMeetings>>(API.getUserGroups("oi"))
-        return userMeetings
+        modUserGroups = MutableLiveData<List<UserGroups>>(API.getUserGroups("oi"))
+        return userGroups
     }
 
     /* TODO methods {insert, delete}*:
@@ -47,12 +47,12 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
     // if Fail -> send a toast to user
     // delete all data that is not in the fetch */
     @WorkerThread
-    suspend fun insertMeeting(meeting: UserMeetings): Long{
+    suspend fun insertMeeting(meeting: UserGroups): Long{
         return userDao.upsertMeeting(meeting)
     }
 
     @WorkerThread
-    fun deleteMeetings(meeting: UserMeetings): Int {
+    suspend fun deleteMeetings(meeting: UserGroups): Int {
         return userDao.deleteMeetings(meeting)
     }
 
@@ -69,12 +69,12 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
     }
 
     @WorkerThread
-    fun insertMeetingsContents(content: Contents): Long{
+    suspend fun insertMeetingsContents(content: Contents): Long{
         return userDao.upsertMeetContent(content)
     }
 
     @WorkerThread
-    fun deleteMeetingsContents(content: Contents): Int {
+    suspend fun deleteMeetingsContents(content: Contents): Int {
         return userDao.deleteMeetContents(content)
     }
 
@@ -86,25 +86,25 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
     }
 
     @WorkerThread
-    fun deleteUserClass(userClass: Classes): Int {
+    suspend fun deleteUserClass(userClass: Classes): Int {
         return userDao.deleteUserClass(userClass)
     }
 
     @WorkerThread
-    fun insertUserClass(userClass: Classes): Long{
+    suspend fun insertUserClass(userClass: Classes): Long{
         return userDao.upsertUserClass(userClass)
     }
 
     // UserRepo Queries
     @WorkerThread
-    fun getUserData(): LiveData<userData>{
+    fun getUserData(): LiveData<UserData>{
         modUserInfo = MutableLiveData()
         return userDao.getUserData()
     }
 
     @WorkerThread
-    fun insetUserData(userData: userData): Long{
-        return userDao.upsertUserData(userData)
+    suspend fun insetUserData(UserData: UserData): Long{
+        return userDao.upsertUserData(UserData)
     }
 }
 

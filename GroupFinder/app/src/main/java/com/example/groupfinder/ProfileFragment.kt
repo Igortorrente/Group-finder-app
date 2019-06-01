@@ -4,16 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
 import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.example.groupfinder.base_classes.ApiHandler
 import com.example.groupfinder.base_classes.ApiUser
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.groupfinder.base_classes.FinderViewModel
+import com.example.groupfinder.base_classes.UserGroups
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 
@@ -36,6 +37,8 @@ class profileFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
+    private lateinit var finderViewModel: FinderViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +48,9 @@ class profileFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
+        finderViewModel = activity?.run {
+            ViewModelProviders.of(this).get(FinderViewModel::class.java)
+        }!!
     }
 
     override fun onCreateView(
@@ -73,8 +79,12 @@ class profileFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         editProfileButton.setOnClickListener { v ->
-            /* val intent = Intent(v.context, profileEditActivity::class.java)
-            v.context.startActivity(intent) */
+
+            finderViewModel.insert(UserGroups(1,"","", 2, 3,4,5,""))
+            Log.d("db", finderViewModel.repo.userGroups.value.toString())
+
+            val intent = Intent(v.context, profileEditActivity::class.java)
+            v.context.startActivity(intent)
 
             val handler = ApiHandler()
             handler.setContext(v.context)

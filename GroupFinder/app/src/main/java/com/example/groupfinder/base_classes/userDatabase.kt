@@ -1,18 +1,14 @@
 package com.example.groupfinder.base_classes
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
-import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 // UserRepo info
 @Entity(tableName = "UserData")
-data class userData(
+data class UserData(
     @PrimaryKey val ra: Int,
     val name: String,
     val course: String,
@@ -27,7 +23,7 @@ data class Classes(
 )
 
 @Entity (tableName = "Meetings")
-data class UserMeetings(
+data class UserGroups(
     @PrimaryKey @ColumnInfo(name = "meet_id") val id: Int,
     val subject: String,
     val detail: String,
@@ -39,7 +35,7 @@ data class UserMeetings(
     val location_description: String
 )
 
-@Entity(foreignKeys = arrayOf(ForeignKey(entity = UserMeetings::class, parentColumns = arrayOf("meet_id"),
+@Entity(foreignKeys = arrayOf(ForeignKey(entity = UserGroups::class, parentColumns = arrayOf("meet_id"),
             childColumns = arrayOf("content_id"), onDelete = CASCADE)))
 data class Contents(
     @PrimaryKey @ColumnInfo(name = "content_id") val id: Int,
@@ -51,13 +47,13 @@ data class Contents(
 interface UserDao{
     // Meeting Queries
     @Query("SELECT * FROM Meetings")
-    fun getAllMeeting(): LiveData<List<UserMeetings>>
+    fun getAllMeeting(): LiveData<List<UserGroups>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun upsertMeeting(meeting: UserMeetings): Long
+    suspend fun upsertMeeting(meeting: UserGroups): Long
 
     @Delete
-    fun deleteMeetings(meeting: UserMeetings): Int
+    suspend fun deleteMeetings(meeting: UserGroups): Int
 
     // Meeting content
     @Query("SELECT * FROM Contents WHERE content_id LIKE :id")
@@ -67,31 +63,30 @@ interface UserDao{
     fun getAllContents(): LiveData<List<Contents>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun upsertMeetContent(content: Contents): Long
+    suspend fun upsertMeetContent(content: Contents): Long
 
     @Delete
-    fun deleteMeetContents(content: Contents): Int
+    suspend fun deleteMeetContents(content: Contents): Int
 
     // Class Queries
     @Query("SELECT * FROM Classes")
     fun getAllUserClasses(): LiveData<List<Classes>>
 
     @Delete
-    fun deleteUserClass(userClass: Classes): Int
+    suspend fun deleteUserClass(userClass: Classes): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun upsertUserClass(userClass: Classes): Long
+    suspend fun upsertUserClass(userClass: Classes): Long
 
     // UserData Queries
     @Query("SELECT * FROM UserData")
-    fun getUserData(): LiveData<userData>
+    fun getUserData(): LiveData<UserData>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun upsertUserData(userData: userData): Long
+    suspend fun upsertUserData(UserData: UserData): Long
 }
 
-@Database(entities = arrayOf(userData::class, Classes::class,
-    UserMeetings::class, Contents::class), version = 1, exportSchema = false)
+@Database(entities = arrayOf(UserData::class, Classes::class, UserGroups::class, Contents::class), version = 1)
 abstract class UserDatabase : RoomDatabase(){
 
     abstract fun userDataDao(): UserDao
@@ -99,35 +94,14 @@ abstract class UserDatabase : RoomDatabase(){
     companion object {
         @Volatile
         private var INSTANCE: UserDatabase? = null
-        @SuppressLint("StaticFieldLeak")
 
         fun getDatabase(context: Context, scope: CoroutineScope): UserDatabase {
-            val tempInstance = INSTANCE
-            if (tempInstance != null) {
-                return tempInstance
-            }
-            synchronized(this) {
+            return INSTANCE ?:synchronized(this) {
                 val instance = Room.databaseBuilder(context.applicationContext,
                     UserDatabase::class.java,"rename-me").fallbackToDestructiveMigration()
-                    .addCallback(DatabaseCallback(scope)).build()
+                    .build()
                 INSTANCE = instance
-                return instance
-            }
-        }
-        private class DatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
-            /**
-             * Override the onOpen method to populate the database.
-             * For this sample, we clear the database every time it is created or opened.
-             */
-            override fun onOpen(db: SupportSQLiteDatabase) {
-                super.onOpen(db)
-                // If you want to keep the data through app restarts,
-                // comment out the following line.
-                INSTANCE?.let { database ->
-                    scope.launch {
-                        Log.d("database", "Pass callback")
-                    }
-                }
+                instance
             }
         }
     }
