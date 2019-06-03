@@ -20,8 +20,9 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.my_groups_navigation -> {
                 if (lastFragment != 0){
-                        menuInflater.inflate(R.menu.group_toolbar, toolbar)
-                        lastFragment = 0
+                    toolbar.clear()
+                    menuInflater.inflate(R.menu.group_toolbar, toolbar)
+                    lastFragment = 0
                 }
                 supportFragmentManager
                     .beginTransaction()
@@ -32,9 +33,9 @@ class MainActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.sugestions_navigation -> {
-                if (lastFragment != 0){
-                    menuInflater.inflate(R.menu.group_toolbar, toolbar)
-                    lastFragment = 0
+                if (lastFragment != 1){
+                    toolbar.clear()
+                    lastFragment = 1
                 }
                 supportFragmentManager
                     .beginTransaction()
