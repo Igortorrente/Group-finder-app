@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">GroupFinder</string>
-    <string name="title_groups">Grupos</string>
+    <string name="title_groups">Meus Grupos</string>
     <string name="title_recomendations">Sugestões</string>
     <string name="title_Profile">Perfil</string>
     <!-- Strings text related to profile -->
@@ -52,4 +52,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search">Search</string>
+    <string name="leavegroup">LeaveGroup</string>
+    <string name="joingroup">JoinGroup</string>
+    <string name="addgroup">addGroup</string>
+    <string name="meeting_add">meeting_add</string>
 </resources>

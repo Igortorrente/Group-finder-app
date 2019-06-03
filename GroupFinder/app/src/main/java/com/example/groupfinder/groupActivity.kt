@@ -12,7 +12,7 @@ class groupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group)
 
-        editGroupButton.setOnClickListener { v ->
+        actionGroupButton.setOnClickListener { v ->
             val intent = Intent(v.context, groupEditActivity::class.java)
             v.context.startActivity(intent)
         }

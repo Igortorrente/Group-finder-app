@@ -142,8 +142,12 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true" app:srcCompat="@android:drawable/ic_menu_edit"
-            android:id="@+id/editGroupButton" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="16dp" android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:clickable="true"
+            app:srcCompat="@drawable/baseline_person_add_disabled_white_24dp"
+            android:id="@+id/actionGroupButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:focusable="true"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

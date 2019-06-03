@@ -2,6 +2,7 @@ package com.example.groupfinder
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.my_groups_navigation -> {
                 if (lastFragment != 0){
-                        menuInflater.inflate(R.menu.search_toolbar, toolbar)
+                        menuInflater.inflate(R.menu.group_toolbar, toolbar)
                         lastFragment = 0
                 }
                 supportFragmentManager
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.sugestions_navigation -> {
                 if (lastFragment != 0){
-                    menuInflater.inflate(R.menu.search_toolbar, toolbar)
+                    menuInflater.inflate(R.menu.group_toolbar, toolbar)
                     lastFragment = 0
                 }
                 supportFragmentManager
@@ -68,7 +69,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-
         profileFragment = profileFragment()
         groupListFragment = groupListFragment()
         suggestionListFragment = groupListFragment()
@@ -87,7 +87,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         toolbar = menu!!
-        menuInflater.inflate(R.menu.search_toolbar, toolbar)
+        menuInflater.inflate(R.menu.group_toolbar, toolbar)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        val id = item?.itemId
+        if(R.id.meeting_add == id){
+            //TODO:
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

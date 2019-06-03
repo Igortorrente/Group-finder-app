@@ -18,7 +18,7 @@ class groupEditActivity : AppCompatActivity() {
         }
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.edit_top_bar, menu)
+        menuInflater.inflate(R.menu.edit_toolbar, menu)
         return super.onCreateOptionsMenu(menu)
     }
 

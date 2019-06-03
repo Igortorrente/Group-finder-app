@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.recyclerview.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,4 +12,6 @@
         android:layout_marginRight="8dp"
         app:layoutManager="LinearLayoutManager"
         tools:context=".groupListFragment"
-        tools:listitem="@layout/fragment_groups_item"/>
+        tools:listitem="@layout/fragment_groups_item"
+        android:paddingBottom="60dp"
+        android:clipToPadding="false" tools:itemCount="6"/>
