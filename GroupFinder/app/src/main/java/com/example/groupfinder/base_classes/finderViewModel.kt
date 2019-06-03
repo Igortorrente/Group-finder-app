@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 class finderViewModel(application: Application) : AndroidViewModel(application){
     private val repo: UserRepo = UserRepo(UserDatabase.getDatabase(application).userDataDao())
     private lateinit var userMeetings: LiveData<MutableList<UserMeetings>>
-    private lateinit var userClasses: LiveData<List<Classes>>
+    private lateinit var userClasses: LiveData<MutableList<Classes>>
     private lateinit var allUserContents: LiveData<MutableList<Contents>>
     private lateinit var userInfo: LiveData<userData>
 
@@ -22,7 +22,7 @@ class finderViewModel(application: Application) : AndroidViewModel(application){
         return userMeetings
     }
 
-    fun getUserClasses(): LiveData<List<Classes>>{
+    fun getUserClasses(): LiveData<MutableList<Classes>>{
         return userClasses
     }
 

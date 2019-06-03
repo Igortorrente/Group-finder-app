@@ -73,8 +73,8 @@ class profileFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         editProfileButton.setOnClickListener { v ->
-            /* val intent = Intent(v.context, profileEditActivity::class.java)
-            v.context.startActivity(intent) */
+            val intent = Intent(v.context, profileEditActivity::class.java)
+            v.context.startActivity(intent)
 
             val handler = ApiHandler()
             handler.setContext(v.context)
