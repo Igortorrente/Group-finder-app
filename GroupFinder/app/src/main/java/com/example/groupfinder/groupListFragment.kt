@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.groupfinder.base_classes.API
+import com.example.groupfinder.base_classes.FinderViewModel
 import com.example.groupfinder.base_classes.UserMeetings
 
 /**
@@ -21,8 +24,10 @@ class groupListFragment : Fragment() {
 
     // TODO: Customize parameters
     private var columnCount = 1
-
     private var listener: OnListFragmentInteractionListener? = null
+    private lateinit var viewModel: FinderViewModel
+    private lateinit var userMeetings: LiveData<List<UserMeetings>>
+    private lateinit var listAdapter: GroupsRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +35,18 @@ class groupListFragment : Fragment() {
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
+
+        viewModel = activity?.run {
+            ViewModelProviders.of(this).get(FinderViewModel::class.java)
+        }!!
+
+        userMeetings = viewModel.userMeetings
+
+        userMeetings.observe(this, Observer { newList ->
+            listAdapter.newItemAllert(newList)
+        })
     }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -42,8 +58,12 @@ class groupListFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-
-                adapter = GroupsRecyclerViewAdapter(API.getUserGroups("dummy"), listener)
+                listAdapter = if(viewModel.userMeetings.value != null){
+                    GroupsRecyclerViewAdapter(viewModel.userMeetings.value!!, listener)
+                }else{
+                    GroupsRecyclerViewAdapter(emptyList(), listener)
+                }
+                adapter = listAdapter
             }
         }
         return view

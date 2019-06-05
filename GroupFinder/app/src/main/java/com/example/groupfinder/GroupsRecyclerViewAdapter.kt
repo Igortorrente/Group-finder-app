@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_groups_item.view.*
  * TODO: Replace the implementation with code for your data type.
  */
 class GroupsRecyclerViewAdapter(
-    private val mValues: List<UserMeetings>,
+    private var mValues: List<UserMeetings>,
     private val mListener: OnListFragmentInteractionListener?
 ) : RecyclerView.Adapter<GroupsRecyclerViewAdapter.ViewHolder>() {
 
@@ -32,6 +32,11 @@ class GroupsRecyclerViewAdapter(
             val intent = Intent(v.context, groupActivity::class.java)
             v.context.startActivity(intent)
         }
+    }
+
+    fun newItemAllert(newList: List<UserMeetings>){
+        this.mValues = newList
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
