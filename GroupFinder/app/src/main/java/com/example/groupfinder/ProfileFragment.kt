@@ -1,5 +1,6 @@
 package com.example.groupfinder
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -7,14 +8,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
 import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import com.example.groupfinder.base_classes.ApiHandler
-import com.example.groupfinder.base_classes.ApiUser
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.groupfinder.base_classes.userData
 import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -52,6 +54,61 @@ class profileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        GlobalScope.launch {
+            val userDef = ApiHandler().userData(177953)
+
+            withContext(Dispatchers.Main) {
+                try {
+                    val userResponse = userDef.await()
+
+                    when {
+                        userResponse.code() == 404 -> {
+                            val dialog = AlertDialog.Builder(this@profileFragment.context)
+                                .setTitle("User Not Found")
+                                .setMessage("The given user was not found")
+                                .setNeutralButton("Yes") {
+                                        dialog, _ ->
+                                    dialog.cancel()
+                                }
+                                .create()
+
+                            dialog.show()
+                        }
+                        userResponse.code() == 200 -> {
+                            userResponse.body()?.let {
+                                val dialog = AlertDialog.Builder(this@profileFragment.context)
+                                    .setTitle("Failed to connect")
+                                    .setMessage(it.nome)
+                                    .setNeutralButton("Yes") {
+                                            dialog, _ ->
+                                        dialog.cancel()
+                                    }
+                                    .create()
+
+                                dialog.show()
+                                setLabels(it)
+                            }
+                        }
+                        else -> {
+
+                        }
+                    }
+                }
+                catch (t: Throwable) {
+                    val dialog = AlertDialog.Builder(this@profileFragment.context)
+                        .setTitle("Failed to connect")
+                        .setMessage("Failed to connect to external server\n" + t.message)
+                        .setNeutralButton("Yes") {
+                                dialog, _ ->
+                            dialog.cancel()
+                        }
+                        .create()
+
+                    dialog.show()
+                }
+            }
+        }
+
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
@@ -76,6 +133,7 @@ class profileFragment : Fragment() {
             val intent = Intent(v.context, profileEditActivity::class.java)
             v.context.startActivity(intent)
 
+
             /*val handler = ApiHandler()
             handler.setContext(v.context)
             handler.userAuth(ApiUser(ra = 177953, senha = "12345"))*/
@@ -86,6 +144,10 @@ class profileFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
+    }
+
+    fun setLabels(user: userData) {
+        this.userNameEditText.text = user.nome
     }
 
     /**
@@ -100,7 +162,7 @@ class profileFragment : Fragment() {
      * for more information.
      */
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+        // TODO: Update argument type and nome
         fun onFragmentInteraction(uri: Uri)
     }
 

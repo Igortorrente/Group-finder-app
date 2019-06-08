@@ -23,6 +23,12 @@ interface ApiService {
     @GET("user/{ra}")
     fun userData(@Path("ra") ra: Int): Deferred<userData>
 
+    @GET("user/{ra}")
+    fun userDataResponse(@Path("ra") ra: Int): Deferred<Response<userData>>
+
+    @GET("user/{ra}/groups")
+    fun userGroupsResponse(@Path("ra") ra: Int): Deferred<Response<List<UserMeetings>>>
+
     @GET("user/{ra}/groups")
     fun userGroups(@Path("ra") ra: Int): Deferred<List<UserMeetings>>
 
@@ -32,6 +38,6 @@ interface ApiService {
     @GET("/groups/{id}")
     fun groupData(@Path("id") id: Int): Deferred<UserMeetings>
 
-    @GET("/groups/subject/{id}")
+    @GET("/groups/disciplina/{id}")
     fun groupFindBySubject(@Path("id") subId: Int): Deferred<List<UserMeetings>>
 }

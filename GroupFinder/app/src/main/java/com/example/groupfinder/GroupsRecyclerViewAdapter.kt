@@ -42,7 +42,7 @@ class GroupsRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
-        holder.mainSubjectView.text = item.subject
+        holder.mainSubjectView.text = item.disciplina
         holder.placeView.text = item.location_description
         holder.imageView.setImageResource(R.drawable.gde)
 

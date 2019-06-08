@@ -1,16 +1,20 @@
 package com.example.groupfinder
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.groupfinder.base_classes.API
+import com.example.groupfinder.base_classes.ApiHandler
 import com.example.groupfinder.base_classes.UserMeetings
+import kotlinx.coroutines.*
 
 /**
  * A fragment representing a list of Items.
@@ -46,7 +50,72 @@ class groupListFragment : Fragment() {
                     else -> GridLayoutManager(context, columnCount)
                 }
 
-                adapter = GroupsRecyclerViewAdapter(API.getUserGroups("dummy"), listener)
+                GlobalScope.launch {
+                    val groupsListDef = ApiHandler().userGroups(177953)
+
+                        withContext(Dispatchers.Main) {
+                            try {
+                                val groupsListResponse = groupsListDef.await()
+
+                                when {
+                                    groupsListResponse.code() == 404 -> {
+                                        val dialog = AlertDialog.Builder(view.context)
+                                            .setTitle("User Not Found")
+                                            .setMessage("The given user was not found")
+                                            .setNeutralButton("Yes") {
+                                                dialog, which ->
+                                                dialog.cancel()
+                                            }
+                                            .create()
+
+                                        dialog.show()
+                                    }
+                                    groupsListResponse.code() == 200 -> {
+                                        groupsListResponse.body()?.let {
+                                            if (it.isEmpty()) {
+                                                val dialog = AlertDialog.Builder(view.context)
+                                                    .setTitle("No Groups Found")
+                                                    .setMessage("This user hasn't joined any group")
+                                                    .setNeutralButton("Yes") {
+                                                            dialog, which ->
+                                                        dialog.cancel()
+                                                    }
+                                                    .create()
+
+                                                dialog.show()
+                                            }
+                                            else {
+                                                adapter = GroupsRecyclerViewAdapter(it, listener)
+                                            }
+                                        }
+                                    }
+                                    else -> {
+
+                                    }
+                                }
+                            }
+                            catch (t: Throwable) {
+                                val dialog = AlertDialog.Builder(view.context)
+                                    .setTitle("Failed to connect")
+                                    .setMessage("Failed to connect to external server\n" + t.message)
+                                    .setNeutralButton("Yes") {
+                                            dialog, which ->
+                                        dialog.cancel()
+                                    }
+                                    .create()
+
+                                dialog.show()
+                            }
+                        }
+
+                        //adapter = GroupsRecyclerViewAdapter(API.getUserGroups("RESPONSE " + groupsList.code()), listener)
+                        //Toast.makeText(view.context, "RESPONSE " + groupsList.code(), Toast.LENGTH_LONG)
+
+                        //Toast.makeText(view.context, t.message, Toast.LENGTH_LONG)
+                }
+
+
+
             }
         }
         return view
@@ -78,7 +147,7 @@ class groupListFragment : Fragment() {
      * for more information.
      */
     interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
+        // TODO: Update argument type and nome
         fun onListFragmentInteraction(item: UserMeetings?)
     }
 

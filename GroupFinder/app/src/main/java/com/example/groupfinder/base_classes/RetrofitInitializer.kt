@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class RetrofitInitializer {
 
     private val retrofitInstance = Retrofit.Builder()
-            .baseUrl("http://177.220.85.247:5001/")
+            .baseUrl("http://hsconexao.com.br:5001/")
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .build()

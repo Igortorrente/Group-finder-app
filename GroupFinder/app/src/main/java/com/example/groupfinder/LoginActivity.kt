@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import java.util.*
 
 /**
- * A login screen that offers login via email/password.
+ * A login screen that offers login via email/senha.
  */
 class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
     /**
@@ -110,7 +110,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         var cancel = false
         var focusView: View? = null
 
-        // Check for a valid password, if the User entered one.
+        // Check for a valid senha, if the User entered one.
         if (!TextUtils.isEmpty(passwordStr) && !isPasswordValid(passwordStr)) {
             password.error = getString(R.string.error_invalid_password)
             focusView = password
@@ -122,11 +122,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             email.error = getString(R.string.error_field_required)
             focusView = email
             cancel = true
-        } else if (!isEmailValid(emailStr)) {
+        } /*else if (!isEmailValid(emailStr)) {
             email.error = getString(R.string.error_invalid_email)
             focusView = email
             cancel = true
-        }
+        }*/
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -265,7 +265,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 .map { it.split(":") }
                 .firstOrNull { it[0] == mEmail }
                 ?.let {
-                    // Account exists, return true if the password matches.
+                    // Account exists, return true if the senha matches.
                     it[1] == mPassword
                 }
                 ?: true

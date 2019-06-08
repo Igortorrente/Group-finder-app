@@ -10,9 +10,9 @@ import androidx.room.ForeignKey.CASCADE
 @Entity(tableName = "UserData")
 data class userData(
     @PrimaryKey val ra: Int,
-    val name: String,
-    val course: String,
-    val password:String
+    val nome: String,
+    val curso: String,
+    val senha:String
 )
 
 // UserRepo classes table
@@ -25,14 +25,14 @@ data class Classes(
 @Entity (tableName = "Meetings")
 data class UserMeetings(
     @PrimaryKey @ColumnInfo(name = "meet_id") val id: Int,
-    val subject: String,
-    val detail: String,
-    val data_init: Int,
-    val data_end: Int,
-    val location_id: Int,
-    // TODO: Probably T need change this to put the name of creator and a image
-    val user_creator: Int,
-    val location_description: String
+    val disciplina: String,
+    val detalhes: String,
+    val data_ini: Int,
+    val data_fim: Int,
+    val local_id: Int,
+    // TODO: Probably T need change this to put the nome of creator and a image
+    val usuario_criador: Int,
+    val location_description: String? = ""
 )
 
 @Entity(foreignKeys = arrayOf(ForeignKey(
