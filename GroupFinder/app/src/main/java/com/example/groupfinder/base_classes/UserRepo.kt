@@ -2,14 +2,25 @@ package com.example.groupfinder.base_classes
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 
 class UserRepo(private val userDao: UserDao) : android.app.Application(){
 
-    var myDB: UserDatabase = UserDatabase.getDatabase(this)
-
     // TODO: Introduce Networking at all of this
+    private var modUserMeetings = MutableLiveData<List<UserMeetings>>()
+    private var modUserClasses = MutableLiveData<List<Classes>>()
+    private var modAllUserContents = MutableLiveData<List<Contents>>()
+    private var modUserInfo = MutableLiveData<UserData>()
+
+    private val userMeetings: LiveData<List<UserMeetings>> get() = modUserMeetings
+    private val userClasses: LiveData<List<Classes>> get() = modUserClasses
+    private val allUserContents: LiveData<List<Contents>> get() = modAllUserContents
+    private val userInfo: LiveData<UserData> get() = modUserInfo
+
     // Meeting Queries
     fun getAllMeetings(): LiveData<List<UserMeetings>>{
+        val meets = API.getUserGroups("oi")
+        modUserMeetings.value = meets
         return userMeetings
     }
 
