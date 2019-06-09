@@ -10,8 +10,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var profileFragment: profileFragment
-    lateinit var groupListFragment: groupListFragment
-    lateinit var suggestionListFragment: groupListFragment
+    lateinit var GroupListFragment: GroupListFragment
+    lateinit var suggestionListFragment: GroupListFragment
     lateinit var toolbar: Menu
     private var lastFragment: Int = 0
 
@@ -26,8 +26,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.container, groupListFragment)
-                    .addToBackStack(groupListFragment.toString())
+                    .replace(R.id.container, GroupListFragment)
+                    .addToBackStack(GroupListFragment.toString())
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit()
                 return@OnNavigationItemSelectedListener true
@@ -71,14 +71,14 @@ class MainActivity : AppCompatActivity() {
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         profileFragment = profileFragment()
-        groupListFragment = groupListFragment()
-        suggestionListFragment = groupListFragment()
+        GroupListFragment = GroupListFragment()
+        suggestionListFragment = GroupListFragment()
 
 
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.container, groupListFragment)
-            .addToBackStack(groupListFragment.toString())
+            .replace(R.id.container, GroupListFragment)
+            .addToBackStack(GroupListFragment.toString())
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             .commit()
 

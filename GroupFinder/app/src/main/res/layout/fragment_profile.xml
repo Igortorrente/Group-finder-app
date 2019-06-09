@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                    xmlns:app="http://schemas.android.com/apk/res-auto"
                                                    xmlns:tools="http://schemas.android.com/tools"
-                                                   tools:context=".profileFragment"
+                                                   tools:context=".ProfileFragment"
                                                    android:layout_width="match_parent"
                                                    android:layout_height="match_parent"
                                                    android:paddingBottom="60dp">
@@ -31,18 +31,18 @@
                         android:text="@string/text_view_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/userNameTextView"
+                        android:id="@+id/subjectTextView"
                         android:layout_marginBottom="11dp"
-                        app:layout_constraintBottom_toTopOf="@+id/userNameEditText"
+                        app:layout_constraintBottom_toTopOf="@+id/subjectFieldTextView"
                         android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
                         android:layout_marginStart="8dp" app:layout_constraintVertical_bias="1.0"
-                        app:layout_constraintStart_toStartOf="@+id/userNameEditText"/>
+                        app:layout_constraintStart_toStartOf="@+id/subjectFieldTextView"/>
                 <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName"
                         android:ems="10"
-                        android:id="@+id/userNameEditText"
+                        android:id="@+id/subjectFieldTextView"
                         android:importantForAutofill="no"
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_marginTop="60dp"
@@ -60,7 +60,7 @@
                         android:text="@string/text_view_user_course"
                         android:layout_width="match_parent"
                         android:layout_height="15dp"
-                        android:id="@+id/userCourseTextView"
+                        android:id="@+id/locationTextView"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"/>
@@ -69,10 +69,10 @@
                         android:layout_height="wrap_content"
                         android:inputType="text|textAutoComplete"
                         android:ems="10"
-                        android:id="@+id/userCourseEditText"
+                        android:id="@+id/locationFieldTextView"
                         android:hint="@string/hint_course_edit_text" android:autofillHints=""
                         android:layout_marginTop="8dp"
-                        app:layout_constraintTop_toBottomOf="@+id/userCourseTextView"
+                        app:layout_constraintTop_toBottomOf="@+id/locationTextView"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginStart="16dp" android:layout_marginEnd="16dp"/>
@@ -80,56 +80,56 @@
                         android:text="@string/text_view_ra"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/raTextView"
+                        android:id="@+id/dataInitTextView"
                         app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="16dp"
                         android:layout_marginStart="16dp"
-                        app:layout_constraintTop_toBottomOf="@+id/userCourseEditText"/>
+                        app:layout_constraintTop_toBottomOf="@+id/locationFieldTextView"/>
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:id="@+id/raEditText"
+                        android:id="@+id/dataInitFieldTextView"
                         android:inputType="number" android:hint="@string/hint_ra_edit_text" android:autofillHints=""
                         android:layout_marginTop="8dp"
-                        app:layout_constraintTop_toBottomOf="@+id/raTextView" app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/dataInitTextView" app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginStart="16dp" android:layout_marginEnd="16dp"/>
                 <TextView
                         android:text="@string/text_view_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/emailTextView"
+                        android:id="@+id/dataEndTextView"
                         app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="16dp"
                         android:layout_marginStart="16dp"
-                        app:layout_constraintTop_toBottomOf="@+id/raEditText"/>
+                        app:layout_constraintTop_toBottomOf="@+id/dataInitFieldTextView"/>
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
                         android:ems="10"
-                        android:id="@+id/emailEditText"
+                        android:id="@+id/dataEndFieldTextView"
                         android:hint="@string/hint_email_edit_text"
                         android:layout_marginTop="8dp"
-                        app:layout_constraintTop_toBottomOf="@+id/emailTextView"
+                        app:layout_constraintTop_toBottomOf="@+id/dataEndTextView"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginStart="16dp" android:layout_marginEnd="16dp"/>
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/phoneNumberTextView"
+                        android:id="@+id/descriptionTextView"
                         android:text="@string/text_view_phone"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginTop="16dp" android:layout_marginStart="16dp"
-                        app:layout_constraintTop_toBottomOf="@+id/emailEditText"/>
+                        app:layout_constraintTop_toBottomOf="@+id/dataEndFieldTextView"/>
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:id="@+id/phoneNumberEditText"
+                        android:id="@+id/descriptionFieldTextView"
                         android:hint="@string/hint_phone_edit_text"
                         android:layout_marginTop="8dp"
-                        app:layout_constraintTop_toBottomOf="@+id/phoneNumberTextView"
+                        app:layout_constraintTop_toBottomOf="@+id/descriptionTextView"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:inputType="phone"/>
@@ -140,13 +140,13 @@
                         android:id="@+id/interestTextView"
                         app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="16dp"
                         android:layout_marginStart="16dp"
-                        app:layout_constraintTop_toBottomOf="@+id/phoneNumberEditText"/>
+                        app:layout_constraintTop_toBottomOf="@+id/descriptionFieldTextView"/>
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
                         android:ems="10"
-                        android:id="@+id/interestEditText"
+                        android:id="@+id/interestFieldTextView"
                         android:hint="@string/hint_interest_edit_text"
                         android:layout_marginTop="8dp"
                         app:layout_constraintTop_toBottomOf="@+id/interestTextView"

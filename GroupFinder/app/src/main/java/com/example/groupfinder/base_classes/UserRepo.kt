@@ -9,9 +9,8 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
 
     // TODO: Introduce Networking at all of this
     // Meeting Queries
-    @WorkerThread
-    fun getAllMeetings(): LiveData<MutableList<UserMeetings>>{
-        return userDao.getAllMeeting()
+    fun getAllMeetings(): LiveData<List<UserMeetings>>{
+        return userMeetings
     }
 
     @WorkerThread
@@ -31,12 +30,12 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
 
     // Meeting content
     @WorkerThread
-    fun getAllMeetingContent(id: Int): LiveData<MutableList<Contents>>{
+    fun getAllMeetingContent(id: Int): LiveData<List<Contents>>{
         return userDao.getAllMeetingContent(id)
     }
 
     @WorkerThread
-    fun gettAllContents():  LiveData<MutableList<Contents>>{
+    fun gettAllContents():  LiveData<List<Contents>>{
         return userDao.getAllContents()
     }
 
@@ -57,7 +56,7 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
 
     // Class Queries
     @WorkerThread
-    fun getAllUserClasses(): LiveData<MutableList<Classes>>{
+    fun getAllUserClasses(): LiveData<List<Classes>>{
         return userDao.getAllUserClasses()
     }
 
@@ -78,18 +77,18 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
 
     // UserRepo Queries
     @WorkerThread
-    fun getUserData(): LiveData<userData>{
-        return userDao.getUserData()
+    fun getUserData(): LiveData<UserData>{
+        return userInfo
     }
 
     @WorkerThread
-    fun updateUserData(userData: userData): Int {
-        return userDao.updateUserData(userData)
+    fun updateUserData(UserData: UserData): Int {
+        return userDao.updateUserData(UserData)
     }
 
     @WorkerThread
-    fun insetUserData(userData: userData): Long{
-        return userDao.insetUserData(userData)
+    fun insetUserData(UserData: UserData): Long{
+        return userDao.insetUserData(UserData)
     }
 }
 

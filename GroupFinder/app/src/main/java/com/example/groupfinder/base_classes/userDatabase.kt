@@ -2,13 +2,12 @@ package com.example.groupfinder.base_classes
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
 
 // UserRepo info
 @Entity(tableName = "UserData")
-data class userData(
+data class UserData(
     @PrimaryKey val ra: Int,
     val name: String,
     val course: String,
@@ -36,10 +35,10 @@ data class UserMeetings(
 )
 
 @Entity(foreignKeys = arrayOf(ForeignKey(
-            entity = UserMeetings::class,
-            parentColumns = arrayOf("meet_id"),
-            childColumns = arrayOf("content_id"),
-            onDelete = CASCADE)))
+    entity = UserMeetings::class,
+    parentColumns = arrayOf("meet_id"),
+    childColumns = arrayOf("content_id"),
+    onDelete = CASCADE)))
 data class Contents(
     @PrimaryKey @ColumnInfo(name = "content_id") val id: Int,
     val description: String,
@@ -50,7 +49,7 @@ data class Contents(
 interface UserDao{
     // Meeting Queries
     @Query("SELECT * FROM Meetings")
-    fun getAllMeeting(): LiveData<MutableList<UserMeetings>>
+    fun getAllMeeting(): LiveData<List<UserMeetings>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertMeeting(meeting: UserMeetings): Long
@@ -63,10 +62,10 @@ interface UserDao{
 
     // Meeting content
     @Query("SELECT * FROM Contents WHERE content_id LIKE :id")
-    fun getAllMeetingContent(id: Int):  LiveData<MutableList<Contents>>
+    fun getAllMeetingContent(id: Int):  LiveData<List<Contents>>
 
     @Query("SELECT * FROM Contents")
-    fun getAllContents():  LiveData<MutableList<Contents>>
+    fun getAllContents():  LiveData<List<Contents>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertMeetContents(content: Contents): Long
@@ -79,7 +78,7 @@ interface UserDao{
 
     // Class Queries
     @Query("SELECT * FROM Classes")
-    fun getAllUserClasses(): LiveData<MutableList<Classes>>
+    fun getAllUserClasses(): LiveData<List<Classes>>
 
     @Delete
     fun deleteUserClass(userClass: Classes): Int
@@ -92,16 +91,16 @@ interface UserDao{
 
     // UserData Queries
     @Query("SELECT * FROM UserData")
-    fun getUserData(): LiveData<userData>
+    fun getUserData(): LiveData<UserData>
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    fun updateUserData(userData: userData): Int
+    fun updateUserData(UserData: UserData): Int
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insetUserData(userData: userData): Long
+    fun insetUserData(UserData: UserData): Long
 }
 
-@Database(entities = arrayOf(userData::class, Classes::class,
+@Database(entities = arrayOf(UserData::class, Classes::class,
     UserMeetings::class, Contents::class), version = 1, exportSchema = false)
 abstract class UserDatabase : RoomDatabase(){
     abstract fun userDataDao(): UserDao

@@ -9,7 +9,7 @@ class FinderViewModel(application: Application) : AndroidViewModel(application){
     var userMeetings: LiveData<List<UserMeetings>>
     var userClasses: LiveData<List<Classes>>
     var allUserContents: LiveData<List<Contents>>
-    var userInfo: LiveData<userData>
+    var userInfo: LiveData<UserData>
 
     init {
         userMeetings  = repo.getAllMeetings()

@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.groupfinder.base_classes.UserMeetings
-import com.example.groupfinder.groupListFragment.OnListFragmentInteractionListener
+import com.example.groupfinder.GroupListFragment.OnListFragmentInteractionListener
 import kotlinx.android.synthetic.main.fragment_groups_item.view.*
 
 /**

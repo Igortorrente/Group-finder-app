@@ -15,7 +15,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".profileEditActivity">
+        <activity android:name=".ProfileEditActivity">
         </activity>
         <activity android:name=".groupActivity">
         </activity>

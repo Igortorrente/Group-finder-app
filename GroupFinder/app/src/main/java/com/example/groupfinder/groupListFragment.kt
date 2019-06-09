@@ -18,11 +18,9 @@ import com.example.groupfinder.base_classes.UserMeetings
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
- * [groupListFragment.OnListFragmentInteractionListener] interface.
+ * [GroupListFragment.OnListFragmentInteractionListener] interface.
  */
-class groupListFragment : Fragment() {
-
-    // TODO: Customize parameters
+class GroupListFragment : Fragment() {
     private var columnCount = 1
     private var listener: OnListFragmentInteractionListener? = null
     private lateinit var viewModel: FinderViewModel
@@ -31,10 +29,6 @@ class groupListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
 
         viewModel = activity?.run {
             ViewModelProviders.of(this).get(FinderViewModel::class.java)
