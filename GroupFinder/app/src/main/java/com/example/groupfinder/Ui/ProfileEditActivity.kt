@@ -1,4 +1,4 @@
-package com.example.groupfinder
+package com.example.groupfinder.Ui
 
 import android.app.Activity
 import android.content.Intent
@@ -8,8 +8,9 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
-import com.example.groupfinder.base_classes.Classes
-import com.example.groupfinder.base_classes.UserData
+import com.example.groupfinder.Data.Common.Classes
+import com.example.groupfinder.Data.Common.UserData
+import com.example.groupfinder.R
 import kotlinx.android.synthetic.main.activity_profile_edit.*
 import java.util.ArrayList
 
@@ -63,8 +64,11 @@ class ProfileEditActivity : AppCompatActivity(){
             if(!userInfoHasChange){
                 setResult(Activity.RESULT_CANCELED, replyIntent)
             }else{
-                replyIntent.putExtra("replyuserinfo", UserData(dataInitFieldTextView.text.toString().toInt(),
-                    subjectFieldTextView.text.toString(), locationFieldTextView.text.toString(), userInfo!!.password))
+                // TODO: Change dummy
+                replyIntent.putExtra("replyuserinfo", UserData(
+                    dataInitFieldTextView.text.toString().toInt(),
+                    subjectFieldTextView.text.toString(), locationFieldTextView.text.toString(), "dummy")
+                )
                 // TODO: rework at this
                 replyIntent.putParcelableArrayListExtra("replyuserclasses", classes as ArrayList<out Parcelable>)
                 setResult(Activity.RESULT_OK, replyIntent)

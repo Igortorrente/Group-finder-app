@@ -1,5 +1,6 @@
-package com.example.groupfinder.base_classes
+package com.example.groupfinder.Data.API
 
+import com.example.groupfinder.Data.Common.UserMeetings
 import com.example.groupfinder.R
 
 

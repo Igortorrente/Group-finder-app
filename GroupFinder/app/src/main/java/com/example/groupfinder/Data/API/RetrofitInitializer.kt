@@ -1,4 +1,4 @@
-package com.example.groupfinder.base_classes
+package com.example.groupfinder.Data.API
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

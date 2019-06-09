@@ -1,7 +1,8 @@
-package com.example.groupfinder
+package com.example.groupfinder.Ui
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +13,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.groupfinder.base_classes.FinderViewModel
-import com.example.groupfinder.base_classes.UserMeetings
+import com.example.groupfinder.ViewModels.FinderViewModel
+import com.example.groupfinder.Data.Common.UserMeetings
+import com.example.groupfinder.R
 
 /**
  * A fragment representing a list of Items.
@@ -35,10 +37,13 @@ class GroupListFragment : Fragment() {
         }!!
 
         userMeetings = viewModel.userMeetings
+        Log.d("wtf","observers" + userMeetings.hasObservers().toString())
 
         userMeetings.observe(this, Observer { newList ->
             listAdapter.newItemAllert(newList)
+            Log.d("wtf","Frag: " + userMeetings.value!!.size.toString())
         })
+
     }
 
 
@@ -74,6 +79,7 @@ class GroupListFragment : Fragment() {
 
     override fun onDetach() {
         super.onDetach()
+        userMeetings.removeObservers(this)
         listener = null
     }
 
@@ -91,20 +97,5 @@ class GroupListFragment : Fragment() {
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onListFragmentInteraction(item: UserMeetings?)
-    }
-
-    companion object {
-
-        // TODO: Customize parameter argument names
-        const val ARG_COLUMN_COUNT = "column-count"
-
-        // TODO: Customize parameter initialization
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            groupListFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
-            }
     }
 }

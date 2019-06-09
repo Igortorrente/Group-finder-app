@@ -1,4 +1,4 @@
-package com.example.groupfinder
+package com.example.groupfinder.Ui
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -7,8 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.groupfinder.base_classes.UserMeetings
-import com.example.groupfinder.GroupListFragment.OnListFragmentInteractionListener
+import com.example.groupfinder.Data.Common.UserMeetings
+import com.example.groupfinder.R
+import com.example.groupfinder.Ui.GroupListFragment.OnListFragmentInteractionListener
 import kotlinx.android.synthetic.main.fragment_groups_item.view.*
 
 /**

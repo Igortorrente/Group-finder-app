@@ -1,4 +1,4 @@
-package com.example.groupfinder
+package com.example.groupfinder.Ui
 
 import android.Manifest.permission.READ_CONTACTS
 import android.animation.Animator
@@ -20,6 +20,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.groupfinder.R
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_login.*
 import java.util.*

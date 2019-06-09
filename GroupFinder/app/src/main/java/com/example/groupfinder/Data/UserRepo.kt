@@ -1,8 +1,11 @@
-package com.example.groupfinder.base_classes
+package com.example.groupfinder.Data
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.groupfinder.Data.Common.*
+import com.example.groupfinder.Data.DB.UserDao
+import com.example.groupfinder.Data.API.*
 
 class UserRepo(private val userDao: UserDao) : android.app.Application(){
 

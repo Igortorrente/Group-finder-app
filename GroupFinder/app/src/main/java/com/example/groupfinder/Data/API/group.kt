@@ -1,4 +1,4 @@
-package com.example.groupfinder.base_classes
+package com.example.groupfinder.Data.API
 
 // A dummy item representing a piece of place.
 data class groupItem(var groupID: Int, var mainSubject: String, var place: String, var timeToBegin: String,

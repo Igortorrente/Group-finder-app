@@ -1,4 +1,4 @@
-package com.example.groupfinder
+package com.example.groupfinder.Ui
 
 import android.os.Bundle
 import android.view.Menu
@@ -6,11 +6,12 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.groupfinder.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    lateinit var profileFragment: profileFragment
-    lateinit var GroupListFragment: GroupListFragment
+    lateinit var profileFragment: ProfileFragment
+    lateinit var groupListFragment: GroupListFragment
     lateinit var suggestionListFragment: GroupListFragment
     lateinit var toolbar: Menu
     private var lastFragment: Int = 0
@@ -26,8 +27,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.container, GroupListFragment)
-                    .addToBackStack(GroupListFragment.toString())
+                    .replace(R.id.container, groupListFragment)
+                    .addToBackStack(groupListFragment.toString())
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit()
                 return@OnNavigationItemSelectedListener true
@@ -70,15 +71,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        profileFragment = profileFragment()
-        GroupListFragment = GroupListFragment()
+        profileFragment = ProfileFragment()
+        groupListFragment = GroupListFragment()
         suggestionListFragment = GroupListFragment()
 
 
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.container, GroupListFragment)
-            .addToBackStack(GroupListFragment.toString())
+            .replace(R.id.container, groupListFragment)
+            .addToBackStack(groupListFragment.toString())
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             .commit()
 
