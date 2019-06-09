@@ -17,9 +17,9 @@
             android:theme="@style/AppTheme">
         <activity android:name=".ProfileEditActivity">
         </activity>
-        <activity android:name=".groupActivity">
+        <activity android:name=".GroupActivity">
         </activity>
-        <activity android:name=".groupEditActivity">
+        <activity android:name=".GroupEditActivity">
         </activity>
         <activity
                 android:name=".LoginActivity"
