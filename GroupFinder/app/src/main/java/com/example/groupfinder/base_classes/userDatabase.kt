@@ -1,26 +1,31 @@
 package com.example.groupfinder.base_classes
 
 import android.content.Context
+import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
+import kotlinx.android.parcel.Parcelize
 
 // UserRepo info
+@Parcelize
 @Entity(tableName = "UserData")
 data class UserData(
     @PrimaryKey val ra: Int,
     val name: String,
     val course: String,
     val password:String
-)
+) : Parcelable
 
 // UserRepo classes table
+@Parcelize
 @Entity
 data class Classes(
     @PrimaryKey @ColumnInfo(name = "class_id") val id: Int,
     val description: String
-)
+) : Parcelable
 
+@Parcelize
 @Entity (tableName = "Meetings")
 data class UserMeetings(
     @PrimaryKey @ColumnInfo(name = "meet_id") val id: Int,
@@ -32,8 +37,9 @@ data class UserMeetings(
     // TODO: Probably T need change this to put the name of creator and a image
     val user_creator: Int,
     val location_description: String
-)
+) : Parcelable
 
+@Parcelize
 @Entity(foreignKeys = arrayOf(ForeignKey(
     entity = UserMeetings::class,
     parentColumns = arrayOf("meet_id"),
@@ -43,7 +49,7 @@ data class Contents(
     @PrimaryKey @ColumnInfo(name = "content_id") val id: Int,
     val description: String,
     val url: String
-)
+) : Parcelable
 
 @Dao
 interface UserDao{
