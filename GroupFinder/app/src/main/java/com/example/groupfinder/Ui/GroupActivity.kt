@@ -23,6 +23,9 @@ class GroupActivity : AppCompatActivity() {
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
             supportActionBar!!.setDisplayShowHomeEnabled(true)
         }
+
+        actionGroupButton.setOnClickListener { view ->
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

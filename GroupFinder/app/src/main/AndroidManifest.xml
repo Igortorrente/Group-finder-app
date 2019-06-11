@@ -19,7 +19,7 @@
         </activity>
         <activity android:name=".Ui.GroupActivity">
         </activity>
-        <activity android:name=".Ui.GroupEditActivity">
+        <activity android:name=".Ui.NewGroupActivity">
         </activity>
         <activity
                 android:name=".Ui.LoginActivity"
