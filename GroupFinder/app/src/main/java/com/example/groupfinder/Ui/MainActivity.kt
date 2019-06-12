@@ -1,5 +1,6 @@
 package com.example.groupfinder.Ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -13,6 +14,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var profileFragment: ProfileFragment
     lateinit var groupListFragment: GroupListFragment
     lateinit var suggestionListFragment: GroupListFragment
+    private val groupActivityRequestCode = 4
     lateinit var toolbar: Menu
     private var lastFragment: Int = 0
 
@@ -96,7 +98,8 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val id = item?.itemId
         if(R.id.group_add == id){
-            //TODO:
+            val intent = Intent(this, NewGroupActivity::class.java)
+            startActivityForResult(intent, groupActivityRequestCode)
         }
         return super.onOptionsItemSelected(item)
     }

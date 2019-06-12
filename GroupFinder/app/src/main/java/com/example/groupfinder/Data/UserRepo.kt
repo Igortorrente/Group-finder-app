@@ -92,6 +92,9 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
     // UserRepo Queries
     @WorkerThread
     fun getUserData(): LiveData<UserData>{
+        // TODO: Replace
+        modUserInfo = MutableLiveData()
+        modUserInfo.postValue(UserData(213,"joão","eng de ali","123"))
         return userInfo
     }
 
