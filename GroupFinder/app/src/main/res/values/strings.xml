@@ -37,7 +37,8 @@
     <!-- Strings hints related to group Activity -->
     <string name="hint_main_subject">Ex: Física experimental III (F329)</string>
     <string name="hint_location">Ex: Casa branca</string>
-    <string name="hint_begin">Ex: Qui 23 de Mar 00:00</string>
+    <string name="hint_begin_day">Ex: 23/06/2019</string>
+    <string name="hint_begin_hour">Ex: 14:00</string>
     <string name="hint_ends">Ex: Qui 23 de Mar 23:59</string>
     <string name="hint_descrition">Ex: Grupo de estudo para a primeira prova</string>
     <string name="hint_content">Física (Haliday) http://bla.com</string>

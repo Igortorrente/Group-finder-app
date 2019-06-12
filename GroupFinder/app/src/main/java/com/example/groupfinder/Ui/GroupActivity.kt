@@ -138,7 +138,7 @@ class GroupActivity : AppCompatActivity() {
     private fun changeState(mode1: Int, mode2: Int){
         subjectFieldTextView.visibility = mode1
         locationFieldTextView.visibility = mode1
-        dataInitFieldTextView.visibility = mode1
+        initTimeTextView.visibility = mode1
         dataEndFieldTextView.visibility = mode1
 
         subjectFieldTextEdit.visibility = mode2
@@ -150,7 +150,7 @@ class GroupActivity : AppCompatActivity() {
     private fun updateTextViews(){
         subjectFieldTextView.text = group?.subject
         locationFieldTextView.text = group?.location_description
-        dataInitFieldTextView.text = group?.data_init.toString()
+        initTimeTextView.text = group?.data_init.toString()
         dataEndFieldTextView.text = group?.data_end.toString()
     }
 }
