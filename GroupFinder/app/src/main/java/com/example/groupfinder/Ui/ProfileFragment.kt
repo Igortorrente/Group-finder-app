@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.example.groupfinder.Data.Common.Classes
+import com.example.groupfinder.Data.Common.Class
 import com.example.groupfinder.Data.Common.UserData
 import com.example.groupfinder.ViewModels.FinderViewModel
 import com.example.groupfinder.R
@@ -24,7 +24,7 @@ class ProfileFragment : Fragment() {
     private val profileEditFragmentRequestCode = 1
     private lateinit var viewModel: FinderViewModel
     private lateinit var userData: LiveData<UserData>
-    private lateinit var userClasses: LiveData<List<Classes>>
+    private lateinit var userClass: LiveData<List<Class>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +34,7 @@ class ProfileFragment : Fragment() {
         }!!
 
         userData = viewModel.userInfo
-        userClasses = viewModel.userClasses
+        userClass = viewModel.userClass
 
         userData.observe(this, Observer {
             userData.value?.let {
@@ -45,7 +45,7 @@ class ProfileFragment : Fragment() {
             }
         })
 
-        userClasses.observe(this, Observer {
+        userClass.observe(this, Observer {
             //TODO: implement
         })
     }
@@ -72,8 +72,8 @@ class ProfileFragment : Fragment() {
             userData.value?.let {
                 intent.putExtra("userinfo", userData.value)
             }
-            userClasses.value?.let {
-                intent.putParcelableArrayListExtra("userclasses", userClasses.value as ArrayList<Classes>)
+            userClass.value?.let {
+                intent.putParcelableArrayListExtra("userclasses", userClass.value as ArrayList<Class>)
             }
             startActivityForResult(intent, profileEditFragmentRequestCode)
         }
@@ -93,7 +93,7 @@ class ProfileFragment : Fragment() {
                     subjectFieldTextView.refreshDrawableState()
                     locationFieldTextView.refreshDrawableState()
                     dataInitFieldTextView.refreshDrawableState()
-                    // TODO: add viewModel and user's Classes
+                    // TODO: add viewModel and user's Class
                 }
                 Toast.makeText(this.context, "Sucesso !", Toast.LENGTH_SHORT).show()
             } else {

@@ -7,7 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
-import com.example.groupfinder.Data.Common.UserMeetings
+import com.example.groupfinder.Data.Common.UserGroups
 import com.example.groupfinder.R
 import kotlinx.android.synthetic.main.activity_group.*
 
@@ -16,10 +16,10 @@ enum class State{ VIEW, EDIT, INSIDE, OUTSIDE}
 
 
 class GroupActivity : AppCompatActivity() {
-    private var meeting: UserMeetings? = null
+    private var group: UserGroups? = null
     private var mode = Mode.USER
     private var state = State.VIEW
-    private var meetingChange = false
+    private var infoChange = false
     private var instantChange = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +27,7 @@ class GroupActivity : AppCompatActivity() {
         setContentView(R.layout.activity_group)
 
         intent.extras?.let {
-            meeting = intent.extras?.getParcelable("groupInfo") as UserMeetings
+            group = intent.extras?.getParcelable("groupInfo") as UserGroups
             updateTextViews()
             // TODO: Check if user are inside/admin the group
             // Change mode and float button image
@@ -45,10 +45,10 @@ class GroupActivity : AppCompatActivity() {
                     actionGroupButton.setImageResource(R.drawable.baseline_edit_white_24dp)
                     changeState(View.VISIBLE, View.INVISIBLE)
                     if(instantChange)
-                        meetingChange = instantChange
+                        infoChange = instantChange
                     state = State.VIEW
                     // Change These dummies
-                    meeting = UserMeetings(0, subjectFieldTextEdit.text.toString(), "dummy",
+                    group = UserGroups(0, subjectFieldTextEdit.text.toString(), "dummy",
                         dataInitFieldTextEdit.text.toString().toInt(), dataEndFieldTextEdit.text.toString().toInt(),
                         0,0, locationFieldTextEdit.text.toString())
                     updateTextViews()
@@ -57,10 +57,10 @@ class GroupActivity : AppCompatActivity() {
                     actionGroupButton.setImageResource(R.drawable.baseline_save_white_24dp)
                     changeState(View.INVISIBLE, View.VISIBLE)
                     state = State.EDIT
-                    subjectFieldTextEdit.setText(meeting?.subject)
-                    locationFieldTextEdit.setText(meeting?.location_description)
-                    dataInitFieldTextEdit.setText(meeting?.data_init.toString())
-                    dataEndFieldTextEdit.setText(meeting?.data_end.toString())
+                    subjectFieldTextEdit.setText(group?.subject)
+                    locationFieldTextEdit.setText(group?.location_description)
+                    dataInitFieldTextEdit.setText(group?.data_init.toString())
+                    dataEndFieldTextEdit.setText(group?.data_end.toString())
                 }
             }else {
                 if(state == State.INSIDE){
@@ -114,9 +114,9 @@ class GroupActivity : AppCompatActivity() {
                 instantChange = false
             }else{
                 val replyIntent = Intent()
-                if(meetingChange){
+                if(infoChange){
                     replyIntent.putExtra("replytype", 0)
-                    replyIntent.putExtra("replymeet", meeting)
+                    replyIntent.putExtra("replygroup", group)
                     setResult(Activity.RESULT_OK, replyIntent)
                 }else{
                     setResult(Activity.RESULT_CANCELED, replyIntent)
@@ -148,9 +148,9 @@ class GroupActivity : AppCompatActivity() {
     }
 
     private fun updateTextViews(){
-        subjectFieldTextView.text = meeting?.subject
-        locationFieldTextView.text = meeting?.location_description
-        dataInitFieldTextView.text = meeting?.data_init.toString()
-        dataEndFieldTextView.text = meeting?.data_end.toString()
+        subjectFieldTextView.text = group?.subject
+        locationFieldTextView.text = group?.location_description
+        dataInitFieldTextView.text = group?.data_init.toString()
+        dataEndFieldTextView.text = group?.data_end.toString()
     }
 }

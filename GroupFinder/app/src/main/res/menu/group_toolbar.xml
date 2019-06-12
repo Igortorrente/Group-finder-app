@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/meeting_add"
-          android:title="@string/meeting_add"
+    <item android:id="@+id/group_add"
+          android:title="@string/group_add"
           android:icon="@drawable/baseline_add_white_48dp"
           app:showAsAction="ifRoom"  />
     <item
-            android:id="@+id/meeting_search"
+            android:id="@+id/group_search"
             android:icon="@drawable/ic_search_black_24dp"
             android:title="@string/search"
             app:actionViewClass="android.widget.SearchView"

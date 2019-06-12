@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.groupfinder.ViewModels.FinderViewModel
-import com.example.groupfinder.Data.Common.UserMeetings
+import com.example.groupfinder.Data.Common.UserGroups
 import com.example.groupfinder.R
 
 /**
@@ -26,7 +26,7 @@ class GroupListFragment : Fragment() {
     private var columnCount = 1
     private var listener: OnListFragmentInteractionListener? = null
     private lateinit var viewModel: FinderViewModel
-    private lateinit var userMeetings: LiveData<List<UserMeetings>>
+    private lateinit var userGroups: LiveData<List<UserGroups>>
     private lateinit var listAdapter: GroupsRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,12 +36,12 @@ class GroupListFragment : Fragment() {
             ViewModelProviders.of(this).get(FinderViewModel::class.java)
         }!!
 
-        userMeetings = viewModel.userMeetings
-        Log.d("wtf","observers" + userMeetings.hasObservers().toString())
+        userGroups = viewModel.userGroups
+        Log.d("wtf","observers" + userGroups.hasObservers().toString())
 
-        userMeetings.observe(this, Observer { newList ->
+        userGroups.observe(this, Observer { newList ->
             listAdapter.newItemAllert(newList)
-            Log.d("wtf","Frag: " + userMeetings.value!!.size.toString())
+            Log.d("wtf","Frag: " + userGroups.value!!.size.toString())
         })
 
     }
@@ -57,8 +57,8 @@ class GroupListFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                listAdapter = if(viewModel.userMeetings.value != null){
-                    GroupsRecyclerViewAdapter(viewModel.userMeetings.value!!, listener)
+                listAdapter = if(viewModel.userGroups.value != null){
+                    GroupsRecyclerViewAdapter(viewModel.userGroups.value!!, listener)
                 }else{
                     GroupsRecyclerViewAdapter(emptyList(), listener)
                 }
@@ -79,7 +79,7 @@ class GroupListFragment : Fragment() {
 
     override fun onDetach() {
         super.onDetach()
-        userMeetings.removeObservers(this)
+        userGroups.removeObservers(this)
         listener = null
     }
 
@@ -96,6 +96,6 @@ class GroupListFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: UserMeetings?)
+        fun onListFragmentInteraction(item: UserGroups?)
     }
 }

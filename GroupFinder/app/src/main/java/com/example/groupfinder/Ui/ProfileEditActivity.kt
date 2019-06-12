@@ -8,7 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
-import com.example.groupfinder.Data.Common.Classes
+import com.example.groupfinder.Data.Common.Class
 import com.example.groupfinder.Data.Common.UserData
 import com.example.groupfinder.R
 import kotlinx.android.synthetic.main.activity_profile_edit.*
@@ -17,7 +17,7 @@ import java.util.ArrayList
 class ProfileEditActivity : AppCompatActivity(){
     private var userInfoHasChange: Boolean = true
     private var userClassesHasChange: Boolean = false
-    private var classes: List<Classes>? = null
+    private var classes: List<Class>? = null
     private var userInfo: UserData? = null
 
     override fun onCreate(savedInstanceState: Bundle?){
@@ -31,9 +31,9 @@ class ProfileEditActivity : AppCompatActivity(){
             locationFieldTextView.setText(userInfo?.course)
             dataInitFieldTextView.setText(userInfo?.ra.toString())
 
-            classes = intent.extras?.getParcelableArrayList<Classes>("userclasses") as List<Classes>
+            classes = intent.extras?.getParcelableArrayList<Class>("userclasses") as List<Class>
 
-            // TODO: Implement This classes
+            // TODO: Implement This aClasses
         }
 
         subjectFieldTextView.addTextChangedListener {

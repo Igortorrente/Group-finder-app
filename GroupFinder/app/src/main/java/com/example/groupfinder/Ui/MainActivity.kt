@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val id = item?.itemId
-        if(R.id.meeting_add == id){
+        if(R.id.group_add == id){
             //TODO:
         }
         return super.onOptionsItemSelected(item)

@@ -7,47 +7,47 @@ import com.example.groupfinder.Data.Common.*
 
 @Dao
 interface UserDao{
-    // Meeting Queries
-    @Query("SELECT * FROM Meetings")
-    fun getAllMeeting(): LiveData<List<UserMeetings>>
+    // Groups Queries
+    @Query("SELECT * FROM Groups")
+    fun getAllGroups(): LiveData<List<UserGroups>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertMeeting(meeting: UserMeetings): Long
+    fun insertGroup(group: UserGroups): Long
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    fun updateMeet(meeting: UserMeetings): Int
+    fun updateGroup(group: UserGroups): Int
 
     @Delete
-    fun deleteMeetings(meeting: UserMeetings): Int
+    fun deleteGroup(group: UserGroups): Int
 
-    // Meeting content
-    @Query("SELECT * FROM Contents WHERE content_id LIKE :id")
-    fun getAllMeetingContent(id: Int):  LiveData<List<Contents>>
+    // Group content
+    @Query("SELECT * FROM Content WHERE content_id LIKE :id")
+    fun getAllGroupContent(id: Int):  LiveData<List<Content>>
 
-    @Query("SELECT * FROM Contents")
-    fun getAllContents():  LiveData<List<Contents>>
+    @Query("SELECT * FROM Content")
+    fun getAllContents():  LiveData<List<Content>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertMeetContents(content: Contents): Long
+    fun insertGroupContents(content: Content): Long
 
     @Delete
-    fun deleteMeetContents(content: Contents): Int
+    fun deleteGroupContents(content: Content): Int
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    fun updateMeetContents(content: Contents): Int
+    fun updateGroupContents(content: Content): Int
 
     // Class Queries
-    @Query("SELECT * FROM Classes")
-    fun getAllUserClasses(): LiveData<List<Classes>>
+    @Query("SELECT * FROM Class")
+    fun getAllUserClasses(): LiveData<List<Class>>
 
     @Delete
-    fun deleteUserClass(userClass: Classes): Int
+    fun deleteUserClass(userClass: Class): Int
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertUserClass(userClass: Classes): Long
+    fun insertUserClass(userClass: Class): Long
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    fun updateUserClass(userClass: Classes): Int
+    fun updateUserClass(userClass: Class): Int
 
     // UserData Queries
     @Query("SELECT * FROM UserData")
@@ -60,8 +60,8 @@ interface UserDao{
     fun insetUserData(UserData: UserData): Long
 }
 
-@Database(entities = arrayOf(UserData::class, Classes::class,
-    UserMeetings::class, Contents::class), version = 1, exportSchema = false)
+@Database(entities = arrayOf(UserData::class, Class::class,
+    UserGroups::class, Content::class), version = 1, exportSchema = false)
 abstract class UserDatabase : RoomDatabase(){
     abstract fun userDataDao(): UserDao
     companion object {

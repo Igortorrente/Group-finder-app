@@ -20,15 +20,15 @@ data class UserData(
 // UserRepo classes table
 @Parcelize
 @Entity
-data class Classes(
+data class Class(
     @PrimaryKey @ColumnInfo(name = "class_id") val id: Int,
     val description: String
 ) : Parcelable
 
 @Parcelize
-@Entity(tableName = "Meetings")
-data class UserMeetings(
-    @PrimaryKey @ColumnInfo(name = "meet_id") val id: Int,
+@Entity(tableName = "Groups")
+data class UserGroups(
+    @PrimaryKey @ColumnInfo(name = "group_id") val id: Int,
     val subject: String,
     val detail: String,
     val data_init: Int,
@@ -42,13 +42,13 @@ data class UserMeetings(
 @Parcelize
 @Entity(foreignKeys = arrayOf(
     ForeignKey(
-        entity = UserMeetings::class,
-        parentColumns = arrayOf("meet_id"),
+        entity = UserGroups::class,
+        parentColumns = arrayOf("group_id"),
         childColumns = arrayOf("content_id"),
         onDelete = ForeignKey.CASCADE
     )
 ))
-data class Contents(
+data class Content(
     @PrimaryKey @ColumnInfo(name = "content_id") val id: Int,
     val description: String,
     val url: String

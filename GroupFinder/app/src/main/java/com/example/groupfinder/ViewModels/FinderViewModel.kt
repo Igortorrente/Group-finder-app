@@ -9,19 +9,15 @@ import com.example.groupfinder.Data.UserRepo
 
 class FinderViewModel(application: Application) : AndroidViewModel(application){
     private val repo: UserRepo = UserRepo(UserDatabase.getDatabase(application).userDataDao())
-    var userMeetings: LiveData<List<UserMeetings>>
-    var userClasses: LiveData<List<Classes>>
-    var allUserContents: LiveData<List<Contents>>
+    var userGroups: LiveData<List<UserGroups>>
+    var userClass: LiveData<List<Class>>
+    var allUserContent: LiveData<List<Content>>
     var userInfo: LiveData<UserData>
 
     init {
-        userMeetings  = repo.getAllMeetings()
-        userClasses = repo.getAllUserClasses()
-        allUserContents = repo.gettAllContents()
+        userGroups  = repo.getAllGroups()
+        userClass = repo.getAllUserClasses()
+        allUserContent = repo.gettAllContents()
         userInfo = repo.getUserData()
-    }
-
-    fun getAllMeetings(): LiveData<MutableList<UserMeetings>>{
-        return userMeetings
     }
 }

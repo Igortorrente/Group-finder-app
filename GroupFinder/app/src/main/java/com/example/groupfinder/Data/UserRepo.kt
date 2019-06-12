@@ -10,82 +10,82 @@ import com.example.groupfinder.Data.API.*
 class UserRepo(private val userDao: UserDao) : android.app.Application(){
 
     // TODO: Introduce Networking at all of this
-    private var modUserMeetings = MutableLiveData<List<UserMeetings>>()
-    private var modUserClasses = MutableLiveData<List<Classes>>()
-    private var modAllUserContents = MutableLiveData<List<Contents>>()
+    private var modUserGroup = MutableLiveData<List<UserGroups>>()
+    private var modUserClasses = MutableLiveData<List<Class>>()
+    private var modAllUserContents = MutableLiveData<List<Content>>()
     private var modUserInfo = MutableLiveData<UserData>()
 
-    private val userMeetings: LiveData<List<UserMeetings>> get() = modUserMeetings
-    private val userClasses: LiveData<List<Classes>> get() = modUserClasses
-    private val allUserContents: LiveData<List<Contents>> get() = modAllUserContents
+    private val userGroups: LiveData<List<UserGroups>> get() = modUserGroup
+    private val userClass: LiveData<List<Class>> get() = modUserClasses
+    private val allUserContent: LiveData<List<Content>> get() = modAllUserContents
     private val userInfo: LiveData<UserData> get() = modUserInfo
 
-    // Meeting Queries
-    fun getAllMeetings(): LiveData<List<UserMeetings>>{
-        val meets = API.getUserGroups("oi")
-        modUserMeetings.value = meets
-        return userMeetings
+    // Group Queries
+    fun getAllGroups(): LiveData<List<UserGroups>>{
+        val groups = API.getUserGroups("oi")
+        modUserGroup.value = groups
+        return userGroups
     }
 
     @WorkerThread
-    fun insertMeeting(meeting: UserMeetings): Long{
-        return userDao.insertMeeting(meeting)
+    fun insertGroup(Group: UserGroups): Long{
+        return userDao.insertGroup(Group)
     }
 
     @WorkerThread
-    fun updateMeet(meeting: UserMeetings): Int {
-        return userDao.updateMeet(meeting)
+    fun updateGroup(Group: UserGroups): Int {
+        return userDao.updateGroup(Group)
     }
 
     @WorkerThread
-    fun deleteMeetings(meeting: UserMeetings): Int {
-        return userDao.deleteMeetings(meeting)
+    fun deleteGroup(Group: UserGroups): Int {
+        return userDao.deleteGroup(Group)
     }
 
-    // Meeting content
+    // Group content
     @WorkerThread
-    fun getAllMeetingContent(id: Int): LiveData<List<Contents>>{
-        return userDao.getAllMeetingContent(id)
+    fun getAllGroupContent(id: Int): LiveData<List<Content>>{
+        return userDao.getAllGroupContent(id)
     }
 
     @WorkerThread
-    fun gettAllContents():  LiveData<List<Contents>>{
+    fun gettAllContents():  LiveData<List<Content>>{
         return userDao.getAllContents()
     }
 
     @WorkerThread
-    fun insertMeetingsContents(content: Contents): Long{
-        return userDao.insertMeetContents(content)
+    fun insertGroupContents(content: Content): Long{
+        return userDao.insertGroupContents(content)
     }
 
     @WorkerThread
-    fun deleteMeetingsContents(content: Contents): Int {
-        return userDao.deleteMeetContents(content)
+    fun deleteGroupContents(content: Content): Int {
+        return userDao.deleteGroupContents(content)
     }
 
     @WorkerThread
-    fun updateMeetingsContents(content: Contents): Int {
-        return userDao.updateMeetContents(content)
+    fun updateGroupContents(content: Content): Int {
+        return userDao.updateGroupContents(content)
     }
 
     // Class Queries
     @WorkerThread
-    fun getAllUserClasses(): LiveData<List<Classes>>{
+    fun getAllUserClasses(): LiveData<List<Class>>{
         return userDao.getAllUserClasses()
     }
 
     @WorkerThread
-    fun deleteUserClass(userClass: Classes): Int {
+    fun deleteUserClass(userClass: Class): Int {
         return userDao.deleteUserClass(userClass)
     }
 
     @WorkerThread
-    fun insertUserClass(userClass: Classes): Long{
+    fun insertUserClass(userClass: Class): Long{
         return userDao.insertUserClass(userClass)
     }
 
     @WorkerThread
-    fun updateUserClass(userClass: Classes): Int {
+    fun updateUserClass(userClass: Class): Int {
         return userDao.updateUserClass(userClass)
     }
 

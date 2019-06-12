@@ -1,16 +1,15 @@
 package com.example.groupfinder.Ui
 
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.groupfinder.R
 
-class GroupEditActivity : AppCompatActivity() {
+class NewGroupActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_group)
+        setContentView(R.layout.activity_new_group)
 
         // add back arrow to toolbar
         if (supportActionBar != null){
@@ -18,16 +17,9 @@ class GroupEditActivity : AppCompatActivity() {
             supportActionBar!!.setDisplayShowHomeEnabled(true)
         }
     }
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.edit_toolbar, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val id = item?.itemId
-        if(R.id.saveButton == id){
-            //TODO:
-        }
         if (item!!.itemId == android.R.id.home) {
             finish() // close this activity and return to preview activity (if there is any)
         }
