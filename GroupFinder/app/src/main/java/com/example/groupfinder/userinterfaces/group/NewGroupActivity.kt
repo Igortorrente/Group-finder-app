@@ -10,11 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.groupfinder.R
 import com.example.groupfinder.userinterfaces.dialogs.DatePickDialog
 import com.example.groupfinder.userinterfaces.dialogs.TimePickDialog
+import com.example.groupfinder.userinterfaces.enums.Caller
 import kotlinx.android.synthetic.main.activity_new_group.*
 import java.text.DateFormat
 import java.util.*
-
-enum class Caller { TIME_INIT, TIME_END, DATE_INIT, DATE_END }
 
 class NewGroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
@@ -34,7 +33,7 @@ class NewGroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         }
 
         addGroupFAB.setOnClickListener {
-
+            //TODO: implement the check return
         }
 
         initDayTextView_ActNewGroup.setOnClickListener {

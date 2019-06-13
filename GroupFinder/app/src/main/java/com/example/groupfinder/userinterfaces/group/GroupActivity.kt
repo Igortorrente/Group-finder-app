@@ -1,21 +1,32 @@
 package com.example.groupfinder.userinterfaces.group
 
 import android.app.Activity
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.DatePicker
+import android.widget.TimePicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.example.groupfinder.Data.entities.UserGroups
 import com.example.groupfinder.R
+import com.example.groupfinder.userinterfaces.dialogs.DatePickDialog
+import com.example.groupfinder.userinterfaces.dialogs.TimePickDialog
+import com.example.groupfinder.userinterfaces.enums.Caller
+import com.example.groupfinder.userinterfaces.enums.Mode
+import com.example.groupfinder.userinterfaces.enums.State
 import kotlinx.android.synthetic.main.activity_group.*
+import java.text.DateFormat
+import java.util.*
 
-enum class Mode{ ADMIN , USER }
-enum class State{ VIEW, EDIT, INSIDE, OUTSIDE}
-
-
-class GroupActivity : AppCompatActivity() {
+class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
+    TimePickerDialog.OnTimeSetListener {
+    private var dialogCaller = Caller.TIME_INIT
+    private val datePicker = DatePickDialog()
+    private val timePicker = TimePickDialog()
     private var group: UserGroups? = null
     private var mode = Mode.ADMIN
     private var state = State.VIEW
@@ -42,25 +53,46 @@ class GroupActivity : AppCompatActivity() {
         actionGroupButton.setOnClickListener {
             if(mode == Mode.ADMIN){
                 if(state == State.EDIT){
-                    actionGroupButton.setImageResource(R.drawable.baseline_edit_white_24dp)
-                    changeState(View.VISIBLE, View.INVISIBLE)
                     if(instantChange)
                         infoChange = instantChange
-                    state = State.VIEW
-                    // Change These dummies
+                    actionGroupButton.setImageResource(R.drawable.baseline_edit_white_24dp)
+                    changeState(View.VISIBLE, View.INVISIBLE)
+                    endDayTextView_ActGroup.setOnClickListener(null)
+                    initDayTextView_ActGroup.setOnClickListener(null)
+                    initTimeTextView_ActGroup.setOnClickListener(null)
+                    endTimeTextView_ActGroup.setOnClickListener(null)
+
+                    // TODO: Change These dummies
                     group = UserGroups(
                         0, subjectFieldTextEdit_ActGroup.text.toString(), "dummy",
                         1, 2,
                         0, 0, locationFieldTextEdit_ActGroup.text.toString()
                     )
                     updateTextViews()
-
+                    state = State.VIEW
                 }else{
                     actionGroupButton.setImageResource(R.drawable.baseline_save_white_24dp)
                     changeState(View.INVISIBLE, View.VISIBLE)
-                    state = State.EDIT
                     subjectFieldTextEdit_ActGroup.setText(group?.subject)
                     locationFieldTextEdit_ActGroup.setText(group?.location_description)
+
+                    endDayTextView_ActGroup.setOnClickListener{
+                        datePicker.show(supportFragmentManager, "init date picker")
+                        dialogCaller = Caller.DATE_END
+                    }
+                    initDayTextView_ActGroup.setOnClickListener{
+                        datePicker.show(supportFragmentManager, "end date picker")
+                        dialogCaller = Caller.DATE_INIT
+                    }
+                    initTimeTextView_ActGroup.setOnClickListener{
+                        timePicker.show(supportFragmentManager, "init hour picker")
+                        dialogCaller = Caller.TIME_INIT
+                    }
+                    endTimeTextView_ActGroup.setOnClickListener{
+                        timePicker.show(supportFragmentManager, "end hour picker")
+                        dialogCaller = Caller.TIME_END
+                    }
+                    state = State.EDIT
                 }
             }else {
                 if(state == State.INSIDE){
@@ -139,5 +171,27 @@ class GroupActivity : AppCompatActivity() {
         subjectFieldTextView_ActGroup.text = group?.subject
         locationFieldTextView_ActGroup.text = group?.location_description
         //initTimeTextView_ActNewGroup.text = group?.data_init.toString()
+    }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.MONTH, month)
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        if(dialogCaller == Caller.DATE_INIT){
+            initDayTextView_ActGroup.text = DateFormat.getDateInstance()?.format(calendar.time)
+        }else {
+            endDayTextView_ActGroup.text = DateFormat.getDateInstance()?.format(calendar.time)
+        }
+    }
+
+    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        val text = "${String.format("%02d", hourOfDay)}:${String.format("%02d", minute)}"
+        //Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+        if(dialogCaller == Caller.TIME_INIT){
+            initTimeTextView_ActGroup.text = text
+        }else {
+            endTimeTextView_ActGroup.text = text
+        }
     }
 }
