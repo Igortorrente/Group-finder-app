@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
@@ -19,6 +18,7 @@ class ProfileEditActivity : AppCompatActivity(){
     private var userClassesHasChange: Boolean = false
     private var classes: List<Class>? = null
     private var userInfo: UserData? = null
+    private val replyIntent = Intent()
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
@@ -46,21 +46,7 @@ class ProfileEditActivity : AppCompatActivity(){
             userInfoHasChange = true
         }
 
-        // add back arrow to toolbar
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.edit_toolbar, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        val replyIntent = Intent()
-
-        if(R.id.saveButton == item?.itemId){
+        saveFAB_ActProfileEdit.setOnClickListener {
             if(!userInfoHasChange){
                 setResult(Activity.RESULT_CANCELED, replyIntent)
             }else{
@@ -77,6 +63,13 @@ class ProfileEditActivity : AppCompatActivity(){
             }
             finish()
         }
+
+        // add back arrow to toolbar
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
+    }
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == android.R.id.home) {
             setResult(Activity.RESULT_CANCELED, replyIntent)
             finish() // close this activity and return to preview activity (if there is any)
