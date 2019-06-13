@@ -17,7 +17,7 @@ enum class State{ VIEW, EDIT, INSIDE, OUTSIDE}
 
 class GroupActivity : AppCompatActivity() {
     private var group: UserGroups? = null
-    private var mode = Mode.USER
+    private var mode = Mode.ADMIN
     private var state = State.VIEW
     private var infoChange = false
     private var instantChange = false
@@ -48,19 +48,17 @@ class GroupActivity : AppCompatActivity() {
                         infoChange = instantChange
                     state = State.VIEW
                     // Change These dummies
-                    group = UserGroups(0, subjectFieldTextEdit.text.toString(), "dummy",
-                        dataInitFieldTextEdit.text.toString().toInt(), dataEndFieldTextEdit.text.toString().toInt(),
-                        0,0, locationFieldTextEdit.text.toString())
+                    group = UserGroups(0, subjectFieldTextEdit_ActGroup.text.toString(), "dummy",
+                        1,2,
+                        0,0, locationFieldTextEdit_ActGroup.text.toString())
                     updateTextViews()
 
                 }else{
                     actionGroupButton.setImageResource(R.drawable.baseline_save_white_24dp)
                     changeState(View.INVISIBLE, View.VISIBLE)
                     state = State.EDIT
-                    subjectFieldTextEdit.setText(group?.subject)
-                    locationFieldTextEdit.setText(group?.location_description)
-                    dataInitFieldTextEdit.setText(group?.data_init.toString())
-                    dataEndFieldTextEdit.setText(group?.data_end.toString())
+                    subjectFieldTextEdit_ActGroup.setText(group?.subject)
+                    locationFieldTextEdit_ActGroup.setText(group?.location_description)
                 }
             }else {
                 if(state == State.INSIDE){
@@ -75,19 +73,11 @@ class GroupActivity : AppCompatActivity() {
             actionGroupButton
         }
 
-        subjectFieldTextEdit.addTextChangedListener{
+        subjectFieldTextEdit_ActGroup.addTextChangedListener{
             instantChange = true
         }
 
-        locationFieldTextEdit.addTextChangedListener {
-            instantChange = true
-        }
-
-        dataInitFieldTextEdit.addTextChangedListener{
-            instantChange = true
-        }
-
-        dataEndFieldTextEdit.addTextChangedListener{
+        locationFieldTextEdit_ActGroup.addTextChangedListener {
             instantChange = true
         }
     }
@@ -136,21 +126,16 @@ class GroupActivity : AppCompatActivity() {
     }
 
     private fun changeState(mode1: Int, mode2: Int){
-        subjectFieldTextView.visibility = mode1
-        locationFieldTextView.visibility = mode1
-        initTimeTextView.visibility = mode1
-        dataEndFieldTextView.visibility = mode1
+        subjectFieldTextView_ActGroup.visibility = mode1
+        locationFieldTextView_ActGroup.visibility = mode1
 
-        subjectFieldTextEdit.visibility = mode2
-        locationFieldTextEdit.visibility = mode2
-        dataInitFieldTextEdit.visibility = mode2
-        dataEndFieldTextEdit.visibility = mode2
+        subjectFieldTextEdit_ActGroup.visibility = mode2
+        locationFieldTextEdit_ActGroup.visibility = mode2
     }
 
     private fun updateTextViews(){
-        subjectFieldTextView.text = group?.subject
-        locationFieldTextView.text = group?.location_description
-        initTimeTextView.text = group?.data_init.toString()
-        dataEndFieldTextView.text = group?.data_end.toString()
+        subjectFieldTextView_ActGroup.text = group?.subject
+        locationFieldTextView_ActGroup.text = group?.location_description
+        //initTimeTextView_ActNewGroup.text = group?.data_init.toString()
     }
 }

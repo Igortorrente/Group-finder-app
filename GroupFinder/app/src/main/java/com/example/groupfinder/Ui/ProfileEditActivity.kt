@@ -12,7 +12,7 @@ import com.example.groupfinder.Data.Common.Class
 import com.example.groupfinder.Data.Common.UserData
 import com.example.groupfinder.R
 import kotlinx.android.synthetic.main.activity_profile_edit.*
-import java.util.ArrayList
+import java.util.*
 
 class ProfileEditActivity : AppCompatActivity(){
     private var userInfoHasChange: Boolean = true
@@ -27,22 +27,22 @@ class ProfileEditActivity : AppCompatActivity(){
         val bundle: Bundle? = intent.extras
         intent.extras?.let {
             userInfo = intent.extras?.getParcelable("userinfo") as UserData
-            subjectFieldTextView.setText(userInfo?.name)
-            locationFieldTextView.setText(userInfo?.course)
-            dataInitFieldTextView.setText(userInfo?.ra.toString())
+            nameFieldTextEdit_ActProfileEdit.setText(userInfo?.name)
+            courseFieldTextEdit_ActProfileEdit.setText(userInfo?.course)
+            RAFieldTextEdit_ActProfileEdit.setText(userInfo?.ra.toString())
 
             classes = intent.extras?.getParcelableArrayList<Class>("userclasses") as List<Class>
 
             // TODO: Implement This aClasses
         }
 
-        subjectFieldTextView.addTextChangedListener {
+        nameFieldTextEdit_ActProfileEdit.addTextChangedListener {
             userInfoHasChange = true
         }
-        locationFieldTextView.addTextChangedListener {
+        courseFieldTextEdit_ActProfileEdit.addTextChangedListener {
             userInfoHasChange = true
         }
-        dataInitFieldTextView.addTextChangedListener {
+        RAFieldTextEdit_ActProfileEdit.addTextChangedListener {
             userInfoHasChange = true
         }
 
@@ -66,8 +66,9 @@ class ProfileEditActivity : AppCompatActivity(){
             }else{
                 // TODO: Change dummy
                 replyIntent.putExtra("replyuserinfo", UserData(
-                    dataInitFieldTextView.text.toString().toInt(),
-                    subjectFieldTextView.text.toString(), locationFieldTextView.text.toString(), "dummy")
+                    RAFieldTextEdit_ActProfileEdit.text.toString().toInt(),
+                    nameFieldTextEdit_ActProfileEdit.text.toString(),
+                    courseFieldTextEdit_ActProfileEdit.text.toString(), "dummy")
                 )
                 // TODO: rework at this
                 replyIntent.putParcelableArrayListExtra("replyuserclasses", classes as ArrayList<out Parcelable>)

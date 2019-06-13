@@ -38,9 +38,9 @@ class ProfileFragment : Fragment() {
 
         userData.observe(this, Observer {
             userData.value?.let {
-                subjectFieldTextView.text = userData.value!!.name
-                locationFieldTextView.text = userData.value!!.course
-                dataInitFieldTextView.text = userData.value!!.ra.toString()
+                nameFieldTextView_FragProfile.text = userData.value!!.name
+                courseFieldTextView_FragProfile.text = userData.value!!.course
+                RAFieldTextView_FragProfile.text = userData.value!!.ra.toString()
                 Log.d("intent-user", userData.value.toString())
             }
         })
@@ -62,9 +62,9 @@ class ProfileFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         userData.value?.let {
-            subjectFieldTextView.text = userData.value!!.name
-            locationFieldTextView.text = userData.value!!.course
-            dataInitFieldTextView.text = userData.value!!.ra.toString()
+            nameFieldTextView_FragProfile.text = userData.value!!.name
+            courseFieldTextView_FragProfile.text = userData.value!!.course
+            RAFieldTextView_FragProfile.text = userData.value!!.ra.toString()
         }
 
         editProfileButton.setOnClickListener { view ->
@@ -86,13 +86,13 @@ class ProfileFragment : Fragment() {
                 data?.let { data ->
                     var userInfo = data.extras?.getParcelable("replyuserinfo") as UserData
                     Log.d("intent-user", userInfo.toString())
-                    subjectFieldTextView.text = userInfo.name
-                    locationFieldTextView.text = userInfo.course
-                    dataInitFieldTextView.text = userInfo.ra.toString()
+                    nameFieldTextView_FragProfile.text = userInfo.name
+                    courseFieldTextView_FragProfile.text = userInfo.course
+                    RAFieldTextView_FragProfile.text = userInfo.ra.toString()
 
-                    subjectFieldTextView.refreshDrawableState()
-                    locationFieldTextView.refreshDrawableState()
-                    dataInitFieldTextView.refreshDrawableState()
+                    nameFieldTextView_FragProfile.refreshDrawableState()
+                    courseFieldTextView_FragProfile.refreshDrawableState()
+                    RAFieldTextView_FragProfile.refreshDrawableState()
                     // TODO: add viewModel and user's Class
                 }
                 Toast.makeText(this.context, "Sucesso !", Toast.LENGTH_SHORT).show()

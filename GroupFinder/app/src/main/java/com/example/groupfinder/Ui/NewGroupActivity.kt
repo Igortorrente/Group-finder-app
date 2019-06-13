@@ -35,22 +35,22 @@ class NewGroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
 
         }
 
-        initDayTextView.setOnClickListener {
+        initDayTextView_ActNewGroup.setOnClickListener {
             datePicker.show(supportFragmentManager, "init date picker")
             dialogCaller = Caller.DATE_INIT
         }
 
-        endDayTextView.setOnClickListener {
+        endDayTextView_ActNewGroup.setOnClickListener {
             datePicker.show(supportFragmentManager, "end date picker")
             dialogCaller = Caller.DATE_END
         }
 
-        initTimeTextView.setOnClickListener {
+        initTimeTextView_ActNewGroup.setOnClickListener {
             timePicker.show(supportFragmentManager, "init hour picker")
             dialogCaller = Caller.TIME_INIT
         }
 
-        endTimeTextView.setOnClickListener {
+        endTimeTextView_ActNewGroup.setOnClickListener {
             timePicker.show(supportFragmentManager, "end hour picker")
             dialogCaller = Caller.TIME_END
         }
@@ -62,9 +62,9 @@ class NewGroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         calendar.set(Calendar.MONTH, month)
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
         if(dialogCaller == Caller.DATE_INIT){
-            initDayTextView.text = DateFormat.getDateInstance()?.format(calendar.time)
+            initDayTextView_ActNewGroup.text = DateFormat.getDateInstance()?.format(calendar.time)
         }else {
-            endDayTextView.text = DateFormat.getDateInstance()?.format(calendar.time)
+            endDayTextView_ActNewGroup.text = DateFormat.getDateInstance()?.format(calendar.time)
         }
     }
 
@@ -72,9 +72,9 @@ class NewGroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         val text = "${String.format("%02d", hourOfDay)}:${String.format("%02d", minute)}"
         //Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
         if(dialogCaller == Caller.TIME_INIT){
-            initTimeTextView.text = text
+            initTimeTextView_ActNewGroup.text = text
         }else {
-            endTimeTextView.text = text
+            endTimeTextView_ActNewGroup.text = text
         }
     }
 
