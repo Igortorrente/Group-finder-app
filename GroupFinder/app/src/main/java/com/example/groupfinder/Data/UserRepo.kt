@@ -3,9 +3,12 @@ package com.example.groupfinder.Data
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.groupfinder.Data.Common.*
-import com.example.groupfinder.Data.DB.UserDao
-import com.example.groupfinder.Data.API.*
+import com.example.groupfinder.Data.api.API
+import com.example.groupfinder.Data.database.UserDao
+import com.example.groupfinder.Data.entities.Class
+import com.example.groupfinder.Data.entities.Content
+import com.example.groupfinder.Data.entities.UserData
+import com.example.groupfinder.Data.entities.UserGroups
 
 class UserRepo(private val userDao: UserDao) : android.app.Application(){
 
@@ -94,7 +97,7 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
     fun getUserData(): LiveData<UserData>{
         // TODO: Replace
         modUserInfo = MutableLiveData()
-        modUserInfo.postValue(UserData(213,"joão","eng de ali","123"))
+        modUserInfo.postValue(UserData(213, "joão", "eng de ali", "123"))
         return userInfo
     }
 

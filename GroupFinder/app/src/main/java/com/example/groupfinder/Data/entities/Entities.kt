@@ -1,4 +1,4 @@
-package com.example.groupfinder.Data.Common
+package com.example.groupfinder.Data.entities
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo

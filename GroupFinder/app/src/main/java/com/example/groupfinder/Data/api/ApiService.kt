@@ -1,4 +1,4 @@
-package com.example.groupfinder.Data.API
+package com.example.groupfinder.Data.api
 
 import com.google.gson.JsonObject
 import retrofit2.Call

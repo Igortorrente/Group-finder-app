@@ -1,6 +1,6 @@
-package com.example.groupfinder.Data.API
+package com.example.groupfinder.Data.api
 
-import com.example.groupfinder.Data.Common.UserGroups
+import com.example.groupfinder.Data.entities.UserGroups
 import com.example.groupfinder.R
 
 
@@ -11,28 +11,44 @@ class API (serverAddress: String){
         fun getUserGroups(userID: String): List<UserGroups>{
             // TODO: change this dummy return:
             var groups : List<UserGroups> = emptyList()
-            groups = groups + UserGroups(1, "FISICA III(F329)", " unicamp",
-                10, 12, 15, 100, "oi")
-            groups = groups + UserGroups(2, "Calculo III", "unicamp",
-                10, 12, 15, 100, "oi")
-            groups = groups + UserGroups(3, "Dummy", "unicamp",
-                10, 12, 15, 100, "oi")
-            groups = groups + UserGroups(4, "Dummy2", "unicamp",
-                10, 12, 15, 100, "oi")
+            groups = groups + UserGroups(
+                1, "FISICA III(F329)", " unicamp",
+                10, 12, 15, 100, "oi"
+            )
+            groups = groups + UserGroups(
+                2, "Calculo III", "unicamp",
+                10, 12, 15, 100, "oi"
+            )
+            groups = groups + UserGroups(
+                3, "Dummy", "unicamp",
+                10, 12, 15, 100, "oi"
+            )
+            groups = groups + UserGroups(
+                4, "Dummy2", "unicamp",
+                10, 12, 15, 100, "oi"
+            )
 
             return groups
         }
         fun getUserSugestions(userID: String): List<UserGroups>{
             // TODO: change this dummy return:
             var groups : List<UserGroups> = emptyList()
-            groups = groups + UserGroups(1, "FISICA III(F329)", " unicamp",
-                10, 12, 15, 100, "oi")
-            groups = groups + UserGroups(2, "Calculo III", "unicamp",
-                10, 12, 15, 100, "oi")
-            groups = groups + UserGroups(3, "Dummy", "unicamp",
-                10, 12, 15, 100, "oi")
-            groups = groups + UserGroups(4, "Dummy2", "unicamp",
-                10, 12, 15, 100, "oi")
+            groups = groups + UserGroups(
+                1, "FISICA III(F329)", " unicamp",
+                10, 12, 15, 100, "oi"
+            )
+            groups = groups + UserGroups(
+                2, "Calculo III", "unicamp",
+                10, 12, 15, 100, "oi"
+            )
+            groups = groups + UserGroups(
+                3, "Dummy", "unicamp",
+                10, 12, 15, 100, "oi"
+            )
+            groups = groups + UserGroups(
+                4, "Dummy2", "unicamp",
+                10, 12, 15, 100, "oi"
+            )
 
             return groups
         }

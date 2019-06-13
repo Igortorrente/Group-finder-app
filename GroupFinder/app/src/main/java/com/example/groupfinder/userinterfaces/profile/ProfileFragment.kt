@@ -1,4 +1,4 @@
-package com.example.groupfinder.Ui
+package com.example.groupfinder.userinterfaces.profile
 
 import android.app.Activity
 import android.content.Intent
@@ -13,10 +13,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.example.groupfinder.Data.Common.Class
-import com.example.groupfinder.Data.Common.UserData
-import com.example.groupfinder.ViewModels.FinderViewModel
+import com.example.groupfinder.Data.entities.Class
+import com.example.groupfinder.Data.entities.UserData
 import com.example.groupfinder.R
+import com.example.groupfinder.viewmodels.FinderViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 

@@ -1,4 +1,4 @@
-package com.example.groupfinder.Ui
+package com.example.groupfinder.userinterfaces.group
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -8,6 +8,8 @@ import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.appcompat.app.AppCompatActivity
 import com.example.groupfinder.R
+import com.example.groupfinder.userinterfaces.dialogs.DatePickDialog
+import com.example.groupfinder.userinterfaces.dialogs.TimePickDialog
 import kotlinx.android.synthetic.main.activity_new_group.*
 import java.text.DateFormat
 import java.util.*
@@ -17,8 +19,8 @@ enum class Caller { TIME_INIT, TIME_END, DATE_INIT, DATE_END }
 class NewGroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
     private var dialogCaller = Caller.TIME_INIT
-    private val datePicker = GroupDatePickerDialog()
-    private val timePicker = GroupTimePickerDialog()
+    private val datePicker = DatePickDialog()
+    private val timePicker = TimePickDialog()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

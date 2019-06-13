@@ -1,4 +1,4 @@
-package com.example.groupfinder.Data.API
+package com.example.groupfinder.Data.api
 
 import android.content.Context
 import android.widget.Toast

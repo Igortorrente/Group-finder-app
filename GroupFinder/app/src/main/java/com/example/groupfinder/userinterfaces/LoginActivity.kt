@@ -1,4 +1,4 @@
-package com.example.groupfinder.Ui
+package com.example.groupfinder.userinterfaces
 
 import android.Manifest.permission.READ_CONTACTS
 import android.animation.Animator

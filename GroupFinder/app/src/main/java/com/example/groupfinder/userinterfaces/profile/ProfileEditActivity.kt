@@ -1,4 +1,4 @@
-package com.example.groupfinder.Ui
+package com.example.groupfinder.userinterfaces.profile
 
 import android.app.Activity
 import android.content.Intent
@@ -8,8 +8,8 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
-import com.example.groupfinder.Data.Common.Class
-import com.example.groupfinder.Data.Common.UserData
+import com.example.groupfinder.Data.entities.Class
+import com.example.groupfinder.Data.entities.UserData
 import com.example.groupfinder.R
 import kotlinx.android.synthetic.main.activity_profile_edit.*
 import java.util.*
@@ -68,7 +68,8 @@ class ProfileEditActivity : AppCompatActivity(){
                 replyIntent.putExtra("replyuserinfo", UserData(
                     RAFieldTextEdit_ActProfileEdit.text.toString().toInt(),
                     nameFieldTextEdit_ActProfileEdit.text.toString(),
-                    courseFieldTextEdit_ActProfileEdit.text.toString(), "dummy")
+                    courseFieldTextEdit_ActProfileEdit.text.toString(), "dummy"
+                )
                 )
                 // TODO: rework at this
                 replyIntent.putParcelableArrayListExtra("replyuserclasses", classes as ArrayList<out Parcelable>)

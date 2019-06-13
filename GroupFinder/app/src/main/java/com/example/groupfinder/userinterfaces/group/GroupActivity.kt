@@ -1,4 +1,4 @@
-package com.example.groupfinder.Ui
+package com.example.groupfinder.userinterfaces.group
 
 import android.app.Activity
 import android.content.Intent
@@ -7,7 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
-import com.example.groupfinder.Data.Common.UserGroups
+import com.example.groupfinder.Data.entities.UserGroups
 import com.example.groupfinder.R
 import kotlinx.android.synthetic.main.activity_group.*
 
@@ -48,9 +48,11 @@ class GroupActivity : AppCompatActivity() {
                         infoChange = instantChange
                     state = State.VIEW
                     // Change These dummies
-                    group = UserGroups(0, subjectFieldTextEdit_ActGroup.text.toString(), "dummy",
-                        1,2,
-                        0,0, locationFieldTextEdit_ActGroup.text.toString())
+                    group = UserGroups(
+                        0, subjectFieldTextEdit_ActGroup.text.toString(), "dummy",
+                        1, 2,
+                        0, 0, locationFieldTextEdit_ActGroup.text.toString()
+                    )
                     updateTextViews()
 
                 }else{

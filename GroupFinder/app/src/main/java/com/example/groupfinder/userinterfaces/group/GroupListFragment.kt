@@ -1,4 +1,4 @@
-package com.example.groupfinder.Ui
+package com.example.groupfinder.userinterfaces.group
 
 import android.content.Context
 import android.os.Bundle
@@ -13,9 +13,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.groupfinder.ViewModels.FinderViewModel
-import com.example.groupfinder.Data.Common.UserGroups
+import com.example.groupfinder.Data.entities.UserGroups
 import com.example.groupfinder.R
+import com.example.groupfinder.viewmodels.FinderViewModel
 
 /**
  * A fragment representing a list of Items.

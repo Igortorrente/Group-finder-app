@@ -1,4 +1,4 @@
-package com.example.groupfinder.Ui
+package com.example.groupfinder.userinterfaces
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,8 +6,11 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.example.groupfinder.R
+import com.example.groupfinder.userinterfaces.group.GroupListFragment
+import com.example.groupfinder.userinterfaces.group.NewGroupActivity
+import com.example.groupfinder.userinterfaces.profile.ProfileFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

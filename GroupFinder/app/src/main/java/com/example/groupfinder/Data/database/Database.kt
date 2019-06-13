@@ -1,9 +1,12 @@
-package com.example.groupfinder.Data.DB
+package com.example.groupfinder.Data.database
 
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.groupfinder.Data.Common.*
+import com.example.groupfinder.Data.entities.Class
+import com.example.groupfinder.Data.entities.Content
+import com.example.groupfinder.Data.entities.UserData
+import com.example.groupfinder.Data.entities.UserGroups
 
 @Dao
 interface UserDao{
@@ -60,7 +63,8 @@ interface UserDao{
     fun insetUserData(UserData: UserData): Long
 }
 
-@Database(entities = arrayOf(UserData::class, Class::class,
+@Database(entities = arrayOf(
+    UserData::class, Class::class,
     UserGroups::class, Content::class), version = 1, exportSchema = false)
 abstract class UserDatabase : RoomDatabase(){
     abstract fun userDataDao(): UserDao

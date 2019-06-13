@@ -1,11 +1,14 @@
-package com.example.groupfinder.ViewModels
+package com.example.groupfinder.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.example.groupfinder.Data.Common.*
-import com.example.groupfinder.Data.DB.UserDatabase
 import com.example.groupfinder.Data.UserRepo
+import com.example.groupfinder.Data.database.UserDatabase
+import com.example.groupfinder.Data.entities.Class
+import com.example.groupfinder.Data.entities.Content
+import com.example.groupfinder.Data.entities.UserData
+import com.example.groupfinder.Data.entities.UserGroups
 
 class FinderViewModel(application: Application) : AndroidViewModel(application){
     private val repo: UserRepo = UserRepo(UserDatabase.getDatabase(application).userDataDao())
