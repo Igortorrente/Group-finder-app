@@ -1,12 +1,15 @@
 package com.example.groupfinder.userinterfaces.group
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.appcompat.app.AppCompatActivity
+import com.example.groupfinder.Data.entities.UserGroups
 import com.example.groupfinder.R
 import com.example.groupfinder.userinterfaces.dialogs.DatePickDialog
 import com.example.groupfinder.userinterfaces.dialogs.TimePickDialog
@@ -20,6 +23,7 @@ class NewGroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     private var dialogCaller = Caller.TIME_INIT
     private val datePicker = DatePickDialog()
     private val timePicker = TimePickDialog()
+    private val replyIntent = Intent()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +37,12 @@ class NewGroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         }
 
         addGroupFAB.setOnClickListener {
-            //TODO: implement the check return
+            //TODO: implement the check return and change these dummies
+            replyIntent.putExtra("replyuserinfo", UserGroups(0,
+                subjectFieldTextEdit_ActNewGroup.text.toString(), "dummy", 0 ,0,
+            0,0, locationTextEdit_ActNewGroup.text.toString()))
+            setResult(Activity.RESULT_OK, replyIntent)
+            finish()
         }
 
         initDayTextView_ActNewGroup.setOnClickListener {
@@ -82,6 +91,7 @@ class NewGroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val id = item?.itemId
         if (item!!.itemId == android.R.id.home) {
+            setResult(Activity.RESULT_CANCELED, replyIntent)
             finish() // close this activity and return to preview activity (if there is any)
         }
         return super.onOptionsItemSelected(item)

@@ -12,13 +12,16 @@ import com.example.groupfinder.Data.entities.UserGroups
 
 class UserRepo(private val userDao: UserDao) : android.app.Application(){
 
-    // TODO: Introduce Networking at all of this
-    private var modUserGroup = MutableLiveData<List<UserGroups>>()
+    // ***************************************** //
+    // TODO: Introduce Networking at all of this //
+    // ***************************************** //
+
+    private var modUserGroups = MutableLiveData<List<UserGroups>>()
     private var modUserClasses = MutableLiveData<List<Class>>()
     private var modAllUserContents = MutableLiveData<List<Content>>()
     private var modUserInfo = MutableLiveData<UserData>()
 
-    private val userGroups: LiveData<List<UserGroups>> get() = modUserGroup
+    private val userGroups: LiveData<List<UserGroups>> get() = modUserGroups
     private val userClass: LiveData<List<Class>> get() = modUserClasses
     private val allUserContent: LiveData<List<Content>> get() = modAllUserContents
     private val userInfo: LiveData<UserData> get() = modUserInfo
@@ -26,13 +29,17 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
     // Group Queries
     fun getAllGroups(): LiveData<List<UserGroups>>{
         val groups = API.getUserGroups("oi")
-        modUserGroup.value = groups
+        modUserGroups.value = groups
         return userGroups
     }
 
     @WorkerThread
     fun insertGroup(Group: UserGroups): Long{
-        return userDao.insertGroup(Group)
+        val groups = modUserGroups.value as MutableList<UserGroups>
+        groups.add(Group)
+        modUserGroups.postValue(groups)
+        //userDao.insertGroup(Group)
+        return 0
     }
 
     @WorkerThread

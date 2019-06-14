@@ -23,4 +23,8 @@ class FinderViewModel(application: Application) : AndroidViewModel(application){
         allUserContent = repo.gettAllContents()
         userInfo = repo.getUserData()
     }
+
+    fun insertGroup(Group: UserGroups): Long{
+        return repo.insertGroup(Group)
+    }
 }

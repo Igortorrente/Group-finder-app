@@ -16,12 +16,13 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.groupfinder.Data.entities.Class
 import com.example.groupfinder.Data.entities.UserData
 import com.example.groupfinder.R
+import com.example.groupfinder.userinterfaces.enums.RequestCode
 import com.example.groupfinder.viewmodels.FinderViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 
 class ProfileFragment : Fragment() {
-    private val profileEditFragmentRequestCode = 1
+    private val profileRequestCode = RequestCode.PROFILE_EDIT.number
     private lateinit var viewModel: FinderViewModel
     private lateinit var userData: LiveData<UserData>
     private lateinit var userClass: LiveData<List<Class>>
@@ -50,13 +51,10 @@ class ProfileFragment : Fragment() {
         })
     }
 
-
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
-
 
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -75,13 +73,13 @@ class ProfileFragment : Fragment() {
             userClass.value?.let {
                 intent.putParcelableArrayListExtra("userclasses", userClass.value as ArrayList<Class>)
             }
-            startActivityForResult(intent, profileEditFragmentRequestCode)
+            startActivityForResult(intent, profileRequestCode)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == profileEditFragmentRequestCode){
+        if(requestCode == profileRequestCode){
             if(resultCode == Activity.RESULT_OK){
                 data?.let { data ->
                     var userInfo = data.extras?.getParcelable("replyuserinfo") as UserData

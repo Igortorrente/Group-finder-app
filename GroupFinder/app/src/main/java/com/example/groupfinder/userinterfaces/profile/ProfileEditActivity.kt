@@ -54,8 +54,7 @@ class ProfileEditActivity : AppCompatActivity(){
                 replyIntent.putExtra("replyuserinfo", UserData(
                     RAFieldTextEdit_ActProfileEdit.text.toString().toInt(),
                     nameFieldTextEdit_ActProfileEdit.text.toString(),
-                    courseFieldTextEdit_ActProfileEdit.text.toString(), "dummy"
-                )
+                    courseFieldTextEdit_ActProfileEdit.text.toString(), "dummy")
                 )
                 // TODO: rework at this
                 replyIntent.putParcelableArrayListExtra("replyuserclasses", classes as ArrayList<out Parcelable>)
