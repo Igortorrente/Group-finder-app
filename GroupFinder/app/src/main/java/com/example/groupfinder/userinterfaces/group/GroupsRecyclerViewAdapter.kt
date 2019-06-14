@@ -6,9 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.groupfinder.Data.entities.UserGroups
 import com.example.groupfinder.R
+import com.example.groupfinder.userinterfaces.enums.RequestCode
 import com.example.groupfinder.userinterfaces.group.GroupListFragment.OnListFragmentInteractionListener
 import kotlinx.android.synthetic.main.fragment_groups_item.view.*
 
@@ -19,19 +22,22 @@ import kotlinx.android.synthetic.main.fragment_groups_item.view.*
  */
 class GroupsRecyclerViewAdapter(
     private var mValues: List<UserGroups>,
-    private val mListener: OnListFragmentInteractionListener?
+    private val mListener: OnListFragmentInteractionListener?,
+    private val activity: FragmentActivity
 ) : RecyclerView.Adapter<GroupsRecyclerViewAdapter.ViewHolder>() {
-
+//    private val
     private val mOnClickListener: View.OnClickListener
+    private val groupRequestCode = RequestCode.GROUP.number
 
     init {
-        mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as UserGroups
+        mOnClickListener = View.OnClickListener { view ->
+            val item = view.tag as UserGroups
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
-            val intent = Intent(v.context, GroupActivity::class.java)
-            v.context.startActivity(intent)
+            val intent = Intent(view.context, GroupActivity::class.java)
+            intent.putExtra("groupInfo", item)
+            startActivityForResult(activity , intent, groupRequestCode, null)
         }
     }
 

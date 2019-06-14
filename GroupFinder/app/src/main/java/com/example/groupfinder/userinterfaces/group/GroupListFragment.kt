@@ -46,7 +46,6 @@ class GroupListFragment : Fragment() {
 
     }
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_groups_list, container, false)
@@ -58,9 +57,9 @@ class GroupListFragment : Fragment() {
                     else -> GridLayoutManager(context, columnCount)
                 }
                 listAdapter = if(viewModel.userGroups.value != null){
-                    GroupsRecyclerViewAdapter(viewModel.userGroups.value!!, listener)
+                    GroupsRecyclerViewAdapter(viewModel.userGroups.value!!, listener, activity!!)
                 }else{
-                    GroupsRecyclerViewAdapter(emptyList(), listener)
+                    GroupsRecyclerViewAdapter(emptyList(), listener, activity!!)
                 }
                 adapter = listAdapter
             }
