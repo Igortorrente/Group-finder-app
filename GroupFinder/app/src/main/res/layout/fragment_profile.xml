@@ -108,5 +108,5 @@
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="16dp" android:focusable="true"/>
+            android:layout_marginBottom="8dp" android:focusable="true"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

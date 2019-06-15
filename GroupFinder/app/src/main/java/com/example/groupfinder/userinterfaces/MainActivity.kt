@@ -1,20 +1,13 @@
 package com.example.groupfinder.userinterfaces
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
-import com.example.groupfinder.Data.entities.UserGroups
 import com.example.groupfinder.R
-import com.example.groupfinder.userinterfaces.enums.RequestCode
 import com.example.groupfinder.userinterfaces.group.GroupListFragment
-import com.example.groupfinder.userinterfaces.group.NewGroupActivity
 import com.example.groupfinder.userinterfaces.profile.ProfileFragment
 import com.example.groupfinder.viewmodels.FinderViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -24,7 +17,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var profileFragment: ProfileFragment
     private lateinit var groupListFragment: GroupListFragment
     private lateinit var suggestionListFragment: GroupListFragment
-    private val newGroupRequestCode = RequestCode.NEW_GROUP.number
     private lateinit var viewModel: FinderViewModel
     private lateinit var toolbar: Menu
     private var lastFragment: Int = 0
@@ -105,26 +97,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val id = item?.itemId
-        if(R.id.group_add == id){
-            val intent = Intent(this, NewGroupActivity::class.java)
-            startActivityForResult(intent, newGroupRequestCode)
+        if(R.id.group_search == id){
+
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == newGroupRequestCode){
-            if(resultCode == Activity.RESULT_OK){
-                data?.let { returnedData ->
-                    val group = returnedData.extras?.getParcelable("replyuserinfo") as UserGroups
-                    Log.d("intent-user", group.toString())
-                    viewModel.insertGroup(group)
-                }
-                Toast.makeText(this, "Sucesso !", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Nenhuma mudança", Toast.LENGTH_LONG).show()
-            }
-        }
     }
 }
