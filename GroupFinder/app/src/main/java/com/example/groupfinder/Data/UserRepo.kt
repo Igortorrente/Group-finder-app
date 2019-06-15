@@ -20,11 +20,13 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
     private var modUserClasses = MutableLiveData<List<Class>>()
     private var modAllUserContents = MutableLiveData<List<Content>>()
     private var modUserInfo = MutableLiveData<UserData>()
+    private var modSearchGroups = MutableLiveData<List<UserGroups>>()
 
     private val userGroups: LiveData<List<UserGroups>> get() = modUserGroups
     private val userClass: LiveData<List<Class>> get() = modUserClasses
     private val allUserContent: LiveData<List<Content>> get() = modAllUserContents
     private val userInfo: LiveData<UserData> get() = modUserInfo
+    val searchGroups: LiveData<List<UserGroups>> get() = modSearchGroups
 
     // Group Queries
     fun getAllGroups(): LiveData<List<UserGroups>>{
@@ -76,6 +78,20 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
     @WorkerThread
     fun updateGroupContents(content: Content): Int {
         return userDao.updateGroupContents(content)
+    }
+
+    fun groupSearch(key: String){
+        val groups = listOf<UserGroups>(UserGroups(0,"lolzinho diamante", "lolzinho diamante", 0,0,
+            0,0,"oi"),
+            UserGroups(0,"lolzinho chalenger", "lolzinho chalenger", 0,0,
+                0,0,"oi"),
+            UserGroups(0,"lolzinho prata", "lolzinho prata", 0,0,
+                0,0,"oi"),
+            UserGroups(0,"lolzinho diamante", "lolzinho diamante", 0,0,
+                0,0,"oi")
+            )
+        modSearchGroups.value = groups
+
     }
 
     // Class Queries

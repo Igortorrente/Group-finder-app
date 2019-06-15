@@ -16,6 +16,7 @@ class FinderViewModel(application: Application) : AndroidViewModel(application){
     var userClass: LiveData<List<Class>>
     var allUserContent: LiveData<List<Content>>
     var userInfo: LiveData<UserData>
+    var GroupsSearched: LiveData<List<UserGroups>> = repo.searchGroups
 
     init {
         userGroups  = repo.getAllGroups()
@@ -26,5 +27,9 @@ class FinderViewModel(application: Application) : AndroidViewModel(application){
 
     fun insertGroup(Group: UserGroups): Long{
         return repo.insertGroup(Group)
+    }
+
+    fun searchGroups(key: String){
+        repo.groupSearch(key)
     }
 }

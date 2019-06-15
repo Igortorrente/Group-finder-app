@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.groupfinder.R
 import com.example.groupfinder.userinterfaces.group.GroupListFragment
 import com.example.groupfinder.userinterfaces.profile.ProfileFragment
+import com.example.groupfinder.userinterfaces.search.GroupSearchFragment
 import com.example.groupfinder.viewmodels.FinderViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -16,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
     private lateinit var profileFragment: ProfileFragment
     private lateinit var groupListFragment: GroupListFragment
-    private lateinit var suggestionListFragment: GroupListFragment
+    private lateinit var groupSearchListFragment: GroupSearchFragment
     private lateinit var viewModel: FinderViewModel
     private lateinit var toolbar: Menu
     private var lastFragment: Int = 0
@@ -31,8 +32,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.container, suggestionListFragment)
-                    .addToBackStack(suggestionListFragment.toString())
+                    .replace(R.id.container, groupSearchListFragment)
+                    .addToBackStack(groupSearchListFragment.toString())
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit()
                 return@OnNavigationItemSelectedListener true
@@ -78,14 +79,14 @@ class MainActivity : AppCompatActivity() {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         profileFragment = ProfileFragment()
         groupListFragment = GroupListFragment()
-        suggestionListFragment = GroupListFragment()
+        groupSearchListFragment = GroupSearchFragment()
 
         viewModel = ViewModelProviders.of(this).get(FinderViewModel::class.java)
 
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.container, groupListFragment)
-            .addToBackStack(groupListFragment.toString())
+            .replace(R.id.container, groupSearchListFragment)
+            .addToBackStack(groupSearchListFragment.toString())
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             .commit()
     }
