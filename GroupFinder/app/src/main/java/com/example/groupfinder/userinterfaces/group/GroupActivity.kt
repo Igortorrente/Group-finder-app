@@ -7,9 +7,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.DatePicker
-import android.widget.TimePicker
+import android.view.ViewGroup
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import com.example.groupfinder.Data.entities.UserGroups
 import com.example.groupfinder.R
@@ -22,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_group.*
 import java.text.DateFormat
 import java.util.*
 
+
 class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
     private var dialogCaller = Caller.TIME_INIT
@@ -32,6 +34,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     private var state = State.VIEW
     private var infoChange = false
     private var instantChange = false
+    private val contentsViews: MutableList<ConstraintLayout> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +59,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                     if(instantChange)
                         infoChange = instantChange
                     actionGroupButton.setImageResource(R.drawable.baseline_edit_white_24dp)
+                    addContentFAB_ActGroup.hide()
                     changeState(View.VISIBLE, View.INVISIBLE)
                     endDayTextView_ActGroup.setOnClickListener(null)
                     initDayTextView_ActGroup.setOnClickListener(null)
@@ -72,6 +76,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                     state = State.VIEW
                 }else{
                     actionGroupButton.setImageResource(R.drawable.baseline_save_white_24dp)
+                    addContentFAB_ActGroup.show()
                     changeState(View.INVISIBLE, View.VISIBLE)
                     subjectFieldTextEdit_ActGroup.setText(group?.subject)
                     locationFieldTextEdit_ActGroup.setText(group?.location_description)
@@ -114,6 +119,24 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         locationFieldTextEdit_ActGroup.addTextChangedListener {
             instantChange = true
         }
+
+        addContentFAB_ActGroup.setOnClickListener {
+            val view = layoutInflater.inflate(R.layout.group_content, null)
+            val insertPoint = findViewById<LinearLayout>(R.id.contentLinearLayout_ActGroup)
+            val layout = view.findViewById<ConstraintLayout>(R.id.constrainLayout_GroupContentLayout)
+            this.contentsViews.add(layout)
+
+            val textView = layout.findViewById<TextView>(R.id.contentTextView_GroupContentLayout)
+            textView.text = "Test https://stackoverflow.com ${insertPoint.childCount}"
+            textView.visibility = TextView.VISIBLE
+
+            Toast.makeText(this, insertPoint.childCount.toString() , Toast.LENGTH_SHORT).show()
+
+            insertPoint.addView(view, insertPoint.childCount,
+                ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        }
+
+        addContentFAB_ActGroup.hide()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -162,15 +185,24 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     private fun changeState(mode1: Int, mode2: Int){
         subjectFieldTextView_ActGroup.visibility = mode1
         locationFieldTextView_ActGroup.visibility = mode1
+        descriptionFieldTextView_ActGroup.visibility = mode1
 
         subjectFieldTextEdit_ActGroup.visibility = mode2
         locationFieldTextEdit_ActGroup.visibility = mode2
+        descriptionFieldTextEdit_ActGroup.visibility = mode2
+
+        for (content in contentsViews){
+            val textView = content.findViewById<TextView>(R.id.contentTextView_GroupContentLayout)
+            val textEdit = content.findViewById<TextView>(R.id.contentTextEdit_GroupContentLayout)
+            textView.visibility = mode1
+            textEdit.visibility = mode2
+        }
     }
 
     private fun updateTextViews(){
         subjectFieldTextView_ActGroup.text = group?.subject
         locationFieldTextView_ActGroup.text = group?.location_description
-        //initTimeTextView_ActNewGroup.text = group?.data_init.toString()
+        //descriptionFieldTextEdit_ActGroup.text = group?.
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
