@@ -8,8 +8,13 @@
     <SearchView
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" android:id="@+id/searchView"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/searchView-FragSearchGroup"
+            android:queryHint="Ex: F328"
+            android:imeOptions="actionGo|flagForceAscii|actionSend"
+    />
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/groups_search_recycler_view"
             android:name="com.example.groupfinder.userinterfaces.search.groupSearchFragment"
@@ -21,6 +26,6 @@
             tools:listitem="@layout/fragment_groups_item"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintTop_toBottomOf="@+id/searchView"
+            app:layout_constraintTop_toBottomOf="@+id/searchView-FragSearchGroup"
             app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
