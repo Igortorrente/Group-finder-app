@@ -7,11 +7,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import android.widget.*
+import android.widget.DatePicker
+import android.widget.TimePicker
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.example.groupfinder.Data.entities.Content
 import com.example.groupfinder.Data.entities.UserGroups
 import com.example.groupfinder.R
 import com.example.groupfinder.userinterfaces.dialogs.DatePickDialog
@@ -34,7 +36,10 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     private var state = State.VIEW
     private var infoChange = false
     private var instantChange = false
-    private val contentsViews: MutableList<ConstraintLayout> = arrayListOf()
+    private val contents: MutableList<Content> = arrayListOf()
+    private lateinit var contentRecyclerView: RecyclerView
+    private lateinit var recyclerViewAdapter: ContentRecyclerViewAdapter
+    private lateinit var contentTouchHelper: ItemTouchHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +66,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                     actionGroupButton.setImageResource(R.drawable.baseline_edit_white_24dp)
                     addContentFAB_ActGroup.hide()
                     changeState(View.VISIBLE, View.INVISIBLE)
+                    contentTouchHelper.attachToRecyclerView(null)
                     endDayTextView_ActGroup.setOnClickListener(null)
                     initDayTextView_ActGroup.setOnClickListener(null)
                     initTimeTextView_ActGroup.setOnClickListener(null)
@@ -78,6 +84,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                     actionGroupButton.setImageResource(R.drawable.baseline_save_white_24dp)
                     addContentFAB_ActGroup.show()
                     changeState(View.INVISIBLE, View.VISIBLE)
+                    contentTouchHelper.attachToRecyclerView(contentRecyclerView)
                     subjectFieldTextEdit_ActGroup.setText(group?.subject)
                     locationFieldTextEdit_ActGroup.setText(group?.location_description)
 
@@ -121,22 +128,17 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         }
 
         addContentFAB_ActGroup.setOnClickListener {
-            val view = layoutInflater.inflate(R.layout.group_content, null)
-            val insertPoint = findViewById<LinearLayout>(R.id.contentLinearLayout_ActGroup)
-            val layout = view.findViewById<ConstraintLayout>(R.id.constrainLayout_GroupContentLayout)
-            this.contentsViews.add(layout)
-
-            val textView = layout.findViewById<TextView>(R.id.contentTextView_GroupContentLayout)
-            textView.text = "Test https://stackoverflow.com ${insertPoint.childCount}"
-            textView.visibility = TextView.VISIBLE
-
-            Toast.makeText(this, insertPoint.childCount.toString() , Toast.LENGTH_SHORT).show()
-
-            insertPoint.addView(view, insertPoint.childCount,
-                ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+            recyclerViewAdapter.addContent(Content(0,
+                "test: https://www.youtube.com/watch?v=Cys_i-6Pu-o",""))
         }
 
         addContentFAB_ActGroup.hide()
+
+        // Content RecycleView
+        contentRecyclerView = findViewById(R.id.content_recycler_view)
+        recyclerViewAdapter = ContentRecyclerViewAdapter(contents, this)
+        contentRecyclerView.adapter = recyclerViewAdapter
+        contentTouchHelper = ItemTouchHelper(ContentSwipeToDeleteCallback(recyclerViewAdapter))
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -158,6 +160,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                 state = State.VIEW
                 changeState(View.VISIBLE,  View.INVISIBLE)
                 actionGroupButton.setImageResource(R.drawable.baseline_edit_white_24dp)
+                contentTouchHelper.attachToRecyclerView(null)
                 instantChange = false
             }else{
                 val replyIntent = Intent()
@@ -191,12 +194,6 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         locationFieldTextEdit_ActGroup.visibility = mode2
         descriptionFieldTextEdit_ActGroup.visibility = mode2
 
-        for (content in contentsViews){
-            val textView = content.findViewById<TextView>(R.id.contentTextView_GroupContentLayout)
-            val textEdit = content.findViewById<TextView>(R.id.contentTextEdit_GroupContentLayout)
-            textView.visibility = mode1
-            textEdit.visibility = mode2
-        }
     }
 
     private fun updateTextViews(){
