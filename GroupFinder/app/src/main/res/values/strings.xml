@@ -58,5 +58,5 @@
     <string name="addgroup">addGroup</string>
     <string name="group_add">group_add</string>
     <string name="conte_do">Conteúdo</string>
-    <string name="visit_http_italove_today">Visit http://italove.today</string>
+    <string name="content_hint">Ex: Visit http://italove.today</string>
 </resources>

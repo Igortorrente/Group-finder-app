@@ -33,7 +33,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     private val timePicker = TimePickDialog()
     private var group: UserGroups? = null
     private var mode = Mode.ADMIN
-    private var state = State.VIEW
+    private var groupState = GroupState(State.VIEW)
     private var infoChange = false
     private var instantChange = false
     private val contents: MutableList<Content> = arrayListOf()
@@ -49,7 +49,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
             group = intent.extras?.getParcelable("groupInfo") as UserGroups
             updateTextViews()
             // TODO: Check if user are inside/admin the group
-            // Change mode and float button image
+            // Change `GroupState.mode` and float button image
         }
 
         // add back arrow to toolbar
@@ -60,7 +60,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
 
         actionGroupButton.setOnClickListener {
             if(mode == Mode.ADMIN){
-                if(state == State.EDIT){
+                if(groupState.state == State.EDIT){
                     if(instantChange)
                         infoChange = instantChange
                     actionGroupButton.setImageResource(R.drawable.baseline_edit_white_24dp)
@@ -79,7 +79,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                         0, 0, locationFieldTextEdit_ActGroup.text.toString()
                     )
                     updateTextViews()
-                    state = State.VIEW
+                    groupState.state = State.VIEW
                 }else{
                     actionGroupButton.setImageResource(R.drawable.baseline_save_white_24dp)
                     addContentFAB_ActGroup.show()
@@ -104,19 +104,19 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                         timePicker.show(supportFragmentManager, "end hour picker")
                         dialogCaller = Caller.TIME_END
                     }
-                    state = State.EDIT
+                    groupState.state = State.EDIT
                 }
             }else {
-                if(state == State.INSIDE){
+                if(groupState.state == State.INSIDE){
                     actionGroupButton.setImageResource(R.drawable.baseline_person_add_disabled_white_24dp)
-                    state = State.OUTSIDE
+                    groupState.state = State.OUTSIDE
                 }else{
                     actionGroupButton.setImageResource(R.drawable.baseline_group_add_white_24dp)
-                    state = State.INSIDE
+                    groupState.state = State.INSIDE
                 }
             }
+            recyclerViewAdapter.reload()
             instantChange = false
-            actionGroupButton
         }
 
         subjectFieldTextEdit_ActGroup.addTextChangedListener{
@@ -128,15 +128,14 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         }
 
         addContentFAB_ActGroup.setOnClickListener {
-            recyclerViewAdapter.addContent(Content(0,
-                "test: https://www.youtube.com/watch?v=Cys_i-6Pu-o",""))
+            recyclerViewAdapter.addContent(Content(0,"",""))
         }
 
         addContentFAB_ActGroup.hide()
 
         // Content RecycleView
         contentRecyclerView = findViewById(R.id.content_recycler_view)
-        recyclerViewAdapter = ContentRecyclerViewAdapter(contents, this)
+        recyclerViewAdapter = ContentRecyclerViewAdapter(contents, this, groupState)
         contentRecyclerView.adapter = recyclerViewAdapter
         contentTouchHelper = ItemTouchHelper(ContentSwipeToDeleteCallback(recyclerViewAdapter))
     }
@@ -156,8 +155,8 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
 
     private fun backFunction(){
         if(mode == Mode.ADMIN){
-            if(state == State.EDIT){
-                state = State.VIEW
+            if(groupState.state == State.EDIT){
+                groupState.state = State.VIEW
                 changeState(View.VISIBLE,  View.INVISIBLE)
                 actionGroupButton.setImageResource(R.drawable.baseline_edit_white_24dp)
                 contentTouchHelper.attachToRecyclerView(null)
@@ -175,7 +174,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
             }
         }else{
             val replyIntent = Intent()
-            if(state == State.INSIDE){
+            if(groupState.state == State.INSIDE){
                 replyIntent.putExtra("replytype", 1)
                 setResult(Activity.RESULT_OK, replyIntent)
             }else{
@@ -193,7 +192,6 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         subjectFieldTextEdit_ActGroup.visibility = mode2
         locationFieldTextEdit_ActGroup.visibility = mode2
         descriptionFieldTextEdit_ActGroup.visibility = mode2
-
     }
 
     private fun updateTextViews(){
@@ -223,4 +221,6 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
             endTimeTextView_ActGroup.text = text
         }
     }
+
+    inner class GroupState(var state: State)
 }
