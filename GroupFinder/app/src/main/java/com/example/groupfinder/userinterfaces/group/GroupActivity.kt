@@ -114,6 +114,10 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                         timePicker.show(supportFragmentManager, "end hour picker")
                         dialogCaller = Caller.TIME_END
                     }
+
+                    // DoBackup of the data
+                    recyclerViewAdapter.doBackup()
+
                     // Update state variable
                     groupState.state = State.EDIT
                 }
@@ -184,6 +188,10 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                 actionGroupButton.setImageResource(R.drawable.baseline_edit_white_24dp)
                 // Disable contentRecyclerView slide listener
                 contentTouchHelper.attachToRecyclerView(null)
+                // Hide add content FloatActionButton
+                addContentFAB_ActGroup.hide()
+                // Restore the changes on content
+                recyclerViewAdapter.restore()
                 instantChange = false
             }else{
                 val replyIntent = Intent()

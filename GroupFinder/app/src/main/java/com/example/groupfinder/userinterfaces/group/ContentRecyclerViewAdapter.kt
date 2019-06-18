@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.group_content.view.*
 
 class ContentRecyclerViewAdapter(private var Values: MutableList<Content>, var context: Context,
          private var groupState: GroupState): RecyclerView.Adapter<ContentRecyclerViewAdapter.ViewHolder>(){
+    private lateinit var undoList: MutableList<Content>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -29,6 +30,15 @@ class ContentRecyclerViewAdapter(private var Values: MutableList<Content>, var c
 
     fun deleteContent(position: Int){
         Values.removeAt(position)
+        notifyDataSetChanged()
+    }
+
+    fun doBackup(){
+        undoList = Values.toMutableList()
+    }
+
+    fun restore(){
+        Values = undoList
         notifyDataSetChanged()
     }
 
