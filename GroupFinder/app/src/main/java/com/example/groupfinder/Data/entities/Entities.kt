@@ -50,6 +50,6 @@ data class UserGroups(
 ))
 data class Content(
     @PrimaryKey @ColumnInfo(name = "content_id") val id: Int,
-    val description: String,
+    var description: String,
     val url: String
 ) : Parcelable

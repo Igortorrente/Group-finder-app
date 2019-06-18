@@ -64,9 +64,13 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                     if(instantChange)
                         infoChange = instantChange
                     actionGroupButton.setImageResource(R.drawable.baseline_edit_white_24dp)
+                    //Hide the add content FloatActionButton
                     addContentFAB_ActGroup.hide()
+                    // Change textEdit to textView of static fields
                     changeState(View.VISIBLE, View.INVISIBLE)
+                    // Disable The slide listener
                     contentTouchHelper.attachToRecyclerView(null)
+                    // Disable all date/time pickers listeners
                     endDayTextView_ActGroup.setOnClickListener(null)
                     initDayTextView_ActGroup.setOnClickListener(null)
                     initTimeTextView_ActGroup.setOnClickListener(null)
@@ -78,16 +82,22 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                         1, 2,
                         0, 0, locationFieldTextEdit_ActGroup.text.toString()
                     )
+                    // Update The texts
                     updateTextViews()
+                    // Update state variable
                     groupState.state = State.VIEW
                 }else{
+                    // Change Main FloatActionButton icons
                     actionGroupButton.setImageResource(R.drawable.baseline_save_white_24dp)
+                    // Show add content FloatActionButton
                     addContentFAB_ActGroup.show()
+                    // Change textView to textEdit of static fields
                     changeState(View.INVISIBLE, View.VISIBLE)
+                    // Enable The slide listener
                     contentTouchHelper.attachToRecyclerView(contentRecyclerView)
                     subjectFieldTextEdit_ActGroup.setText(group?.subject)
                     locationFieldTextEdit_ActGroup.setText(group?.location_description)
-
+                    // Enable all date/time pickers listeners
                     endDayTextView_ActGroup.setOnClickListener{
                         datePicker.show(supportFragmentManager, "init date picker")
                         dialogCaller = Caller.DATE_END
@@ -104,18 +114,24 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                         timePicker.show(supportFragmentManager, "end hour picker")
                         dialogCaller = Caller.TIME_END
                     }
+                    // Update state variable
                     groupState.state = State.EDIT
                 }
+                // Reload content recycler view
+                recyclerViewAdapter.reload()
             }else {
                 if(groupState.state == State.INSIDE){
+                    // Change de FloatActionButton icon
                     actionGroupButton.setImageResource(R.drawable.baseline_person_add_disabled_white_24dp)
+                    // Update State
                     groupState.state = State.OUTSIDE
                 }else{
+                    // Change de FloatActionButton icon
                     actionGroupButton.setImageResource(R.drawable.baseline_group_add_white_24dp)
+                    // Update State
                     groupState.state = State.INSIDE
                 }
             }
-            recyclerViewAdapter.reload()
             instantChange = false
         }
 
@@ -127,13 +143,16 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
             instantChange = true
         }
 
+        // Add content FloatActionButton listener
         addContentFAB_ActGroup.setOnClickListener {
+            //Put A dummy content
             recyclerViewAdapter.addContent(Content(0,"",""))
         }
 
+        // Hide add content FloatActionButton
         addContentFAB_ActGroup.hide()
 
-        // Content RecycleView
+        // ContentRecycleView
         contentRecyclerView = findViewById(R.id.content_recycler_view)
         recyclerViewAdapter = ContentRecyclerViewAdapter(contents, this, groupState)
         contentRecyclerView.adapter = recyclerViewAdapter
@@ -142,6 +161,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val buttonId = item?.itemId
+        // Topbar (toolbar) back arrow listener
         if (buttonId == android.R.id.home) {
             backFunction()
         }
@@ -156,9 +176,13 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     private fun backFunction(){
         if(mode == Mode.ADMIN){
             if(groupState.state == State.EDIT){
+                // Update state
                 groupState.state = State.VIEW
+                // Change textEdit to textView of static fields
                 changeState(View.VISIBLE,  View.INVISIBLE)
+                // Update FAB Button Icon
                 actionGroupButton.setImageResource(R.drawable.baseline_edit_white_24dp)
+                // Disable contentRecyclerView slide listener
                 contentTouchHelper.attachToRecyclerView(null)
                 instantChange = false
             }else{
@@ -184,6 +208,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         }
     }
 
+    // Change visibility of fields
     private fun changeState(mode1: Int, mode2: Int){
         subjectFieldTextView_ActGroup.visibility = mode1
         locationFieldTextView_ActGroup.visibility = mode1
@@ -200,6 +225,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         //descriptionFieldTextEdit_ActGroup.text = group?.
     }
 
+    // Data Picker dialog reply callback
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.YEAR, year)
@@ -211,7 +237,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
             endDayTextView_ActGroup.text = DateFormat.getDateInstance()?.format(calendar.time)
         }
     }
-
+    // Time Picker dialog reply callback
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         val text = "${String.format("%02d", hourOfDay)}:${String.format("%02d", minute)}"
         //Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
@@ -222,5 +248,6 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         }
     }
 
+    // Class to share state between this Activity and ContentRecyclerViewAdapter
     inner class GroupState(var state: State)
 }

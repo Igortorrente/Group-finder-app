@@ -1,9 +1,13 @@
 package com.example.groupfinder.userinterfaces.group
 
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.groupfinder.Data.entities.Content
 import com.example.groupfinder.R
@@ -17,7 +21,8 @@ class ContentRecyclerViewAdapter(private var Values: MutableList<Content>, var c
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.group_content, parent, false)
-        return ViewHolder(view)
+        // Pass a custom listener to the viewHolder, saving listener allocation
+        return ViewHolder(view, ContentEditTextListener())
     }
 
     override fun getItemCount(): Int = Values.size
@@ -26,6 +31,7 @@ class ContentRecyclerViewAdapter(private var Values: MutableList<Content>, var c
         Values.removeAt(position)
         notifyDataSetChanged()
     }
+
     fun reload(){
         notifyDataSetChanged()
     }
@@ -36,20 +42,47 @@ class ContentRecyclerViewAdapter(private var Values: MutableList<Content>, var c
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = Values[position]
+        // Update Holder position
+        holder.ContentEditTextListener.updatePosition(holder.adapterPosition)
+
+        // Update Text View/Edit based on state (of screen)
         if (groupState.state == State.EDIT){
             holder.contentTextView.visibility =  View.INVISIBLE
             holder.contentTextEdit.visibility = View.VISIBLE
-            holder.contentTextEdit.setText(item.description)
+            holder.contentTextEdit.setText(Values[holder.adapterPosition].description)
         }else{
             holder.contentTextView.visibility =  View.VISIBLE
             holder.contentTextEdit.visibility = View.INVISIBLE
-            holder.contentTextView.text = item.description
+            holder.contentTextView.text = Values[holder.adapterPosition].description
         }
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        var contentTextView = itemView.contentTextView_GroupContentLayout
-        var contentTextEdit = itemView.contentTextEdit_GroupContentLayout
+    inner class ViewHolder(itemView: View, var ContentEditTextListener: ContentEditTextListener)
+        : RecyclerView.ViewHolder(itemView){
+        // Get Text views of respective ViewHolder
+        var contentTextView: TextView = itemView.contentTextView_GroupContentLayout
+        var contentTextEdit: EditText = itemView.contentTextEdit_GroupContentLayout
+
+        init {
+            // Add the listener to the text edit view
+            contentTextEdit.addTextChangedListener(ContentEditTextListener)
+        }
+    }
+
+    // Custom listener
+    inner class ContentEditTextListener : TextWatcher {
+        private var position: Int = 0
+
+        fun updatePosition(position: Int) {
+            this.position = position
+        }
+
+        // Update Value Variable
+        override fun onTextChanged(charSequence: CharSequence, i: Int, i2: Int, i3: Int) {
+            Values[position].description = charSequence.toString()
+        }
+
+        override fun beforeTextChanged(charSequence: CharSequence, i: Int, i2: Int, i3: Int) { }
+        override fun afterTextChanged(editable: Editable) { }
     }
 }
