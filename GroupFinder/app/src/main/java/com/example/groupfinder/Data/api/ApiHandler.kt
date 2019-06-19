@@ -1,4 +1,4 @@
-package com.example.groupfinder.base_classes
+package com.example.groupfinder.Data.api
 
 import android.content.Context
 import android.service.autofill.UserData

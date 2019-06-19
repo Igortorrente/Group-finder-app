@@ -15,18 +15,18 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".profileEditActivity">
+        <activity android:name=".userinterfaces.profile.ProfileEditActivity">
         </activity>
-        <activity android:name=".groupActivity">
+        <activity android:name=".userinterfaces.group.GroupActivity">
         </activity>
-        <activity android:name=".groupEditActivity">
+        <activity android:name=".userinterfaces.group.NewGroupActivity">
         </activity>
         <activity
-                android:name=".LoginActivity"
+                android:name=".userinterfaces.LoginActivity"
                 android:label="@string/title_activity_login">
         </activity>
         <activity
-                android:name=".MainActivity"
+                android:name=".userinterfaces.MainActivity"
                 android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

@@ -2,9 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                    xmlns:app="http://schemas.android.com/apk/res-auto"
                                                    xmlns:tools="http://schemas.android.com/tools"
+                                                   tools:context=".userinterfaces.profile.ProfileFragment"
                                                    android:layout_width="match_parent"
-                                                   tools:context=".profileFragment"
-                                                   android:layout_height="450dp">
+                                                   android:layout_height="match_parent"
+                                                   android:paddingBottom="60dp">
     <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,139 +20,83 @@
                 <ImageView
                         android:layout_width="120dp"
                         android:layout_height="match_parent" tools:srcCompat="@tools:sample/avatars"
-                        android:id="@+id/userProfileImageView"
+                        android:id="@+id/profileImageView-FragProfile"
                         app:srcCompat="@drawable/gde"
                         android:adjustViewBounds="true" android:layout_marginTop="16dp"
                         app:layout_constraintTop_toTopOf="parent" android:layout_marginStart="16dp"
                         app:layout_constraintStart_toStartOf="parent" android:layout_marginBottom="32dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                />
+                        tools:ignore="ContentDescription"/>
                 <TextView
                         android:text="@string/text_view_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/userNameTextView"
-                        android:layout_marginBottom="11dp"
-                        app:layout_constraintBottom_toTopOf="@+id/userNameEditText"
-                        android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginStart="8dp" app:layout_constraintVertical_bias="1.0"
-                        app:layout_constraintStart_toStartOf="@+id/userNameEditText"/>
+                        android:id="@+id/nameTitleTextView-FragProfile"
+                        android:layout_marginTop="24dp" app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toTopOf="@+id/nameFieldTextView-FragProfile"
+                        app:layout_constraintStart_toEndOf="@+id/profileImageView-FragProfile"
+                        android:layout_marginStart="16dp"/>
                 <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:inputType="textPersonName"
                         android:ems="10"
-                        android:id="@+id/userNameEditText"
-                        android:importantForAutofill="no"
+                        android:id="@+id/nameFieldTextView-FragProfile"
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_marginTop="60dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:hint="@string/hint_profile_name_edit_text"
                         android:layout_marginBottom="32dp" app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginEnd="8dp" app:layout_constraintStart_toEndOf="@+id/userProfileImageView"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintStart_toEndOf="@+id/profileImageView-FragProfile"
                         android:layout_marginStart="16dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" android:minHeight="138dp">
+                    android:layout_height="match_parent" android:minHeight="138dp" android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent">
 
                 <TextView
                         android:text="@string/text_view_user_course"
                         android:layout_width="match_parent"
                         android:layout_height="15dp"
-                        android:id="@+id/userCourseTextView"
+                        android:id="@+id/courseTitleTextView-FragProfile"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"/>
+                        android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"/>
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text|textAutoComplete"
                         android:ems="10"
-                        android:id="@+id/userCourseEditText"
-                        android:hint="@string/hint_course_edit_text" android:autofillHints=""
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintTop_toBottomOf="@+id/userCourseTextView"
+                        android:id="@+id/courseFieldTextView-FragProfile"
+                        android:hint="@string/hint_course_edit_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginStart="16dp" android:layout_marginEnd="16dp"/>
+                        android:layout_marginStart="16dp" android:layout_marginEnd="16dp"
+                        app:layout_constraintTop_toBottomOf="@+id/courseTitleTextView-FragProfile"
+                        android:layout_marginTop="8dp"/>
                 <TextView
                         android:text="@string/text_view_ra"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/raTextView"
-                        app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="16dp"
-                        android:layout_marginStart="16dp"
-                        app:layout_constraintTop_toBottomOf="@+id/userCourseEditText"/>
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:id="@+id/raEditText"
-                        android:inputType="number" android:hint="@string/hint_ra_edit_text" android:autofillHints=""
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintTop_toBottomOf="@+id/raTextView" app:layout_constraintEnd_toEndOf="parent"
+                        android:id="@+id/RATitleTextView-FragProfile"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginStart="16dp" android:layout_marginEnd="16dp"/>
-                <TextView
-                        android:text="@string/text_view_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/emailTextView"
-                        app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="16dp"
                         android:layout_marginStart="16dp"
-                        app:layout_constraintTop_toBottomOf="@+id/raEditText"/>
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginEnd="16dp" android:layout_marginTop="16dp"
+                        app:layout_constraintTop_toBottomOf="@+id/courseFieldTextView-FragProfile"/>
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress"
                         android:ems="10"
-                        android:id="@+id/emailEditText"
-                        android:hint="@string/hint_email_edit_text"
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintTop_toBottomOf="@+id/emailTextView"
+                        android:id="@+id/RAFieldTextView-FragProfile"
+                        android:hint="@string/hint_ra_edit_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginStart="16dp" android:layout_marginEnd="16dp"/>
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/phoneNumberTextView"
-                        android:text="@string/text_view_phone"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginTop="16dp" android:layout_marginStart="16dp"
-                        app:layout_constraintTop_toBottomOf="@+id/emailEditText"/>
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:id="@+id/phoneNumberEditText"
-                        android:hint="@string/hint_phone_edit_text"
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintTop_toBottomOf="@+id/phoneNumberTextView"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:inputType="phone"/>
-                <TextView
-                        android:text="@string/text_view_interest"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/interestTextView"
-                        app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="16dp"
-                        android:layout_marginStart="16dp"
-                        app:layout_constraintTop_toBottomOf="@+id/phoneNumberEditText"/>
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:ems="10"
-                        android:id="@+id/interestEditText"
-                        android:hint="@string/hint_interest_edit_text"
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintTop_toBottomOf="@+id/interestTextView"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginStart="16dp" android:layout_marginEnd="16dp"/>
+                        android:layout_marginStart="16dp" android:layout_marginEnd="16dp"
+                        app:layout_constraintTop_toBottomOf="@+id/RATitleTextView-FragProfile"
+                        android:layout_marginTop="8dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
@@ -163,5 +108,5 @@
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="16dp" android:focusable="true"/>
+            android:layout_marginBottom="8dp" android:focusable="true"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

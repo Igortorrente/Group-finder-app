@@ -1,0 +1,229 @@
+package com.example.groupfinder.userinterfaces.group
+
+import android.app.Activity
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.content.Intent
+import android.os.Bundle
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.widget.addTextChangedListener
+import com.example.groupfinder.Data.entities.UserGroups
+import com.example.groupfinder.R
+import com.example.groupfinder.userinterfaces.dialogs.DatePickDialog
+import com.example.groupfinder.userinterfaces.dialogs.TimePickDialog
+import com.example.groupfinder.userinterfaces.enums.Caller
+import com.example.groupfinder.userinterfaces.enums.Mode
+import com.example.groupfinder.userinterfaces.enums.State
+import kotlinx.android.synthetic.main.activity_group.*
+import java.text.DateFormat
+import java.util.*
+
+
+class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
+    TimePickerDialog.OnTimeSetListener {
+    private var dialogCaller = Caller.TIME_INIT
+    private val datePicker = DatePickDialog()
+    private val timePicker = TimePickDialog()
+    private var group: UserGroups? = null
+    private var mode = Mode.ADMIN
+    private var state = State.VIEW
+    private var infoChange = false
+    private var instantChange = false
+    private val contentsViews: MutableList<ConstraintLayout> = arrayListOf()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_group)
+
+        intent.extras?.let {
+            group = intent.extras?.getParcelable("groupInfo") as UserGroups
+            updateTextViews()
+            // TODO: Check if user are inside/admin the group
+            // Change mode and float button image
+        }
+
+        // add back arrow to toolbar
+        if (supportActionBar != null){
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            supportActionBar!!.setDisplayShowHomeEnabled(true)
+        }
+
+        actionGroupButton.setOnClickListener {
+            if(mode == Mode.ADMIN){
+                if(state == State.EDIT){
+                    if(instantChange)
+                        infoChange = instantChange
+                    actionGroupButton.setImageResource(R.drawable.baseline_edit_white_24dp)
+                    addContentFAB_ActGroup.hide()
+                    changeState(View.VISIBLE, View.INVISIBLE)
+                    endDayTextView_ActGroup.setOnClickListener(null)
+                    initDayTextView_ActGroup.setOnClickListener(null)
+                    initTimeTextView_ActGroup.setOnClickListener(null)
+                    endTimeTextView_ActGroup.setOnClickListener(null)
+
+                    // TODO: Change These dummies
+                    group = UserGroups(
+                        0, subjectFieldTextEdit_ActGroup.text.toString(), "dummy",
+                        1, 2,
+                        0, 0, locationFieldTextEdit_ActGroup.text.toString()
+                    )
+                    updateTextViews()
+                    state = State.VIEW
+                }else{
+                    actionGroupButton.setImageResource(R.drawable.baseline_save_white_24dp)
+                    addContentFAB_ActGroup.show()
+                    changeState(View.INVISIBLE, View.VISIBLE)
+                    subjectFieldTextEdit_ActGroup.setText(group?.subject)
+                    locationFieldTextEdit_ActGroup.setText(group?.location_description)
+
+                    endDayTextView_ActGroup.setOnClickListener{
+                        datePicker.show(supportFragmentManager, "init date picker")
+                        dialogCaller = Caller.DATE_END
+                    }
+                    initDayTextView_ActGroup.setOnClickListener{
+                        datePicker.show(supportFragmentManager, "end date picker")
+                        dialogCaller = Caller.DATE_INIT
+                    }
+                    initTimeTextView_ActGroup.setOnClickListener{
+                        timePicker.show(supportFragmentManager, "init hour picker")
+                        dialogCaller = Caller.TIME_INIT
+                    }
+                    endTimeTextView_ActGroup.setOnClickListener{
+                        timePicker.show(supportFragmentManager, "end hour picker")
+                        dialogCaller = Caller.TIME_END
+                    }
+                    state = State.EDIT
+                }
+            }else {
+                if(state == State.INSIDE){
+                    actionGroupButton.setImageResource(R.drawable.baseline_person_add_disabled_white_24dp)
+                    state = State.OUTSIDE
+                }else{
+                    actionGroupButton.setImageResource(R.drawable.baseline_group_add_white_24dp)
+                    state = State.INSIDE
+                }
+            }
+            instantChange = false
+            actionGroupButton
+        }
+
+        subjectFieldTextEdit_ActGroup.addTextChangedListener{
+            instantChange = true
+        }
+
+        locationFieldTextEdit_ActGroup.addTextChangedListener {
+            instantChange = true
+        }
+
+        addContentFAB_ActGroup.setOnClickListener {
+            val view = layoutInflater.inflate(R.layout.group_content, null)
+            val insertPoint = findViewById<LinearLayout>(R.id.contentLinearLayout_ActGroup)
+            val layout = view.findViewById<ConstraintLayout>(R.id.constrainLayout_GroupContentLayout)
+            this.contentsViews.add(layout)
+
+            val textView = layout.findViewById<TextView>(R.id.contentTextView_GroupContentLayout)
+            textView.text = "Test https://stackoverflow.com ${insertPoint.childCount}"
+            textView.visibility = TextView.VISIBLE
+
+            Toast.makeText(this, insertPoint.childCount.toString() , Toast.LENGTH_SHORT).show()
+
+            insertPoint.addView(view, insertPoint.childCount,
+                ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        }
+
+        addContentFAB_ActGroup.hide()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        val buttonId = item?.itemId
+        if (buttonId == android.R.id.home) {
+            backFunction()
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        backFunction()
+    }
+
+    private fun backFunction(){
+        if(mode == Mode.ADMIN){
+            if(state == State.EDIT){
+                state = State.VIEW
+                changeState(View.VISIBLE,  View.INVISIBLE)
+                actionGroupButton.setImageResource(R.drawable.baseline_edit_white_24dp)
+                instantChange = false
+            }else{
+                val replyIntent = Intent()
+                if(infoChange){
+                    replyIntent.putExtra("replytype", 0)
+                    replyIntent.putExtra("replygroup", group)
+                    setResult(Activity.RESULT_OK, replyIntent)
+                }else{
+                    setResult(Activity.RESULT_CANCELED, replyIntent)
+                }
+                finish()
+            }
+        }else{
+            val replyIntent = Intent()
+            if(state == State.INSIDE){
+                replyIntent.putExtra("replytype", 1)
+                setResult(Activity.RESULT_OK, replyIntent)
+            }else{
+                setResult(Activity.RESULT_CANCELED, replyIntent)
+            }
+            finish() // close this activity and return to preview activity (if there is any)
+        }
+    }
+
+    private fun changeState(mode1: Int, mode2: Int){
+        subjectFieldTextView_ActGroup.visibility = mode1
+        locationFieldTextView_ActGroup.visibility = mode1
+        descriptionFieldTextView_ActGroup.visibility = mode1
+
+        subjectFieldTextEdit_ActGroup.visibility = mode2
+        locationFieldTextEdit_ActGroup.visibility = mode2
+        descriptionFieldTextEdit_ActGroup.visibility = mode2
+
+        for (content in contentsViews){
+            val textView = content.findViewById<TextView>(R.id.contentTextView_GroupContentLayout)
+            val textEdit = content.findViewById<TextView>(R.id.contentTextEdit_GroupContentLayout)
+            textView.visibility = mode1
+            textEdit.visibility = mode2
+        }
+    }
+
+    private fun updateTextViews(){
+        subjectFieldTextView_ActGroup.text = group?.subject
+        locationFieldTextView_ActGroup.text = group?.location_description
+        //descriptionFieldTextEdit_ActGroup.text = group?.
+    }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.MONTH, month)
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        if(dialogCaller == Caller.DATE_INIT){
+            initDayTextView_ActGroup.text = DateFormat.getDateInstance()?.format(calendar.time)
+        }else {
+            endDayTextView_ActGroup.text = DateFormat.getDateInstance()?.format(calendar.time)
+        }
+    }
+
+    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        val text = "${String.format("%02d", hourOfDay)}:${String.format("%02d", minute)}"
+        //Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+        if(dialogCaller == Caller.TIME_INIT){
+            initTimeTextView_ActGroup.text = text
+        }else {
+            endTimeTextView_ActGroup.text = text
+        }
+    }
+}

@@ -1,4 +1,4 @@
-package com.example.groupfinder
+package com.example.groupfinder.userinterfaces.search
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -6,32 +6,45 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.groupfinder.base_classes.UserMeetings
-import com.example.groupfinder.groupListFragment.OnListFragmentInteractionListener
+import com.example.groupfinder.Data.entities.UserGroups
+import com.example.groupfinder.R
+import com.example.groupfinder.userinterfaces.enums.RequestCode
+import com.example.groupfinder.userinterfaces.group.GroupActivity
+import com.example.groupfinder.userinterfaces.search.GroupSearchFragment.OnListFragmentInteractionListener
 import kotlinx.android.synthetic.main.fragment_groups_item.view.*
 
 /**
- * [RecyclerView.Adapter] that can display a [groupItem] and makes a call to the
+ * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
  * specified [OnListFragmentInteractionListener].
  * TODO: Replace the implementation with code for your data type.
  */
-class GroupsRecyclerViewAdapter(
-    private val mValues: List<UserMeetings>,
-    private val mListener: OnListFragmentInteractionListener?
-) : RecyclerView.Adapter<GroupsRecyclerViewAdapter.ViewHolder>() {
+class GroupSearchRecyclerViewAdapter(
+    private var mValues: List<UserGroups>,
+    private val mListener: OnListFragmentInteractionListener?,
+    private val activity: FragmentActivity
+) : RecyclerView.Adapter<GroupSearchRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
+    private val groupRequestCode = RequestCode.GROUP.number
 
     init {
-        mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as UserMeetings
+        mOnClickListener = View.OnClickListener { view ->
+            val item = view.tag as UserGroups
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
-            val intent = Intent(v.context, groupActivity::class.java)
-            v.context.startActivity(intent)
+            val intent = Intent(view.context, GroupActivity::class.java)
+            intent.putExtra("groupInfo", item)
+            ActivityCompat.startActivityForResult(activity, intent, groupRequestCode, null)
         }
+    }
+
+    fun searchAllert(newList: List<UserGroups>){
+        this.mValues = newList
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -42,7 +55,7 @@ class GroupsRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
-        holder.mainSubjectView.text = item.disciplina
+        holder.mainSubjectView.text = item.subject
         holder.placeView.text = item.location_description
         holder.imageView.setImageResource(R.drawable.gde)
 

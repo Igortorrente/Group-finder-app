@@ -1,4 +1,4 @@
-package com.example.groupfinder.base_classes
+package com.example.groupfinder.Data.api
 
 import com.google.gson.JsonObject
 import kotlinx.coroutines.Deferred
