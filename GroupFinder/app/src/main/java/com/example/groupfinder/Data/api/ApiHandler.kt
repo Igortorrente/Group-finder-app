@@ -1,8 +1,9 @@
 package com.example.groupfinder.Data.api
 
 import android.content.Context
-import android.service.autofill.UserData
 import android.widget.Toast
+import com.example.groupfinder.Data.entities.UserData
+import com.example.groupfinder.Data.entities.UserGroups
 import com.google.gson.JsonObject
 import kotlinx.coroutines.Deferred
 import retrofit2.Call
@@ -24,7 +25,7 @@ class ApiHandler(
 
     // Response and/or return value neeeds to be handled within the coroutine
 
-    suspend fun userAuth(user: userData): Response<JsonObject> {
+    suspend fun userAuth(user: UserData): Response<JsonObject> {
         val response = apiService
             .userAuth(user)
             .await()
@@ -33,7 +34,7 @@ class ApiHandler(
 
     }
 
-    suspend fun userRegister(user: userData): Response<JsonObject>  {
+    suspend fun userRegister(user: UserData): Response<JsonObject>  {
         val response = apiService
             .userRegister(user)
             .await()
@@ -42,11 +43,11 @@ class ApiHandler(
 
     }
 
-    fun userGroups(ra: Int) : Deferred<Response<List<UserMeetings>>> {
+    fun userGroups(ra: Int) : Deferred<Response<List<UserGroups>>> {
         return apiService.userGroupsResponse(ra)
     }
 
-    fun userData(ra: Int) : Deferred<Response<userData>> {
+    fun userData(ra: Int) : Deferred<Response<UserData>> {
         return apiService.userDataResponse(ra)
     }
 
@@ -59,7 +60,7 @@ class ApiHandler(
 
     }
 
-    suspend fun groupData(id: Int): UserMeetings {
+    suspend fun groupData(id: Int): UserGroups {
         val group = apiService
             .groupData(id)
             .await()
@@ -67,7 +68,7 @@ class ApiHandler(
         return group
     }
 
-    suspend fun groupFindBySubject(subId: Int): List<UserMeetings> {
+    suspend fun groupFindBySubject(subId: Int): List<UserGroups> {
         val searchResult = apiService
             .groupFindBySubject(subId)
             .await()

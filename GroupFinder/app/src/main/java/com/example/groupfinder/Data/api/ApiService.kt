@@ -1,5 +1,7 @@
 package com.example.groupfinder.Data.api
 
+import com.example.groupfinder.Data.entities.UserData
+import com.example.groupfinder.Data.entities.UserGroups
 import com.google.gson.JsonObject
 import kotlinx.coroutines.Deferred
 import retrofit2.Call
@@ -15,29 +17,29 @@ interface ApiService {
 
     // Call generic type defines the expected response type after deserialization
     @POST("user/auth")
-    fun userAuth(@Body user: userData): Deferred<Response<JsonObject>>
+    fun userAuth(@Body user: UserData): Deferred<Response<JsonObject>>
 
     @POST("user/register")
-    fun userRegister(@Body user: userData): Deferred<Response<JsonObject>>
+    fun userRegister(@Body user: UserData): Deferred<Response<JsonObject>>
 
     @GET("user/{ra}")
-    fun userData(@Path("ra") ra: Int): Deferred<userData>
+    fun userData(@Path("ra") ra: Int): Deferred<UserData>
 
     @GET("user/{ra}")
-    fun userDataResponse(@Path("ra") ra: Int): Deferred<Response<userData>>
+    fun userDataResponse(@Path("ra") ra: Int): Deferred<Response<UserData>>
 
     @GET("user/{ra}/groups")
-    fun userGroupsResponse(@Path("ra") ra: Int): Deferred<Response<List<UserMeetings>>>
+    fun userGroupsResponse(@Path("ra") ra: Int): Deferred<Response<List<UserGroups>>>
 
     @GET("user/{ra}/groups")
-    fun userGroups(@Path("ra") ra: Int): Deferred<List<UserMeetings>>
+    fun userGroups(@Path("ra") ra: Int): Deferred<List<UserGroups>>
 
     @POST("/groups/register")
     fun groupRegister(@Body groupArgument: ApiGroupArgument): Deferred<Response<JsonObject>>
 
     @GET("/groups/{id}")
-    fun groupData(@Path("id") id: Int): Deferred<UserMeetings>
+    fun groupData(@Path("id") id: Int): Deferred<UserGroups>
 
     @GET("/groups/disciplina/{id}")
-    fun groupFindBySubject(@Path("id") subId: Int): Deferred<List<UserMeetings>>
+    fun groupFindBySubject(@Path("id") subId: Int): Deferred<List<UserGroups>>
 }

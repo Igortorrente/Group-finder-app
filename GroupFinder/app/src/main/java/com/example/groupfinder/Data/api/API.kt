@@ -5,7 +5,7 @@ import com.example.groupfinder.R
 
 class ApiGroupArgument(
     val ra: Int,
-    val group: UserMeetings
+    val group: UserGroups
 )
 
 class API (serverAddress: String){
