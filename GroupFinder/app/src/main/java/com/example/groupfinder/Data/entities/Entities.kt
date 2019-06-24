@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 // UserRepo info
@@ -12,8 +13,11 @@ import kotlinx.android.parcel.Parcelize
 @Entity(tableName = "UserData")
 data class UserData(
     @PrimaryKey val ra: Int,
+    @SerializedName("nome")
     val name: String,
+    @SerializedName("curso")
     val course: String,
+    @SerializedName("senha")
     val password:String
 ) : Parcelable
 
@@ -30,11 +34,16 @@ data class Class(
 data class UserGroups(
     @PrimaryKey @ColumnInfo(name = "group_id") val id: Int,
     val subject: String,
+    @SerializedName("detalhes")
     val detail: String,
+    @SerializedName("data_ini")
     val data_init: Int,
+    @SerializedName("data_fim")
     val data_end: Int,
+    @SerializedName("local_id")
     val location_id: Int,
     // TODO: Probably T need change this to put the name of creator and a image
+    @SerializedName("usuario_criador")
     val user_creator: Int,
     val location_description: String
 ) : Parcelable

@@ -2,7 +2,7 @@ package com.example.groupfinder.base_classes
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.groupfinder.Data.api.ApiService
+import com.example.groupfinder.Data.api.UserService
 import com.example.groupfinder.Data.api.RetrofitInitializer
 import com.example.groupfinder.Data.entities.UserData
 import com.example.groupfinder.Data.entities.UserGroups
@@ -13,14 +13,14 @@ import com.example.groupfinder.Data.entities.UserGroups
 // which would prevent proper integration with the Local DB
 
 class ApiDataSource(
-    private val apiService: ApiService = RetrofitInitializer().apiService()
+    private val userService: UserService = RetrofitInitializer().userService()
 ) {
     private val _downloadedUserData = MutableLiveData<UserData>()
     val downloadedUserData: LiveData<UserData>
         get() = _downloadedUserData
 
     suspend fun fetchUserData(ra: Int) {
-        val fetchedUserData = apiService
+        val fetchedUserData = userService
                 .userData(ra)
                 .await()
 
@@ -32,7 +32,7 @@ class ApiDataSource(
         get() = _downloadedUserGroups
 
     suspend fun fetchUserGroups(ra: Int) {
-        val fetchedUserGroups = apiService
+        val fetchedUserGroups = userService
             .userGroups(ra)
             .await()
 

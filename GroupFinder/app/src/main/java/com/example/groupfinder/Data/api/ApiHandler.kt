@@ -1,21 +1,17 @@
 package com.example.groupfinder.Data.api
 
 import android.content.Context
-import android.widget.Toast
 import com.example.groupfinder.Data.entities.UserData
 import com.example.groupfinder.Data.entities.UserGroups
 import com.google.gson.JsonObject
 import kotlinx.coroutines.Deferred
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
-
-class ApiUser(val ra: Int, val nome: String? = "", val curso: String? = "", val senha:String)
-class ApiGroup()
 
 // Makes and handles calls to the API Service 
 class ApiHandler(
-    private val apiService: ApiService = RetrofitInitializer().apiService()
+    private val userService: UserService = RetrofitInitializer().userService(),
+    private val groupService: GroupService = RetrofitInitializer().groupService(),
+    private val contentService: ContentService = RetrofitInitializer().contentService()
 ) {
 
     private lateinit var context: Context
@@ -26,7 +22,7 @@ class ApiHandler(
     // Response and/or return value neeeds to be handled within the coroutine
 
     suspend fun userAuth(user: UserData): Response<JsonObject> {
-        val response = apiService
+        val response = userService
             .userAuth(user)
             .await()
 
@@ -35,7 +31,7 @@ class ApiHandler(
     }
 
     suspend fun userRegister(user: UserData): Response<JsonObject>  {
-        val response = apiService
+        val response = userService
             .userRegister(user)
             .await()
 
@@ -44,15 +40,15 @@ class ApiHandler(
     }
 
     fun userGroups(ra: Int) : Deferred<Response<List<UserGroups>>> {
-        return apiService.userGroupsResponse(ra)
+        return userService.userGroupsResponse(ra)
     }
 
     fun userData(ra: Int) : Deferred<Response<UserData>> {
-        return apiService.userDataResponse(ra)
+        return userService.userDataResponse(ra)
     }
 
     suspend fun groupRegister(groupArgument: ApiGroupArgument): Response<JsonObject> {
-        val response = apiService
+        val response = groupService
             .groupRegister(groupArgument)
             .await()
 
@@ -61,7 +57,7 @@ class ApiHandler(
     }
 
     suspend fun groupData(id: Int): UserGroups {
-        val group = apiService
+        val group = groupService
             .groupData(id)
             .await()
 
@@ -69,7 +65,7 @@ class ApiHandler(
     }
 
     suspend fun groupFindBySubject(subId: Int): List<UserGroups> {
-        val searchResult = apiService
+        val searchResult = groupService
             .groupFindBySubject(subId)
             .await()
 

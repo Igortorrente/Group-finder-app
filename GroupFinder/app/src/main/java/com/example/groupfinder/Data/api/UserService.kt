@@ -11,9 +11,9 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 
-// Contains all calls to the API
+// Contains all calls to the User Service of the API
 // Retrofit Library handles converting JSON input and output to objects
-interface ApiService {
+interface UserService {
 
     // Call generic type defines the expected response type after deserialization
     @POST("user/auth")
@@ -33,13 +33,4 @@ interface ApiService {
 
     @GET("user/{ra}/groups")
     fun userGroups(@Path("ra") ra: Int): Deferred<List<UserGroups>>
-
-    @POST("/groups/register")
-    fun groupRegister(@Body groupArgument: ApiGroupArgument): Deferred<Response<JsonObject>>
-
-    @GET("/groups/{id}")
-    fun groupData(@Path("id") id: Int): Deferred<UserGroups>
-
-    @GET("/groups/disciplina/{id}")
-    fun groupFindBySubject(@Path("id") subId: Int): Deferred<List<UserGroups>>
 }
