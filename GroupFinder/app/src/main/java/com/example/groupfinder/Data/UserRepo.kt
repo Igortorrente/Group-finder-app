@@ -164,5 +164,14 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
     fun insetUserData(UserData: UserData): Long{
         return userDao.insetUserData(UserData)
     }
+
+    override fun onCreate() {
+        prefs = Prefs(applicationContext)
+        super.onCreate()
+    }
+
+    companion object {
+        var prefs: Prefs? = null
+    }
 }
 
