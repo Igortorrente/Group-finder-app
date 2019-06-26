@@ -1,6 +1,7 @@
 package com.example.groupfinder.Data
 
 import android.app.AlertDialog
+import android.content.Context
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,7 +17,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class UserRepo(private val userDao: UserDao) : android.app.Application(){
+class UserRepo(private val userDao: UserDao, private val context: Context) : android.app.Application(){
 
     // ***************************************** //
     // TODO: Introduce Networking at all of this //
@@ -150,9 +151,31 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
     @WorkerThread
     fun getUserData(): LiveData<UserData>{
         // TODO: Replace
-        modUserInfo = MutableLiveData()
-        modUserInfo.postValue(UserData(213, "joão", "eng de ali", "123"))
+        //modUserInfo = MutableLiveData()
+
+        val userRa = Prefs(context).userRa
+
+        if (userRa > 0) {
+            GlobalScope.launch {
+
+                val userDataDef = ApiHandler.userData(userRa)
+
+                withContext(Dispatchers.Main) {
+                    val userDataResponse = userDataDef.await()
+
+                    val responseCode = userDataResponse.code()
+
+                    if (responseCode == 200) {
+                        userDataResponse.body().let {
+                            modUserInfo.postValue(it)
+                        }
+                    }
+                }
+            }
+        }
+
         return userInfo
+
     }
 
     @WorkerThread
