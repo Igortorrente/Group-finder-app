@@ -165,7 +165,7 @@ class RegisterActivity : AppCompatActivity() {
                     }
                     catch (t: Throwable) {
                         showProgress(false)
-                        API.showAlertDialog(this@RegisterActivity.applicationContext, "Failed to Register", t.localizedMessage)
+                        API.showAlertDialog(this@RegisterActivity, "Failed to Register", t.localizedMessage)
                     }
                 }
             }

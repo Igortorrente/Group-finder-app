@@ -141,8 +141,8 @@ class LoginActivity : AppCompatActivity() {
 
                                 Prefs(this@LoginActivity).userRa = userRA.toInt()
 
-                                val intent = Intent(this@LoginActivity.applicationContext, MainActivity::class.java)
-                                this@LoginActivity.applicationContext.startActivity(intent)
+                                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                this@LoginActivity.startActivity(intent)
 
                             }
                             403 -> {
@@ -162,7 +162,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                     catch (t: Throwable) {
                         showProgress(false)
-                        API.showAlertDialog(this@LoginActivity.applicationContext, "Failed to Login", t.localizedMessage)
+                        API.showAlertDialog(this@LoginActivity, "Failed to Login", t.localizedMessage)
                     }
                 }
             }
