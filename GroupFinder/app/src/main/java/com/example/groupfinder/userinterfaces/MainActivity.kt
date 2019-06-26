@@ -1,11 +1,18 @@
 package com.example.groupfinder.userinterfaces
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.AttributeSet
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
+import com.example.groupfinder.Data.Prefs
+import com.example.groupfinder.Data.UserRepo
 import com.example.groupfinder.R
 import com.example.groupfinder.userinterfaces.group.GroupListFragment
 import com.example.groupfinder.userinterfaces.profile.ProfileFragment
@@ -90,6 +97,25 @@ class MainActivity : AppCompatActivity() {
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             .commit()
     }
+
+    override fun onCreateView(name: String?, context: Context?, attrs: AttributeSet?): View? {
+        val result =  super.onCreateView(name, context, attrs)
+
+        if (Prefs(context!!).userRa < 0) {
+            val intent = Intent(context!!, LoginActivity::class.java)
+            context!!.startActivity(intent)
+        }
+
+        return result
+    }
+
+    /*override fun onCreateView(parent: View?, name: String?, context: Context?, attrs: AttributeSet?): View {
+
+        if (Prefs(context!!).userRa < 0)
+            setContentView(R.layout.activity_login)
+
+        return super.onCreateView(parent, name, context, attrs)
+    }*/
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         toolbar = menu!!

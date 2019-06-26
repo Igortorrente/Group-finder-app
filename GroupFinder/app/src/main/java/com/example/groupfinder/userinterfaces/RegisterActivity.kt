@@ -1,71 +1,55 @@
 package com.example.groupfinder.userinterfaces
 
-import android.Manifest.permission.READ_CONTACTS
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.TargetApi
-import android.app.LoaderManager.LoaderCallbacks
 import android.content.Context
-import android.content.CursorLoader
 import android.content.Intent
-import android.content.Loader
-import android.content.pm.PackageManager
-import android.database.Cursor
-import android.net.Uri
+import androidx.appcompat.app.AppCompatActivity
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.ArrayAdapter
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import com.example.groupfinder.Data.Prefs
 import com.example.groupfinder.Data.api.API
 import com.example.groupfinder.Data.api.ApiHandler
-import com.example.groupfinder.Data.entities.Class
 import com.example.groupfinder.Data.entities.UserData
+
 import com.example.groupfinder.R
-import com.example.groupfinder.userinterfaces.profile.ProfileEditActivity
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_login.*
+
+import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.*
 
 /**
- * A login screen that offers login via email/senha.
+ * A login screen that offers login via email/password.
  */
-class LoginActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity() {
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private var mAuthTask: UserLoginTask? = null
+    private var mAuthTask: UserRegisterTask? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_register)
 
         password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
             if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                attemptLogin()
+                attemptRegister()
                 return@OnEditorActionListener true
             }
             false
         })
 
-        email_sign_in_button.setOnClickListener { attemptLogin() }
-
-        email_reg_button.setOnClickListener {
-                view ->
-            val intent = Intent(view.context, RegisterActivity::class.java)
-            view.context.startActivity(intent)
-        }
+        email_sign_in_button.setOnClickListener { attemptRegister() }
     }
 
     // Ensure that MainActivity gets shown, in case user, somehow, gets on this screen after registering
@@ -80,37 +64,65 @@ class LoginActivity : AppCompatActivity() {
         return result
     }
 
-
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private fun attemptLogin() {
-        if (mAuthTask != null) {
-            return
-        }
+    private fun attemptRegister() {
+        //if (mAuthTask != null) {
+        //    return
+        //}
 
         // Reset errors.
+        user_course.error = null
+        user_name.error = null
         user_ra.error = null
         password.error = null
 
         // Store values at the time of the login attempt.
-        val userRA = Integer(user_ra.text.toString())
+        val nameStr = user_name.text.toString()
+        val raStr = user_ra.text.toString()
+        var userRA = -1
+        val courseStr = user_course.text.toString()
         val passwordStr = password.text.toString()
 
         var cancel = false
         var focusView: View? = null
 
-        // Check for a valid senha, if the User entered one.
-        if (!TextUtils.isEmpty(passwordStr) && !isPasswordValid(passwordStr)) {
+        // Check for a valid password, if the user entered one.
+        if (TextUtils.isEmpty(passwordStr) || !isPasswordValid(passwordStr)) {
             password.error = getString(R.string.error_invalid_password)
             focusView = password
             cancel = true
         }
 
+        val testStr = API.getSHA512hash(passwordStr)
+        //API.showAlertDialog(this, passwordStr, testStr)
+
         // Check for a valid email address.
-        if (!(userRA > 0 && userRA <= 999999)) {
+        if (TextUtils.isEmpty(courseStr)) {
+            user_course.error = getString(R.string.error_field_required)
+            focusView = user_course
+            cancel = true
+        }
+
+        if (TextUtils.isEmpty(nameStr)) {
+            user_name.error = getString(R.string.error_field_required)
+            focusView = user_name
+            cancel = true
+        }
+
+        if (!raStr.isEmpty()) {
+            userRA = raStr.toInt()
+
+            if (userRA !in 1..999999) {
+                user_ra.error = getString(R.string.error_field_required)
+                focusView = user_ra
+                cancel = true
+            }
+        }
+        else {
             user_ra.error = getString(R.string.error_field_required)
             focusView = user_ra
             cancel = true
@@ -122,51 +134,41 @@ class LoginActivity : AppCompatActivity() {
             focusView?.requestFocus()
         } else {
             // Show a progress spinner, and kick off a background task to
-            // perform the User login attempt.
+            // perform the user login attempt.
             showProgress(true)
 
             GlobalScope.launch {
 
-                val newUser = UserData(userRA.toInt(), "", "", API.getSHA512hash(passwordStr))
-                val userAuthResponseDef = ApiHandler.userAuth(newUser)
+                val newUser = UserData(userRA, nameStr, courseStr, API.getSHA512hash(passwordStr))
+                val userRegisterResponseDef = ApiHandler.userRegister(newUser)
 
                 withContext(Dispatchers.Main) {
                     try {
-                        val userAuthResponse = userAuthResponseDef.await()
-                        val responseCode = userAuthResponse.code()
+                        val userRegisterResponse = userRegisterResponseDef.await()
+                        val responseCode = userRegisterResponse.code()
 
                         when(responseCode) {
                             200 -> {
                                 showProgress(false)
+                                API.showAlertDialog(this@RegisterActivity, "Register successful!", "You have been successfully registered.\nYou may now login.")
 
-                                Prefs(this@LoginActivity).userRa = userRA.toInt()
+                                val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                                this@RegisterActivity.startActivity(intent)
 
-                                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                                this@LoginActivity.startActivity(intent)
-
-                            }
-                            403 -> {
-                                showProgress(false)
-                                API.showAlertDialog(this@LoginActivity, "Failed to Login", "The provided user RA and password didn't match")
-                            }
-                            404 -> {
-                                showProgress(false)
-                                API.showAlertDialog(this@LoginActivity, "Failed to Login", "The provided user RA isn't registered")
                             }
                             else -> {
                                 showProgress(false)
-                                API.showAlertDialog(this@LoginActivity, "Failed to Login", "An unknown error occurred while attempting to register")
+                                API.showAlertDialog(this@RegisterActivity, "Failed to Register", "An unknown error (" + responseCode.toString() + ") occurred while attempting to register")
                             }
                         }
 
                     }
                     catch (t: Throwable) {
                         showProgress(false)
-                        API.showAlertDialog(this@LoginActivity, "Failed to Login", t.localizedMessage)
+                        API.showAlertDialog(this@RegisterActivity, "Failed to Register", t.localizedMessage)
                     }
                 }
             }
-
         }
     }
 
@@ -215,29 +217,15 @@ class LoginActivity : AppCompatActivity() {
 
     /**
      * Represents an asynchronous login/registration task used to authenticate
-     * the User.
+     * the user.
      */
-    inner class UserLoginTask internal constructor(private val mEmail: String, private val mPassword: String) :
+    inner class UserRegisterTask internal constructor(private val mName: String, private val mRA: Int, private val mCourse: String, private val mPassword: String) :
         AsyncTask<Void, Void, Boolean>() {
 
         override fun doInBackground(vararg params: Void): Boolean? {
             // TODO: attempt authentication against a network service.
+            return false
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000)
-            } catch (e: InterruptedException) {
-                return false
-            }
-
-            return DUMMY_CREDENTIALS
-                .map { it.split(":") }
-                .firstOrNull { it[0] == mEmail }
-                ?.let {
-                    // Account exists, return true if the senha matches.
-                    it[1] == mPassword
-                }
-                ?: true
         }
 
         override fun onPostExecute(success: Boolean?) {
@@ -266,7 +254,7 @@ class LoginActivity : AppCompatActivity() {
         private val REQUEST_READ_CONTACTS = 0
 
         /**
-         * A dummy authentication store containing known User names and passwords.
+         * A dummy authentication store containing known user names and passwords.
          * TODO: remove after connecting to a real authentication system.
          */
         private val DUMMY_CREDENTIALS = arrayOf("foo@example.com:hello", "bar@example.com:world")

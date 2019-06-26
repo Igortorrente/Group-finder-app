@@ -1,14 +1,20 @@
 package com.example.groupfinder.Data
 
+import android.app.AlertDialog
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.groupfinder.Data.api.API
+import com.example.groupfinder.Data.api.ApiHandler
 import com.example.groupfinder.Data.database.UserDao
 import com.example.groupfinder.Data.entities.Class
 import com.example.groupfinder.Data.entities.Content
 import com.example.groupfinder.Data.entities.UserData
 import com.example.groupfinder.Data.entities.UserGroups
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class UserRepo(private val userDao: UserDao) : android.app.Application(){
 
@@ -17,6 +23,7 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
     // ***************************************** //
 
     private var modUserGroups = MutableLiveData<List<UserGroups>>()
+
     private var modUserClasses = MutableLiveData<List<Class>>()
     private var modAllUserContents = MutableLiveData<List<Content>>()
     private var modUserInfo = MutableLiveData<UserData>()
@@ -30,8 +37,32 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
 
     // Group Queries
     fun getAllGroups(): LiveData<List<UserGroups>>{
-        val groups = API.getUserGroups("oi")
-        modUserGroups.value = groups
+        //modUserGroups.value = emptyList()
+
+        GlobalScope.launch {
+            val groupsListDef = ApiHandler.userGroups(177953)
+
+            withContext(Dispatchers.Main) {
+                try {
+                    val groupsListResponse = groupsListDef.await()
+
+                    when {
+                        groupsListResponse.code() == 200 -> {
+                            groupsListResponse.body().let {
+                                modUserGroups.value = it
+                            }
+                        }
+                        else -> {
+                            //modUserGroups.value = emptyList()
+                        }
+                    }
+                } catch (t: Throwable) {
+                    //modUserGroups.value = emptyList()
+                }
+            }
+
+        }
+
         return userGroups
     }
 
@@ -132,6 +163,15 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
     @WorkerThread
     fun insetUserData(UserData: UserData): Long{
         return userDao.insetUserData(UserData)
+    }
+
+    override fun onCreate() {
+        prefs = Prefs(applicationContext)
+        super.onCreate()
+    }
+
+    companion object {
+        var prefs: Prefs? = null
     }
 }
 

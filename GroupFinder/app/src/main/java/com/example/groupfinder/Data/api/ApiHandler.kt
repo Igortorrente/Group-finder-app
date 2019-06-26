@@ -1,60 +1,79 @@
 package com.example.groupfinder.Data.api
 
 import android.content.Context
-import android.widget.Toast
+import com.example.groupfinder.Data.entities.UserData
+import com.example.groupfinder.Data.entities.UserGroups
 import com.google.gson.JsonObject
-import retrofit2.Call
-import retrofit2.Callback
+import kotlinx.coroutines.Deferred
 import retrofit2.Response
-
-class ApiUser(val ra: Int, val nome: String? = "", val curso: String? = "", val senha:String)
-class ApiGroup()
 
 // Makes and handles calls to the API Service 
 class ApiHandler {
+    companion object {
 
-    private lateinit var context: Context
+        private val userService: UserService = RetrofitInitializer().userService()
+        private val groupService: GroupService = RetrofitInitializer().groupService()
+        private val contentService: ContentService = RetrofitInitializer().contentService()
 
-    // Function that handles authentication to the server
-    fun userAuth(user: ApiUser) {
-        val call = RetrofitInitializer().apiService().userAuth(user)
-        
-        call.enqueue(object: Callback<JsonObject> {
-            override fun onResponse(call: Call<JsonObject?>?, response: Response<JsonObject?>?) {
-                val responseCode = response?.code()
+        private lateinit var context: Context
 
-                when (responseCode) {
-                    200 -> {
-                        // TODO: Implement proper code for handling successful login
-                        // (store student RA in database and start main activity?)
-                        Toast.makeText(context, "200 OK", Toast.LENGTH_LONG).show()
-                    }
-                    404 -> {
-                        // Handle inexistent user somehow
-                        Toast.makeText(context, "404 ERROR", Toast.LENGTH_LONG).show()
-                    }
-                    403 -> {
-                        Toast.makeText(context, "403 ERROR", Toast.LENGTH_LONG).show()
-                        // Handle wrong pwd somehow
-                    }
-                    else -> {
-                        Toast.makeText(context, "UNEXPECTED ERROR", Toast.LENGTH_LONG).show()
-                        // Handle UNEXPECTED response somehow
-                    }
-                }
-                
-            }
-            
-            override fun onFailure(call: Call<JsonObject?>?, t: Throwable?) {
-                Toast.makeText(context, t?.message, Toast.LENGTH_LONG).show()
-                // Handle random (or not) exceptions
-            }
-        })
-        
-    }
+        // All of these functions are semi-synchronous (let's say that they are synchronous
+        // within a Kotlin coroutine)
 
-    fun setContext(con: Context) {
-        this.context = con
+        // Response and/or return value neeeds to be handled within the coroutine
+
+        fun userAuth(user: UserData): Deferred<Response<JsonObject>> {
+            val response = userService
+                .userAuth(user)
+
+            return response
+
+        }
+
+        fun userRegister(user: UserData): Deferred<Response<JsonObject>> {
+            val response = userService
+                .userRegister(user)
+
+            return response
+
+        }
+
+        fun userGroups(ra: Int): Deferred<Response<List<UserGroups>>> {
+            return userService.userGroupsResponse(ra)
+        }
+
+        fun userData(ra: Int): Deferred<Response<UserData>> {
+            return userService.userDataResponse(ra)
+        }
+
+        suspend fun groupRegister(groupArgument: ApiGroupArgument): Response<JsonObject> {
+            val response = groupService
+                .groupRegister(groupArgument)
+                .await()
+
+            return response
+
+        }
+
+        suspend fun groupData(id: Int): UserGroups {
+            val group = groupService
+                .groupData(id)
+                .await()
+
+            return group
+        }
+
+        suspend fun groupFindBySubject(subId: Int): List<UserGroups> {
+            val searchResult = groupService
+                .groupFindBySubject(subId)
+                .await()
+
+            return searchResult
+        }
+
+        fun setContext(con: Context) {
+            this.context = con
+        }
     }
 
 }

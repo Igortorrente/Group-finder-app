@@ -1,8 +1,17 @@
 package com.example.groupfinder.Data.api
 
+import android.app.AlertDialog
+import android.content.Context
 import com.example.groupfinder.Data.entities.UserGroups
 import com.example.groupfinder.R
+import java.security.MessageDigest
+import kotlin.experimental.and
 
+
+class ApiGroupArgument(
+    val ra: Int,
+    val group: UserGroups
+)
 
 class API (serverAddress: String){
 
@@ -52,6 +61,38 @@ class API (serverAddress: String){
 
             return groups
         }
+
+        fun getSHA512hash(input: String): String {
+            val md = MessageDigest.getInstance("SHA-512")
+            val digest = md.digest(input.toByteArray())
+
+            var str = String()
+
+            for (i in digest.indices) {
+                var l = (digest[i] and 0xFF.toByte()) + 0x100
+
+                str += if (l > 0x100)
+                    l.toString(16).substring(1)
+                else
+                    l.toString(16)
+            }
+
+            return str
+        }
+
+        fun showAlertDialog(context: Context, title: String, desc: String) {
+            val dialog = AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(desc)
+                .setNeutralButton("Ok") {
+                        dialog, _ ->
+                    dialog.cancel()
+                }
+                .create()
+
+            dialog.show()
+
+        }
     }
 
     // Fetches a single group from external server
@@ -83,4 +124,6 @@ class API (serverAddress: String){
 
         return groups
     }
+
+
 }
