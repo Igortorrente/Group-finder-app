@@ -82,7 +82,7 @@ class RegisterActivity : AppCompatActivity() {
 
         // Store values at the time of the login attempt.
         val nameStr = user_name.text.toString()
-        val userRA = Integer(user_ra.text.toString())
+        val userRA = user_ra.text.toString().toInt()
         val courseStr = user_course.text.toString()
         val passwordStr = password.text.toString()
 
@@ -95,6 +95,9 @@ class RegisterActivity : AppCompatActivity() {
             focusView = password
             cancel = true
         }
+
+        val testStr = API.getSHA512hash(passwordStr)
+        //API.showAlertDialog(this.applicationContext, passwordStr, testStr)
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(courseStr)) {
@@ -109,7 +112,7 @@ class RegisterActivity : AppCompatActivity() {
             cancel = true
         }
 
-        if (!(userRA > 0 && userRA <= 999999)) {
+        if (userRA !in 1..999999) {
             user_ra.error = getString(R.string.error_field_required)
             focusView = user_ra
             cancel = true
@@ -126,7 +129,7 @@ class RegisterActivity : AppCompatActivity() {
 
             GlobalScope.launch {
 
-                val newUser = UserData(userRA.toInt(), nameStr, courseStr, API.getSHA512hash(passwordStr))
+                val newUser = UserData(userRA, nameStr, courseStr, API.getSHA512hash(passwordStr))
                 val userRegisterResponseDef = ApiHandler.userRegister(newUser)
 
                 withContext(Dispatchers.Main) {
@@ -137,11 +140,9 @@ class RegisterActivity : AppCompatActivity() {
                         when(responseCode) {
                             200 -> {
                                 showProgress(false)
-                                API.showAlertDialog(this@RegisterActivity.applicationContext, "Register sucessful!", "You have been sucessully registred.\nYou'll be automatically be logged in.")
+                                API.showAlertDialog(this@RegisterActivity.applicationContext, "Register successful!", "You have been successfully registered.\nYou may now login.")
 
-                                Prefs(this@RegisterActivity).userRa = userRA.toInt()
-
-                                val intent = Intent(this@RegisterActivity.applicationContext, MainActivity::class.java)
+                                val intent = Intent(this@RegisterActivity.applicationContext, LoginActivity::class.java)
                                 this@RegisterActivity.applicationContext.startActivity(intent)
 
                             }

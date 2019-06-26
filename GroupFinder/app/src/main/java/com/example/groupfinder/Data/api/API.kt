@@ -69,7 +69,8 @@ class API (serverAddress: String){
             val sb = StringBuilder()
 
             for (i in digest.indices) {
-                sb.append(Integer.toString((digest[i] and 0xFF.toByte()) + 0x100, 16).substring(1))
+                val i = (digest[i] and 0xFF.toByte()) + 0x100
+                sb.append(i.toString(16).substring(1))
             }
 
             return sb.toString()

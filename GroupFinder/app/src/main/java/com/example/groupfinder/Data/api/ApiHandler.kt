@@ -22,10 +22,9 @@ class ApiHandler {
 
         // Response and/or return value neeeds to be handled within the coroutine
 
-        suspend fun userAuth(user: UserData): Response<JsonObject> {
+        fun userAuth(user: UserData): Deferred<Response<JsonObject>> {
             val response = userService
                 .userAuth(user)
-                .await()
 
             return response
 
