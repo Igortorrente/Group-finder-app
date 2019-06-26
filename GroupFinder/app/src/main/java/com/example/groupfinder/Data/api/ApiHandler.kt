@@ -8,72 +8,73 @@ import kotlinx.coroutines.Deferred
 import retrofit2.Response
 
 // Makes and handles calls to the API Service 
-class ApiHandler(
-    private val userService: UserService = RetrofitInitializer().userService(),
-    private val groupService: GroupService = RetrofitInitializer().groupService(),
-    private val contentService: ContentService = RetrofitInitializer().contentService()
-) {
+class ApiHandler {
+    companion object {
 
-    private lateinit var context: Context
+        private val userService: UserService = RetrofitInitializer().userService()
+        private val groupService: GroupService = RetrofitInitializer().groupService()
+        private val contentService: ContentService = RetrofitInitializer().contentService()
 
-    // All of these functions are semi-synchronous (let's say that they are synchronous
-    // within a Kotlin coroutine)
+        private lateinit var context: Context
 
-    // Response and/or return value neeeds to be handled within the coroutine
+        // All of these functions are semi-synchronous (let's say that they are synchronous
+        // within a Kotlin coroutine)
 
-    suspend fun userAuth(user: UserData): Response<JsonObject> {
-        val response = userService
-            .userAuth(user)
-            .await()
+        // Response and/or return value neeeds to be handled within the coroutine
 
-        return response
+        suspend fun userAuth(user: UserData): Response<JsonObject> {
+            val response = userService
+                .userAuth(user)
+                .await()
 
-    }
+            return response
 
-    suspend fun userRegister(user: UserData): Response<JsonObject>  {
-        val response = userService
-            .userRegister(user)
-            .await()
+        }
 
-        return response
+        fun userRegister(user: UserData): Deferred<Response<JsonObject>> {
+            val response = userService
+                .userRegister(user)
 
-    }
+            return response
 
-    fun userGroups(ra: Int) : Deferred<Response<List<UserGroups>>> {
-        return userService.userGroupsResponse(ra)
-    }
+        }
 
-    fun userData(ra: Int) : Deferred<Response<UserData>> {
-        return userService.userDataResponse(ra)
-    }
+        fun userGroups(ra: Int): Deferred<Response<List<UserGroups>>> {
+            return userService.userGroupsResponse(ra)
+        }
 
-    suspend fun groupRegister(groupArgument: ApiGroupArgument): Response<JsonObject> {
-        val response = groupService
-            .groupRegister(groupArgument)
-            .await()
+        fun userData(ra: Int): Deferred<Response<UserData>> {
+            return userService.userDataResponse(ra)
+        }
 
-        return response
+        suspend fun groupRegister(groupArgument: ApiGroupArgument): Response<JsonObject> {
+            val response = groupService
+                .groupRegister(groupArgument)
+                .await()
 
-    }
+            return response
 
-    suspend fun groupData(id: Int): UserGroups {
-        val group = groupService
-            .groupData(id)
-            .await()
+        }
 
-        return group
-    }
+        suspend fun groupData(id: Int): UserGroups {
+            val group = groupService
+                .groupData(id)
+                .await()
 
-    suspend fun groupFindBySubject(subId: Int): List<UserGroups> {
-        val searchResult = groupService
-            .groupFindBySubject(subId)
-            .await()
+            return group
+        }
 
-        return searchResult
-    }
+        suspend fun groupFindBySubject(subId: Int): List<UserGroups> {
+            val searchResult = groupService
+                .groupFindBySubject(subId)
+                .await()
 
-    fun setContext(con: Context) {
-        this.context = con
+            return searchResult
+        }
+
+        fun setContext(con: Context) {
+            this.context = con
+        }
     }
 
 }

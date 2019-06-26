@@ -40,7 +40,7 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
         //modUserGroups.value = emptyList()
 
         GlobalScope.launch {
-            val groupsListDef = ApiHandler().userGroups(177953)
+            val groupsListDef = ApiHandler.userGroups(177953)
 
             withContext(Dispatchers.Main) {
                 try {
