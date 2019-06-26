@@ -7,13 +7,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 class RetrofitInitializer {
 
     private val retrofitUserInstance = Retrofit.Builder()
-            .baseUrl("http://hsconexao.com.br:5002/")
+            .baseUrl("http://hsconexao.com.br:5001/")
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
     private val retrofitGroupInstance = Retrofit.Builder()
-        .baseUrl("http://hsconexao.com.br:5001/")
+        .baseUrl("http://hsconexao.com.br:5002/")
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .addConverterFactory(GsonConverterFactory.create())
         .build()

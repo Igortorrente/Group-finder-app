@@ -66,14 +66,18 @@ class API (serverAddress: String){
             val md = MessageDigest.getInstance("SHA-512")
             val digest = md.digest(input.toByteArray())
 
-            val sb = StringBuilder()
+            var str = String()
 
             for (i in digest.indices) {
-                val i = (digest[i] and 0xFF.toByte()) + 0x100
-                sb.append(i.toString(16).substring(1))
+                var l = (digest[i] and 0xFF.toByte()) + 0x100
+
+                str += if (l > 0x100)
+                    l.toString(16).substring(1)
+                else
+                    l.toString(16)
             }
 
-            return sb.toString()
+            return str
         }
 
         fun showAlertDialog(context: Context, title: String, desc: String) {

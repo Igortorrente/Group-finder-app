@@ -139,7 +139,7 @@ class LoginActivity : AppCompatActivity() {
                             200 -> {
                                 showProgress(false)
 
-                                Prefs(this@LoginActivity.applicationContext).userRa = userRA.toInt()
+                                Prefs(this@LoginActivity).userRa = userRA.toInt()
 
                                 val intent = Intent(this@LoginActivity.applicationContext, MainActivity::class.java)
                                 this@LoginActivity.applicationContext.startActivity(intent)
@@ -147,15 +147,15 @@ class LoginActivity : AppCompatActivity() {
                             }
                             403 -> {
                                 showProgress(false)
-                                API.showAlertDialog(this@LoginActivity.applicationContext, "Failed to Login", "The provided user RA and password didn't match")
+                                API.showAlertDialog(this@LoginActivity, "Failed to Login", "The provided user RA and password didn't match")
                             }
                             404 -> {
                                 showProgress(false)
-                                API.showAlertDialog(this@LoginActivity.applicationContext, "Failed to Login", "The provided user RA isn't registered")
+                                API.showAlertDialog(this@LoginActivity, "Failed to Login", "The provided user RA isn't registered")
                             }
                             else -> {
                                 showProgress(false)
-                                API.showAlertDialog(this@LoginActivity.applicationContext, "Failed to Login", "An unknown error occurred while attempting to register")
+                                API.showAlertDialog(this@LoginActivity, "Failed to Login", "An unknown error occurred while attempting to register")
                             }
                         }
 

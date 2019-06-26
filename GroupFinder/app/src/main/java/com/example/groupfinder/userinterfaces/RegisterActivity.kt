@@ -82,7 +82,8 @@ class RegisterActivity : AppCompatActivity() {
 
         // Store values at the time of the login attempt.
         val nameStr = user_name.text.toString()
-        val userRA = user_ra.text.toString().toInt()
+        val raStr = user_ra.text.toString()
+        var userRA = -1
         val courseStr = user_course.text.toString()
         val passwordStr = password.text.toString()
 
@@ -97,7 +98,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         val testStr = API.getSHA512hash(passwordStr)
-        //API.showAlertDialog(this.applicationContext, passwordStr, testStr)
+        //API.showAlertDialog(this, passwordStr, testStr)
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(courseStr)) {
@@ -112,7 +113,16 @@ class RegisterActivity : AppCompatActivity() {
             cancel = true
         }
 
-        if (userRA !in 1..999999) {
+        if (!raStr.isEmpty()) {
+            userRA = raStr.toInt()
+
+            if (userRA !in 1..999999) {
+                user_ra.error = getString(R.string.error_field_required)
+                focusView = user_ra
+                cancel = true
+            }
+        }
+        else {
             user_ra.error = getString(R.string.error_field_required)
             focusView = user_ra
             cancel = true
@@ -140,15 +150,15 @@ class RegisterActivity : AppCompatActivity() {
                         when(responseCode) {
                             200 -> {
                                 showProgress(false)
-                                API.showAlertDialog(this@RegisterActivity.applicationContext, "Register successful!", "You have been successfully registered.\nYou may now login.")
+                                API.showAlertDialog(this@RegisterActivity, "Register successful!", "You have been successfully registered.\nYou may now login.")
 
-                                val intent = Intent(this@RegisterActivity.applicationContext, LoginActivity::class.java)
-                                this@RegisterActivity.applicationContext.startActivity(intent)
+                                val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                                this@RegisterActivity.startActivity(intent)
 
                             }
                             else -> {
                                 showProgress(false)
-                                API.showAlertDialog(this@RegisterActivity.applicationContext, "Failed to Register", "An unknown error occurred while attempting to register")
+                                API.showAlertDialog(this@RegisterActivity, "Failed to Register", "An unknown error (" + responseCode.toString() + ") occurred while attempting to register")
                             }
                         }
 
