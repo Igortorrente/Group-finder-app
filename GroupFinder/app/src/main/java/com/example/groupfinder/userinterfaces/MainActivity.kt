@@ -1,18 +1,14 @@
 package com.example.groupfinder.userinterfaces
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
-import com.example.groupfinder.Data.Prefs
-import com.example.groupfinder.Data.UserRepo
 import com.example.groupfinder.R
 import com.example.groupfinder.userinterfaces.group.GroupListFragment
 import com.example.groupfinder.userinterfaces.profile.ProfileFragment

@@ -17,7 +17,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".userinterfaces.RegisterActivity"
+                android:name=".userinterfaces.login.RegisterActivity"
                 android:label="@string/title_activity_register">
         </activity>
         <activity android:name=".userinterfaces.profile.ProfileEditActivity">
@@ -27,7 +27,7 @@
         <activity android:name=".userinterfaces.group.NewGroupActivity">
         </activity>
         <activity
-                android:name=".userinterfaces.LoginActivity"
+                android:name=".userinterfaces.login.LoginActivity"
                 android:label="@string/title_activity_login">
         </activity>
         <activity
