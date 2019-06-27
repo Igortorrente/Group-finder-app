@@ -46,7 +46,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         setContentView(R.layout.activity_group)
 
         intent.extras?.let {
-            group = intent.extras?.getParcelable("groupInfo") as UserGroups
+            group = intent.extras?.getParcelable("group-info") as UserGroups
             updateTextViews()
             // TODO: Check if user are inside/admin the group
             // Change `GroupState.mode` and float button image
@@ -170,8 +170,8 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         // Save FloatActionButton listener
         saveFAB_ActGroup.setOnClickListener {
             val replyIntent = Intent()
-            replyIntent.putExtra("replytype", 0)
-            replyIntent.putExtra("replygroup", group)
+            replyIntent.putExtra("reply-type", 0)
+            replyIntent.putExtra("reply-group-info", group)
             setResult(Activity.RESULT_OK, replyIntent)
             finish()
         }
@@ -230,7 +230,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         }else{
             val replyIntent = Intent()
             if(groupState.state == State.INSIDE){
-                replyIntent.putExtra("replytype", 1)
+                replyIntent.putExtra("reply-type", 1)
                 setResult(Activity.RESULT_OK, replyIntent)
             }else{
                 setResult(Activity.RESULT_CANCELED, replyIntent)

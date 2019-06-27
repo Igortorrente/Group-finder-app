@@ -61,7 +61,7 @@ class ProfileFragment : Fragment() {
         editProfileButton.setOnClickListener { view ->
             val intent = Intent(view.context, ProfileEditActivity::class.java)
             userData.value?.let {
-                intent.putExtra("userinfo", userData.value)
+                intent.putExtra("user-info", userData.value)
             }
             startActivityForResult(intent, profileRequestCode)
         }
@@ -72,7 +72,7 @@ class ProfileFragment : Fragment() {
         if(requestCode == profileRequestCode){
             if(resultCode == Activity.RESULT_OK){
                 data?.let { data ->
-                    var userInfo = data.extras?.getParcelable("replyuserinfo") as UserData
+                    val userInfo = data.extras?.getParcelable("reply-user-info") as UserData
                     Log.d("intent-user", userInfo.toString())
                     nameFieldTextView_FragProfile.text = userInfo.name
                     courseFieldTextView_FragProfile.text = userInfo.course

@@ -37,7 +37,7 @@ class GroupSearchRecyclerViewAdapter(
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
             val intent = Intent(view.context, GroupActivity::class.java)
-            intent.putExtra("groupInfo", item)
+            intent.putExtra("group-info", item)
             ActivityCompat.startActivityForResult(activity, intent, groupRequestCode, null)
         }
     }

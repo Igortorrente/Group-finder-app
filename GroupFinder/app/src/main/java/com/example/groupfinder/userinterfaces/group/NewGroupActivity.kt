@@ -38,7 +38,7 @@ class NewGroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
 
         addGroupFAB.setOnClickListener {
             //TODO: implement the check return and change these dummies
-            replyIntent.putExtra("replyuserinfo", UserGroups(0,
+            replyIntent.putExtra("reply-user-info", UserGroups(0,
                 subjectFieldTextEdit_ActNewGroup.text.toString(), "dummy", 0 ,0,
             0,locationTextEdit_ActNewGroup.text.toString()))
             setResult(Activity.RESULT_OK, replyIntent)

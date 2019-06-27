@@ -21,7 +21,7 @@ class ProfileEditActivity : AppCompatActivity(){
 
         val bundle: Bundle? = intent.extras
         intent.extras?.let {
-            userInfo = intent.extras?.getParcelable("userinfo") as UserData
+            userInfo = intent.extras?.getParcelable("user-info") as UserData
             nameFieldTextEdit_ActProfileEdit.setText(userInfo?.name)
             courseFieldTextEdit_ActProfileEdit.setText(userInfo?.course)
             RAFieldTextEdit_ActProfileEdit.setText(userInfo?.ra.toString())
@@ -42,7 +42,7 @@ class ProfileEditActivity : AppCompatActivity(){
                 setResult(Activity.RESULT_CANCELED, replyIntent)
             }else{
                 // TODO: Change dummy
-                replyIntent.putExtra("replyuserinfo", UserData(
+                replyIntent.putExtra("reply-user-info", UserData(
                     RAFieldTextEdit_ActProfileEdit.text.toString().toInt(),
                     nameFieldTextEdit_ActProfileEdit.text.toString(),
                     courseFieldTextEdit_ActProfileEdit.text.toString(), "dummy")
