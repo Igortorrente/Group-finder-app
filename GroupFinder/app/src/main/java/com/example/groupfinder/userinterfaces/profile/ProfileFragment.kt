@@ -25,7 +25,7 @@ class ProfileFragment : Fragment() {
     private val profileRequestCode = RequestCode.PROFILE_EDIT.number
     private lateinit var viewModel: FinderViewModel
     private lateinit var userData: LiveData<UserData>
-    private lateinit var userClass: LiveData<List<Class>>
+    //private lateinit var userClass: LiveData<List<Class>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +35,7 @@ class ProfileFragment : Fragment() {
         }!!
 
         userData = viewModel.userInfo
-        userClass = viewModel.userClass
+        //userClass = viewModel.userClass
 
         userData.observe(this, Observer {
             userData.value?.let {
@@ -46,9 +46,9 @@ class ProfileFragment : Fragment() {
             }
         })
 
-        userClass.observe(this, Observer {
+        //userClass.observe(this, Observer {
             //TODO: implement
-        })
+        //})
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -70,9 +70,6 @@ class ProfileFragment : Fragment() {
             userData.value?.let {
                 intent.putExtra("userinfo", userData.value)
             }
-            userClass.value?.let {
-                intent.putParcelableArrayListExtra("userclasses", userClass.value as ArrayList<Class>)
-            }
             startActivityForResult(intent, profileRequestCode)
         }
     }
@@ -91,6 +88,8 @@ class ProfileFragment : Fragment() {
                     nameFieldTextView_FragProfile.refreshDrawableState()
                     courseFieldTextView_FragProfile.refreshDrawableState()
                     RAFieldTextView_FragProfile.refreshDrawableState()
+
+
                     // TODO: add viewModel and user's Class
                 }
                 Toast.makeText(this.context, "Sucesso !", Toast.LENGTH_SHORT).show()

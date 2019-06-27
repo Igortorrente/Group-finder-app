@@ -1,6 +1,7 @@
 package com.example.groupfinder.userinterfaces
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.Menu
@@ -9,8 +10,10 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
+import com.example.groupfinder.Data.Prefs
 import com.example.groupfinder.R
 import com.example.groupfinder.userinterfaces.group.GroupListFragment
+import com.example.groupfinder.userinterfaces.login.LoginActivity
 import com.example.groupfinder.userinterfaces.profile.ProfileFragment
 import com.example.groupfinder.userinterfaces.search.GroupSearchFragment
 import com.example.groupfinder.viewmodels.FinderViewModel
@@ -104,14 +107,6 @@ class MainActivity : AppCompatActivity() {
         */
         return result
     }
-
-    /*override fun onCreateView(parent: View?, name: String?, context: Context?, attrs: AttributeSet?): View {
-
-        if (Prefs(context!!).userRa < 0)
-            setContentView(R.layout.activity_login)
-
-        return super.onCreateView(parent, name, context, attrs)
-    }*/
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         toolbar = menu!!

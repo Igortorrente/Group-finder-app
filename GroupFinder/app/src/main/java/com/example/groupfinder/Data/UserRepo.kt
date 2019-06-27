@@ -1,6 +1,7 @@
 package com.example.groupfinder.Data
 
 import android.app.AlertDialog
+import android.content.Context
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,7 +17,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class UserRepo(private val userDao: UserDao) : android.app.Application(){
+class UserRepo(private val userDao: UserDao, private val context: Context) : android.app.Application(){
 
     // ***************************************** //
     // TODO: Introduce Networking at all of this //
@@ -36,7 +37,7 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
     val searchGroups: LiveData<List<UserGroups>> get() = modSearchGroups
 
     // Group Queries
-    fun getAllGroups(): LiveData<List<UserGroups>>{
+    fun getAllUserGroups(): LiveData<List<UserGroups>>{
         //modUserGroups.value = emptyList()
 
         GlobalScope.launch {
@@ -80,20 +81,10 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
         return userDao.updateGroup(Group)
     }
 
-    @WorkerThread
-    fun deleteGroup(Group: UserGroups): Int {
-        return userDao.deleteGroup(Group)
-    }
-
     // Group content
     @WorkerThread
     fun getAllGroupContent(id: Int): LiveData<List<Content>>{
         return userDao.getAllGroupContent(id)
-    }
-
-    @WorkerThread
-    fun gettAllContents():  LiveData<List<Content>>{
-        return userDao.getAllContents()
     }
 
     @WorkerThread
@@ -113,56 +104,52 @@ class UserRepo(private val userDao: UserDao) : android.app.Application(){
 
     fun groupSearch(key: String){
         val groups = listOf<UserGroups>(UserGroups(0,"lolzinho diamante", "lolzinho diamante", 0,0,
-            0,0,"oi"),
+            0,"oi"),
             UserGroups(0,"lolzinho chalenger", "lolzinho chalenger", 0,0,
-                0,0,"oi"),
+                0,"oi"),
             UserGroups(0,"lolzinho prata", "lolzinho prata", 0,0,
-                0,0,"oi"),
+                0,"oi"),
             UserGroups(0,"lolzinho diamante", "lolzinho diamante", 0,0,
-                0,0,"oi")
+                0,"oi")
             )
         modSearchGroups.value = groups
 
-    }
-
-    // Class Queries
-    @WorkerThread
-    fun getAllUserClasses(): LiveData<List<Class>>{
-        return userDao.getAllUserClasses()
-    }
-
-    @WorkerThread
-    fun deleteUserClass(userClass: Class): Int {
-        return userDao.deleteUserClass(userClass)
-    }
-
-    @WorkerThread
-    fun insertUserClass(userClass: Class): Long{
-        return userDao.insertUserClass(userClass)
-    }
-
-    @WorkerThread
-    fun updateUserClass(userClass: Class): Int {
-        return userDao.updateUserClass(userClass)
     }
 
     // UserRepo Queries
     @WorkerThread
     fun getUserData(): LiveData<UserData>{
         // TODO: Replace
-        modUserInfo = MutableLiveData()
-        modUserInfo.postValue(UserData(213, "joão", "eng de ali", "123"))
+        //modUserInfo = MutableLiveData()
+
+        val userRa = Prefs(context).userRa
+
+        if (userRa > 0) {
+            GlobalScope.launch {
+
+                val userDataDef = ApiHandler.userData(userRa)
+
+                withContext(Dispatchers.Main) {
+                    val userDataResponse = userDataDef.await()
+
+                    val responseCode = userDataResponse.code()
+
+                    if (responseCode == 200) {
+                        userDataResponse.body().let {
+                            modUserInfo.postValue(it)
+                        }
+                    }
+                }
+            }
+        }
+
         return userInfo
+
     }
 
     @WorkerThread
     fun updateUserData(UserData: UserData): Int {
         return userDao.updateUserData(UserData)
-    }
-
-    @WorkerThread
-    fun insetUserData(UserData: UserData): Long{
-        return userDao.insetUserData(UserData)
     }
 
     override fun onCreate() {

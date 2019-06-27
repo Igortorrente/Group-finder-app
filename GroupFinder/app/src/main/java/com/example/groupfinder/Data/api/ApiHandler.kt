@@ -46,29 +46,41 @@ class ApiHandler {
             return userService.userDataResponse(ra)
         }
 
-        suspend fun groupRegister(groupArgument: ApiGroupArgument): Response<JsonObject> {
+        fun groupRegister(groupArgument: ApiGroupArgument): Deferred<Response<JsonObject>> {
             val response = groupService
                 .groupRegister(groupArgument)
-                .await()
 
             return response
 
         }
 
-        suspend fun groupData(id: Int): UserGroups {
-            val group = groupService
-                .groupData(id)
-                .await()
+        fun groupEnroll(enrollArgument: ApiEnrollArgument): Deferred<Response<JsonObject>> {
+            val response = groupService
+                .groupEnroll(enrollArgument)
 
-            return group
+            return response
+
         }
 
-        suspend fun groupFindBySubject(subId: Int): List<UserGroups> {
-            val searchResult = groupService
-                .groupFindBySubject(subId)
-                .await()
+        fun groupData(id: Int): Deferred<Response<UserGroups>> {
+            val response = groupService
+                .groupData(id)
 
-            return searchResult
+            return response
+        }
+
+        fun groupFindAll(): Deferred<Response<List<UserGroups>>> {
+            val response = groupService
+                .groupFindAll()
+
+            return response
+        }
+
+        fun groupFindBySubject(sub: String): Deferred<Response<List<UserGroups>>> {
+            val response = groupService
+                .groupFindBySubject(sub)
+
+            return response
         }
 
         fun setContext(con: Context) {
