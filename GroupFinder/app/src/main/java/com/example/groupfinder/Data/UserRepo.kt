@@ -6,6 +6,7 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.groupfinder.Data.api.API
+import com.example.groupfinder.Data.api.ApiGroupArgument
 import com.example.groupfinder.Data.api.ApiHandler
 import com.example.groupfinder.Data.database.UserDao
 import com.example.groupfinder.Data.entities.Class
@@ -69,10 +70,35 @@ class UserRepo(private val userDao: UserDao, private val context: Context) : and
 
     @WorkerThread
     fun insertGroup(Group: UserGroups): Long{
-        val groups = modUserGroups.value as MutableList<UserGroups>
-        groups.add(Group)
-        modUserGroups.postValue(groups)
+        GlobalScope.launch {
+            val userRa = Prefs(context).userRa
+            val groupRegisterDef = ApiHandler.groupRegister(ApiGroupArgument(userRa, Group))
+
+            withContext(Dispatchers.Main) {
+                try {
+                    val groupRegisterResponse = groupRegisterDef.await()
+                    val responseCode = groupRegisterResponse.code()
+
+                    when (responseCode) {
+                        200 -> {
+                            val groups = modUserGroups.value as MutableList<UserGroups>
+                            groups.add(Group)
+                            modUserGroups.postValue(groups)
+                        }
+                        else -> {
+                            API.showAlertDialog(context, "Erro ao criar grupo",
+                                "Um erro desonhecido($responseCode) ocorreu ao criar o grupo.")
+                        }
+                    }
+                }
+                catch (t: Throwable) {
+                    API.showAlertDialog(context, "Erro ao criar grupo", t.localizedMessage)
+                }
+            }
+        }
+
         //userDao.insertGroup(Group)
+
         return 0
     }
 

@@ -151,7 +151,7 @@ class RegisterActivity : AppCompatActivity() {
                         when(responseCode) {
                             200 -> {
                                 showProgress(false)
-                                API.showAlertDialog(this@RegisterActivity, "Register successful!", "You have been successfully registered.\nYou may now login.")
+                                API.showAlertDialog(this@RegisterActivity, "Registro Realizado com Êxito", "Você foi registrado com êxito e agora pode fazer login no GroupFinder.")
 
                                 val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
                                 this@RegisterActivity.startActivity(intent)
@@ -159,14 +159,14 @@ class RegisterActivity : AppCompatActivity() {
                             }
                             else -> {
                                 showProgress(false)
-                                API.showAlertDialog(this@RegisterActivity, "Failed to Register", "An unknown error (" + responseCode.toString() + ") occurred while attempting to register")
+                                API.showAlertDialog(this@RegisterActivity, "Erro no Registro", "Um errro desconhecido ($responseCode) ocorreu ao tentar se registrar")
                             }
                         }
 
                     }
                     catch (t: Throwable) {
                         showProgress(false)
-                        API.showAlertDialog(this@RegisterActivity, "Failed to Register", t.localizedMessage)
+                        API.showAlertDialog(this@RegisterActivity, "Erro no Registro", t.localizedMessage)
                     }
                 }
             }

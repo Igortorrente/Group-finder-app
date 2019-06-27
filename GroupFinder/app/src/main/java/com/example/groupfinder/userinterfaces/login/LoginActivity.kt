@@ -135,22 +135,22 @@ class LoginActivity : AppCompatActivity() {
                             }
                             403 -> {
                                 showProgress(false)
-                                API.showAlertDialog(this@LoginActivity, "Failed to Login", "The provided user RA and password didn't match")
+                                API.showAlertDialog(this@LoginActivity, "Erro ao Fazer Login", "Senha incorreta")
                             }
                             404 -> {
                                 showProgress(false)
-                                API.showAlertDialog(this@LoginActivity, "Failed to Login", "The provided user RA isn't registered")
+                                API.showAlertDialog(this@LoginActivity, "Erro ao Fazer Login", "O RA fornecido não está registrado")
                             }
                             else -> {
                                 showProgress(false)
-                                API.showAlertDialog(this@LoginActivity, "Failed to Login", "An unknown error occurred while attempting to register")
+                                API.showAlertDialog(this@LoginActivity, "Erro ao Fazer Login", "Um erro desconhecido ($responseCode) ocorreu ao tentar fazer login")
                             }
                         }
 
                     }
                     catch (t: Throwable) {
                         showProgress(false)
-                        API.showAlertDialog(this@LoginActivity, "Failed to Login", t.localizedMessage)
+                        API.showAlertDialog(this@LoginActivity, "Erro ao Fazer Login", t.localizedMessage)
                     }
                 }
             }

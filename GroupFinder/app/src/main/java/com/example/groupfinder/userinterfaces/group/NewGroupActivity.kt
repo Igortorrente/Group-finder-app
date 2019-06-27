@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.appcompat.app.AppCompatActivity
+import com.example.groupfinder.Data.Prefs
 import com.example.groupfinder.Data.entities.UserGroups
 import com.example.groupfinder.R
 import com.example.groupfinder.userinterfaces.dialogs.DatePickDialog
@@ -39,8 +40,8 @@ class NewGroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         addGroupFAB.setOnClickListener {
             //TODO: implement the check return and change these dummies
             replyIntent.putExtra("replyuserinfo", UserGroups(0,
-                subjectFieldTextEdit_ActNewGroup.text.toString(), "dummy", 0 ,0,
-            0,locationTextEdit_ActNewGroup.text.toString()))
+                subjectFieldTextEdit_ActNewGroup.text.toString(), descriptionFieldTextEdit_ActNewGroup.text.toString(), 0 ,0,
+            Prefs(this).userRa,locationTextEdit_ActNewGroup.text.toString()))
             setResult(Activity.RESULT_OK, replyIntent)
             finish()
         }
