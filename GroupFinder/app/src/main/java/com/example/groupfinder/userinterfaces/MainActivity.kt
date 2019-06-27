@@ -96,12 +96,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateView(name: String?, context: Context?, attrs: AttributeSet?): View? {
         val result =  super.onCreateView(name, context, attrs)
-
+        /*
         if (Prefs(context!!).userRa < 0) {
             val intent = Intent(context!!, LoginActivity::class.java)
             context!!.startActivity(intent)
         }
-
+        */
         return result
     }
 
