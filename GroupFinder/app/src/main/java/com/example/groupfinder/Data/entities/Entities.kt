@@ -22,12 +22,11 @@ data class UserData(
 ) : Parcelable
 
 // UserRepo classes table
-@Parcelize
 @Entity
 data class Class(
     @PrimaryKey @ColumnInfo(name = "class_id") val id: Int,
     val description: String
-) : Parcelable
+)
 
 @Parcelize
 @Entity(tableName = "Groups")

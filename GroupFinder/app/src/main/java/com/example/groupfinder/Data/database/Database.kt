@@ -39,19 +39,6 @@ interface UserDao{
     @Update(onConflict = OnConflictStrategy.IGNORE)
     fun updateGroupContents(content: Content): Int
 
-    // Class Queries
-    @Query("SELECT * FROM Class")
-    fun getAllUserClasses(): LiveData<List<Class>>
-
-    @Delete
-    fun deleteUserClass(userClass: Class): Int
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertUserClass(userClass: Class): Long
-
-    @Update(onConflict = OnConflictStrategy.IGNORE)
-    fun updateUserClass(userClass: Class): Int
-
     // UserData Queries
     @Query("SELECT * FROM UserData")
     fun getUserData(): LiveData<UserData>

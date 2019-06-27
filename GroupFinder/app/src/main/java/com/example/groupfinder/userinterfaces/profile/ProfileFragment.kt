@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.example.groupfinder.Data.entities.Class
 import com.example.groupfinder.Data.entities.UserData
 import com.example.groupfinder.R
 import com.example.groupfinder.userinterfaces.enums.RequestCode
@@ -25,7 +24,6 @@ class ProfileFragment : Fragment() {
     private val profileRequestCode = RequestCode.PROFILE_EDIT.number
     private lateinit var viewModel: FinderViewModel
     private lateinit var userData: LiveData<UserData>
-    //private lateinit var userClass: LiveData<List<Class>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +33,6 @@ class ProfileFragment : Fragment() {
         }!!
 
         userData = viewModel.userInfo
-        //userClass = viewModel.userClass
 
         userData.observe(this, Observer {
             userData.value?.let {
@@ -45,10 +42,6 @@ class ProfileFragment : Fragment() {
                 Log.d("intent-user", userData.value.toString())
             }
         })
-
-        //userClass.observe(this, Observer {
-            //TODO: implement
-        //})
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -88,9 +81,6 @@ class ProfileFragment : Fragment() {
                     nameFieldTextView_FragProfile.refreshDrawableState()
                     courseFieldTextView_FragProfile.refreshDrawableState()
                     RAFieldTextView_FragProfile.refreshDrawableState()
-
-
-                    // TODO: add viewModel and user's Class
                 }
                 Toast.makeText(this.context, "Sucesso !", Toast.LENGTH_SHORT).show()
             } else {

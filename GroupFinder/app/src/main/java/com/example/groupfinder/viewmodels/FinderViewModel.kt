@@ -11,14 +11,12 @@ import com.example.groupfinder.Data.entities.UserGroups
 class FinderViewModel(application: Application) : AndroidViewModel(application){
     private val repo: UserRepo = UserRepo(UserDatabase.getDatabase(application).userDataDao(), application)
     var userGroups: LiveData<List<UserGroups>>
-    //var userClass: LiveData<List<Class>>
     //var allUserContent: LiveData<List<Content>>
     var userInfo: LiveData<UserData>
     var GroupsSearched: LiveData<List<UserGroups>> = repo.searchGroups
 
     init {
         userGroups  = repo.getAllUserGroups()
-        //userClass = repo.getAllUserClasses()
         //allUserContent = repo.gettAllContents()
         userInfo = repo.getUserData()
     }

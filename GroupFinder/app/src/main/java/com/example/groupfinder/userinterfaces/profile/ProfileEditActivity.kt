@@ -3,20 +3,15 @@ package com.example.groupfinder.userinterfaces.profile
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
-import com.example.groupfinder.Data.entities.Class
 import com.example.groupfinder.Data.entities.UserData
 import com.example.groupfinder.R
 import kotlinx.android.synthetic.main.activity_profile_edit.*
-import java.util.*
 
 class ProfileEditActivity : AppCompatActivity(){
     private var userInfoHasChange: Boolean = true
-    private var userClassesHasChange: Boolean = false
-    //private var classes: List<Class>? = null
     private var userInfo: UserData? = null
     private val replyIntent = Intent()
 
@@ -30,10 +25,6 @@ class ProfileEditActivity : AppCompatActivity(){
             nameFieldTextEdit_ActProfileEdit.setText(userInfo?.name)
             courseFieldTextEdit_ActProfileEdit.setText(userInfo?.course)
             RAFieldTextEdit_ActProfileEdit.setText(userInfo?.ra.toString())
-
-            //classes = intent.extras?.getParcelableArrayList<Class>("userclasses") as List<Class>
-
-            // TODO: Implement This aClasses
         }
 
         nameFieldTextEdit_ActProfileEdit.addTextChangedListener {
@@ -56,8 +47,6 @@ class ProfileEditActivity : AppCompatActivity(){
                     nameFieldTextEdit_ActProfileEdit.text.toString(),
                     courseFieldTextEdit_ActProfileEdit.text.toString(), "dummy")
                 )
-                // TODO: rework at this
-                //replyIntent.putParcelableArrayListExtra("replyuserclasses", classes as ArrayList<out Parcelable>)
                 setResult(Activity.RESULT_OK, replyIntent)
             }
             finish()

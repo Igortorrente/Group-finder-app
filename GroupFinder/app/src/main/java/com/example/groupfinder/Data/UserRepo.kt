@@ -1,14 +1,11 @@
 package com.example.groupfinder.Data
 
-import android.app.AlertDialog
 import android.content.Context
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.groupfinder.Data.api.API
 import com.example.groupfinder.Data.api.ApiHandler
 import com.example.groupfinder.Data.database.UserDao
-import com.example.groupfinder.Data.entities.Class
 import com.example.groupfinder.Data.entities.Content
 import com.example.groupfinder.Data.entities.UserData
 import com.example.groupfinder.Data.entities.UserGroups
@@ -25,13 +22,11 @@ class UserRepo(private val userDao: UserDao, private val context: Context) : and
 
     private var modUserGroups = MutableLiveData<List<UserGroups>>()
 
-    private var modUserClasses = MutableLiveData<List<Class>>()
     private var modAllUserContents = MutableLiveData<List<Content>>()
     private var modUserInfo = MutableLiveData<UserData>()
     private var modSearchGroups = MutableLiveData<List<UserGroups>>()
 
     private val userGroups: LiveData<List<UserGroups>> get() = modUserGroups
-    private val userClass: LiveData<List<Class>> get() = modUserClasses
     private val allUserContent: LiveData<List<Content>> get() = modAllUserContents
     private val userInfo: LiveData<UserData> get() = modUserInfo
     val searchGroups: LiveData<List<UserGroups>> get() = modSearchGroups
