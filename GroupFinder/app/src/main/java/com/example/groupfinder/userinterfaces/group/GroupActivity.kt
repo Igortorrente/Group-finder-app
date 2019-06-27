@@ -21,6 +21,7 @@ import com.example.groupfinder.userinterfaces.dialogs.TimePickDialog
 import com.example.groupfinder.userinterfaces.enums.Caller
 import com.example.groupfinder.userinterfaces.enums.Mode
 import com.example.groupfinder.userinterfaces.enums.State
+import com.example.groupfinder.userinterfaces.enums.UserState
 import kotlinx.android.synthetic.main.activity_group.*
 import java.text.DateFormat
 import java.util.*
@@ -46,10 +47,32 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         setContentView(R.layout.activity_group)
 
         intent.extras?.let {
-            group = intent.extras?.getParcelable("groupInfo") as UserGroups
+            val state =  intent.extras?.get("state") as UserState
+            group = intent.extras?.getParcelable("group-info") as UserGroups
             updateTextViews()
-            // TODO: Check if user are inside/admin the group
-            // Change `GroupState.mode` and float button image
+
+            when (state) {
+                UserState.OUTSIDE -> {
+                    mode = Mode.USER
+                    groupState.state = State.OUTSIDE
+                    actionGroupButton.setImageResource(R.drawable.baseline_person_add_disabled_white_24dp)
+                }
+                UserState.INSIDE -> {
+                    mode = Mode.USER
+                    groupState.state = State.INSIDE
+                    actionGroupButton.setImageResource(R.drawable.baseline_group_add_white_24dp)
+                }
+                else -> {
+                    // Save FloatActionButton listener
+                    saveFAB_ActGroup.setOnClickListener {
+                        val replyIntent = Intent()
+                        replyIntent.putExtra("reply-type", 0)
+                        replyIntent.putExtra("reply-group-info", group)
+                        setResult(Activity.RESULT_OK, replyIntent)
+                        finish()
+                    }
+                }
+            }
         }
 
         // add back arrow to toolbar
@@ -61,8 +84,6 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         actionGroupButton.setOnClickListener {
             if(mode == Mode.ADMIN){
                 if(groupState.state == State.EDIT){
-                    if(instantChange)
-                        infoChange = instantChange
                     actionGroupButton.setImageResource(R.drawable.baseline_edit_white_24dp)
                     //Hide the add content FloatActionButton
                     addContentFAB_ActGroup.hide()
@@ -82,13 +103,21 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                         1, 2,
                         0, locationFieldTextEdit_ActGroup.text.toString()
                     )
+
+                    if(instantChange){
+                        infoChange = true
+                        saveFAB_ActGroup.show()
+                    }else if(infoChange){
+                        saveFAB_ActGroup.show()
+                    }
+
                     // Update The texts
                     updateTextViews()
                     // Update state variable
                     groupState.state = State.VIEW
                 }else{
                     // Change Main FloatActionButton icons
-                    actionGroupButton.setImageResource(R.drawable.baseline_save_white_24dp)
+                    actionGroupButton.setImageResource(R.drawable.ic_baseline_non_edit_24px)
                     // Show add content FloatActionButton
                     addContentFAB_ActGroup.show()
                     // Change textView to textEdit of static fields
@@ -96,6 +125,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                     // Enable The slide listener
                     contentTouchHelper.attachToRecyclerView(contentRecyclerView)
                     subjectFieldTextEdit_ActGroup.setText(group?.subject)
+                    descriptionFieldTextEdit_ActGroup.setText(group?.detail)
                     locationFieldTextEdit_ActGroup.setText(group?.location_description)
                     // Enable all date/time pickers listeners
                     endDayTextView_ActGroup.setOnClickListener{
@@ -115,8 +145,11 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                         dialogCaller = Caller.TIME_END
                     }
 
-                    // DoBackup of the data
+                    // Do Backup of the data
                     recyclerViewAdapter.doBackup()
+
+                    // Hide save fab
+                    saveFAB_ActGroup.hide()
 
                     // Update state variable
                     groupState.state = State.EDIT
@@ -147,6 +180,10 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
             instantChange = true
         }
 
+        descriptionFieldTextEdit_ActGroup.addTextChangedListener {
+            instantChange = true
+        }
+
         // Add content FloatActionButton listener
         addContentFAB_ActGroup.setOnClickListener {
             //Put A dummy content
@@ -155,6 +192,9 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
 
         // Hide add content FloatActionButton
         addContentFAB_ActGroup.hide()
+
+        // Hide Save hide
+        saveFAB_ActGroup.hide()
 
         // ContentRecycleView
         contentRecyclerView = findViewById(R.id.content_recycler_view)
@@ -193,21 +233,18 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                 // Restore the changes on content
                 recyclerViewAdapter.restore()
                 instantChange = false
+                if(infoChange){
+                    saveFAB_ActGroup.show()
+                }
             }else{
                 val replyIntent = Intent()
-                if(infoChange){
-                    replyIntent.putExtra("replytype", 0)
-                    replyIntent.putExtra("replygroup", group)
-                    setResult(Activity.RESULT_OK, replyIntent)
-                }else{
-                    setResult(Activity.RESULT_CANCELED, replyIntent)
-                }
+                setResult(Activity.RESULT_CANCELED, replyIntent)
                 finish()
             }
         }else{
             val replyIntent = Intent()
             if(groupState.state == State.INSIDE){
-                replyIntent.putExtra("replytype", 1)
+                replyIntent.putExtra("reply-type", 1)
                 setResult(Activity.RESULT_OK, replyIntent)
             }else{
                 setResult(Activity.RESULT_CANCELED, replyIntent)
@@ -230,7 +267,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     private fun updateTextViews(){
         subjectFieldTextView_ActGroup.text = group?.subject
         locationFieldTextView_ActGroup.text = group?.location_description
-        //descriptionFieldTextEdit_ActGroup.text = group?.
+        //descriptionFieldTextEdit_ActGroup.text = group?.detail.toString()
     }
 
     // Data Picker dialog reply callback
@@ -244,6 +281,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         }else {
             endDayTextView_ActGroup.text = DateFormat.getDateInstance()?.format(calendar.time)
         }
+        instantChange = true
     }
     // Time Picker dialog reply callback
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
@@ -254,6 +292,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         }else {
             endTimeTextView_ActGroup.text = text
         }
+        instantChange = true
     }
 
     // Class to share state between this Activity and ContentRecyclerViewAdapter

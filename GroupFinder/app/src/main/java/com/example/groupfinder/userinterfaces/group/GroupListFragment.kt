@@ -101,7 +101,7 @@ class GroupListFragment : Fragment() {
         if(requestCode == newGroupRequestCode){
             if(resultCode == Activity.RESULT_OK){
                 data?.let { returnedData ->
-                    val group = returnedData.extras?.getParcelable("replyuserinfo") as UserGroups
+                    val group = returnedData.extras?.getParcelable("reply-user-info") as UserGroups
                     Log.d("intent-user", group.toString())
                     viewModel.insertGroup(group)
                 }

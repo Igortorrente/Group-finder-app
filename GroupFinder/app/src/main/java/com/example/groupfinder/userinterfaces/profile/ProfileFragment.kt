@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.example.groupfinder.Data.entities.Class
 import com.example.groupfinder.Data.entities.UserData
 import com.example.groupfinder.R
 import com.example.groupfinder.userinterfaces.enums.RequestCode
@@ -25,7 +24,6 @@ class ProfileFragment : Fragment() {
     private val profileRequestCode = RequestCode.PROFILE_EDIT.number
     private lateinit var viewModel: FinderViewModel
     private lateinit var userData: LiveData<UserData>
-    //private lateinit var userClass: LiveData<List<Class>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +33,6 @@ class ProfileFragment : Fragment() {
         }!!
 
         userData = viewModel.userInfo
-        //userClass = viewModel.userClass
 
         userData.observe(this, Observer {
             userData.value?.let {
@@ -45,10 +42,6 @@ class ProfileFragment : Fragment() {
                 Log.d("intent-user", userData.value.toString())
             }
         })
-
-        //userClass.observe(this, Observer {
-            //TODO: implement
-        //})
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -68,7 +61,7 @@ class ProfileFragment : Fragment() {
         editProfileButton.setOnClickListener { view ->
             val intent = Intent(view.context, ProfileEditActivity::class.java)
             userData.value?.let {
-                intent.putExtra("userinfo", userData.value)
+                intent.putExtra("user-info", userData.value)
             }
             startActivityForResult(intent, profileRequestCode)
         }
@@ -79,7 +72,7 @@ class ProfileFragment : Fragment() {
         if(requestCode == profileRequestCode){
             if(resultCode == Activity.RESULT_OK){
                 data?.let { data ->
-                    var userInfo = data.extras?.getParcelable("replyuserinfo") as UserData
+                    val userInfo = data.extras?.getParcelable("reply-user-info") as UserData
                     Log.d("intent-user", userInfo.toString())
                     nameFieldTextView_FragProfile.text = userInfo.name
                     courseFieldTextView_FragProfile.text = userInfo.course
@@ -88,9 +81,6 @@ class ProfileFragment : Fragment() {
                     nameFieldTextView_FragProfile.refreshDrawableState()
                     courseFieldTextView_FragProfile.refreshDrawableState()
                     RAFieldTextView_FragProfile.refreshDrawableState()
-
-
-                    // TODO: add viewModel and user's Class
                 }
                 Toast.makeText(this.context, "Sucesso !", Toast.LENGTH_SHORT).show()
             } else {
