@@ -80,7 +80,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                     group = UserGroups(
                         0, subjectFieldTextEdit_ActGroup.text.toString(), "dummy",
                         1, 2,
-                        0, 0, locationFieldTextEdit_ActGroup.text.toString()
+                        0, locationFieldTextEdit_ActGroup.text.toString()
                     )
                     // Update The texts
                     updateTextViews()

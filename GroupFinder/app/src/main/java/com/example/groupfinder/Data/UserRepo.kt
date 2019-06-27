@@ -37,7 +37,7 @@ class UserRepo(private val userDao: UserDao, private val context: Context) : and
     val searchGroups: LiveData<List<UserGroups>> get() = modSearchGroups
 
     // Group Queries
-    fun getAllGroups(): LiveData<List<UserGroups>>{
+    fun getAllUserGroups(): LiveData<List<UserGroups>>{
         //modUserGroups.value = emptyList()
 
         GlobalScope.launch {
@@ -81,20 +81,10 @@ class UserRepo(private val userDao: UserDao, private val context: Context) : and
         return userDao.updateGroup(Group)
     }
 
-    @WorkerThread
-    fun deleteGroup(Group: UserGroups): Int {
-        return userDao.deleteGroup(Group)
-    }
-
     // Group content
     @WorkerThread
     fun getAllGroupContent(id: Int): LiveData<List<Content>>{
         return userDao.getAllGroupContent(id)
-    }
-
-    @WorkerThread
-    fun gettAllContents():  LiveData<List<Content>>{
-        return userDao.getAllContents()
     }
 
     @WorkerThread
@@ -114,37 +104,16 @@ class UserRepo(private val userDao: UserDao, private val context: Context) : and
 
     fun groupSearch(key: String){
         val groups = listOf<UserGroups>(UserGroups(0,"lolzinho diamante", "lolzinho diamante", 0,0,
-            0,0,"oi"),
+            0,"oi"),
             UserGroups(0,"lolzinho chalenger", "lolzinho chalenger", 0,0,
-                0,0,"oi"),
+                0,"oi"),
             UserGroups(0,"lolzinho prata", "lolzinho prata", 0,0,
-                0,0,"oi"),
+                0,"oi"),
             UserGroups(0,"lolzinho diamante", "lolzinho diamante", 0,0,
-                0,0,"oi")
+                0,"oi")
             )
         modSearchGroups.value = groups
 
-    }
-
-    // Class Queries
-    @WorkerThread
-    fun getAllUserClasses(): LiveData<List<Class>>{
-        return userDao.getAllUserClasses()
-    }
-
-    @WorkerThread
-    fun deleteUserClass(userClass: Class): Int {
-        return userDao.deleteUserClass(userClass)
-    }
-
-    @WorkerThread
-    fun insertUserClass(userClass: Class): Long{
-        return userDao.insertUserClass(userClass)
-    }
-
-    @WorkerThread
-    fun updateUserClass(userClass: Class): Int {
-        return userDao.updateUserClass(userClass)
     }
 
     // UserRepo Queries
@@ -181,11 +150,6 @@ class UserRepo(private val userDao: UserDao, private val context: Context) : and
     @WorkerThread
     fun updateUserData(UserData: UserData): Int {
         return userDao.updateUserData(UserData)
-    }
-
-    @WorkerThread
-    fun insetUserData(UserData: UserData): Long{
-        return userDao.insetUserData(UserData)
     }
 
     override fun onCreate() {

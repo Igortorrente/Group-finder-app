@@ -33,6 +33,7 @@ data class Class(
 @Entity(tableName = "Groups")
 data class UserGroups(
     @PrimaryKey @ColumnInfo(name = "group_id") val id: Int,
+    @SerializedName("disciplina")
     val subject: String,
     @SerializedName("detalhes")
     val detail: String,
@@ -40,11 +41,10 @@ data class UserGroups(
     val data_init: Int,
     @SerializedName("data_fim")
     val data_end: Int,
-    @SerializedName("local_id")
-    val location_id: Int,
     // TODO: Probably T need change this to put the name of creator and a image
     @SerializedName("usuario_criador")
     val user_creator: Int,
+    @SerializedName("local")
     val location_description: String
 ) : Parcelable
 

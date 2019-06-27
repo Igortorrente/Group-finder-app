@@ -13,6 +13,11 @@ class ApiGroupArgument(
     val group: UserGroups
 )
 
+class ApiEnrollArgument(
+    val ra: Int,
+    val group: Int
+)
+
 class API (serverAddress: String){
 
     companion object {
@@ -22,19 +27,19 @@ class API (serverAddress: String){
             var groups : List<UserGroups> = emptyList()
             groups = groups + UserGroups(
                 1, "FISICA III(F329)", " unicamp",
-                10, 12, 15, 100, "oi"
+                10, 12, 15, "oi"
             )
             groups = groups + UserGroups(
                 2, "Calculo III", "unicamp",
-                10, 12, 15, 100, "oi"
+                10, 12, 15, "oi"
             )
             groups = groups + UserGroups(
                 3, "Dummy", "unicamp",
-                10, 12, 15, 100, "oi"
+                10, 12, 15,  "oi"
             )
             groups = groups + UserGroups(
                 4, "Dummy2", "unicamp",
-                10, 12, 15, 100, "oi"
+                10, 12, 15, "oi"
             )
 
             return groups
@@ -44,19 +49,19 @@ class API (serverAddress: String){
             var groups : List<UserGroups> = emptyList()
             groups = groups + UserGroups(
                 1, "FISICA III(F329)", " unicamp",
-                10, 12, 15, 100, "oi"
+                10, 12, 15, "oi"
             )
             groups = groups + UserGroups(
                 2, "Calculo III", "unicamp",
-                10, 12, 15, 100, "oi"
+                10, 12, 15, "oi"
             )
             groups = groups + UserGroups(
                 3, "Dummy", "unicamp",
-                10, 12, 15, 100, "oi"
+                10, 12, 15, "oi"
             )
             groups = groups + UserGroups(
                 4, "Dummy2", "unicamp",
-                10, 12, 15, 100, "oi"
+                10, 12, 15, "oi"
             )
 
             return groups

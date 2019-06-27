@@ -17,8 +17,14 @@ interface GroupService {
     fun groupRegister(@Body groupArgument: ApiGroupArgument): Deferred<Response<JsonObject>>
 
     @GET("/groups/{id}")
-    fun groupData(@Path("id") id: Int): Deferred<UserGroups>
+    fun groupData(@Path("id") id: Int): Deferred<Response<UserGroups>>
 
-    @GET("/groups/disciplina/{id}")
-    fun groupFindBySubject(@Path("id") subId: Int): Deferred<List<UserGroups>>
+    @GET("/groups")
+    fun groupFindAll(): Deferred<Response<List<UserGroups>>>
+
+    @GET("/groups/subject/{sub}")
+    fun groupFindBySubject(@Path("sub") sub: String): Deferred<Response<List<UserGroups>>>
+
+    @POST("/groups/enroll")
+    fun groupEnroll(@Body enrollArgument: ApiEnrollArgument): Deferred<Response<JsonObject>>
 }

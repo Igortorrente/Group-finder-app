@@ -35,7 +35,7 @@ class ProfileFragment : Fragment() {
         }!!
 
         userData = viewModel.userInfo
-        userClass = viewModel.userClass
+        //userClass = viewModel.userClass
 
         userData.observe(this, Observer {
             userData.value?.let {
@@ -46,9 +46,9 @@ class ProfileFragment : Fragment() {
             }
         })
 
-        userClass.observe(this, Observer {
+        //userClass.observe(this, Observer {
             //TODO: implement
-        })
+        //})
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
