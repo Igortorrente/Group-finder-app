@@ -27,6 +27,7 @@ class UserRepo(private val userDao: UserDao, private val context: Context) : and
     private var modAllUserContents = MutableLiveData<List<Content>>()
     private var modUserInfo = MutableLiveData<UserData>()
     private var modSearchGroups = MutableLiveData<List<UserGroups>>()
+    private val appPrefs: Prefs = Prefs(context)
 
     private val userGroups: LiveData<List<UserGroups>> get() = modUserGroups
     private val allUserContent: LiveData<List<Content>> get() = modAllUserContents
@@ -67,7 +68,7 @@ class UserRepo(private val userDao: UserDao, private val context: Context) : and
     @WorkerThread
     fun insertGroup(Group: UserGroups): Long{
         GlobalScope.launch {
-            val userRa = Prefs(context).userRa
+            val userRa = getCurrentRA()
             val groupRegisterDef = ApiHandler.groupRegister(ApiGroupArgument(userRa, Group))
 
             withContext(Dispatchers.Main) {
@@ -144,7 +145,7 @@ class UserRepo(private val userDao: UserDao, private val context: Context) : and
         // TODO: Replace
         //modUserInfo = MutableLiveData()
 
-        val userRa = Prefs(context).userRa
+        val userRa = getCurrentRA()
 
         if (userRa > 0) {
             GlobalScope.launch {
@@ -169,18 +170,18 @@ class UserRepo(private val userDao: UserDao, private val context: Context) : and
 
     }
 
+    fun getCurrentRA(): Int {
+        return appPrefs.userRa
+    }
+
+    fun setCurrentRA(userRa: Int) {
+        appPrefs.userRa = userRa
+    }
+
     @WorkerThread
     fun updateUserData(UserData: UserData): Int {
         return userDao.updateUserData(UserData)
     }
 
-    override fun onCreate() {
-        prefs = Prefs(applicationContext)
-        super.onCreate()
-    }
-
-    companion object {
-        var prefs: Prefs? = null
-    }
 }
 

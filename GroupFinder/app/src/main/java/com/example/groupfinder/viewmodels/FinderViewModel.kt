@@ -3,6 +3,7 @@ package com.example.groupfinder.viewmodels
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import com.example.groupfinder.Data.Prefs
 import com.example.groupfinder.Data.UserRepo
 import com.example.groupfinder.Data.database.UserDatabase
 import com.example.groupfinder.Data.entities.UserData
@@ -19,6 +20,14 @@ class FinderViewModel(application: Application) : AndroidViewModel(application){
         userGroups  = repo.getAllUserGroups()
         //allUserContent = repo.gettAllContents()
         userInfo = repo.getUserData()
+    }
+
+    fun getCurrentRA(): Int {
+        return repo.getCurrentRA()
+    }
+
+    fun setCurrentRA(userRa: Int) {
+        repo.setCurrentRA(userRa)
     }
 
     fun insertGroup(Group: UserGroups): Long{
