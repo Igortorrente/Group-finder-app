@@ -105,7 +105,7 @@ class UserRepo(private val userDao: UserDao, private val context: Context) : and
             UserGroups(0,"lolzinho prata", "lolzinho prata", 0,0,
                 0,"oi"),
             UserGroups(0,"lolzinho diamante", "lolzinho diamante", 0,0,
-                0,"oi")
+                15,"oi")
             )
         modSearchGroups.value = groups
 

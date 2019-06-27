@@ -1,12 +1,10 @@
 package com.example.groupfinder.userinterfaces.search
 
-import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -60,9 +58,9 @@ class GroupSearchFragment : Fragment() {
                     else -> GridLayoutManager(context, columnCount)
                 }
                 listAdapter = if(groupsToDisplay.value != null) {
-                    GroupSearchRecyclerViewAdapter(groupsToDisplay.value!!, listener, activity!!)
+                    GroupSearchRecyclerViewAdapter(groupsToDisplay.value!!, listener, activity!!, viewModel)
                 } else{
-                    GroupSearchRecyclerViewAdapter(emptyList(), listener, activity!!)
+                    GroupSearchRecyclerViewAdapter(emptyList(), listener, activity!!, viewModel)
                 }
                 adapter = listAdapter
             }

@@ -21,6 +21,7 @@ import com.example.groupfinder.userinterfaces.dialogs.TimePickDialog
 import com.example.groupfinder.userinterfaces.enums.Caller
 import com.example.groupfinder.userinterfaces.enums.Mode
 import com.example.groupfinder.userinterfaces.enums.State
+import com.example.groupfinder.userinterfaces.enums.UserState
 import kotlinx.android.synthetic.main.activity_group.*
 import java.text.DateFormat
 import java.util.*
@@ -46,10 +47,32 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         setContentView(R.layout.activity_group)
 
         intent.extras?.let {
+            val state =  intent.extras?.get("state") as UserState
             group = intent.extras?.getParcelable("group-info") as UserGroups
             updateTextViews()
-            // TODO: Check if user are inside/admin the group
-            // Change `GroupState.mode` and float button image
+
+            when (state) {
+                UserState.OUTSIDE -> {
+                    mode = Mode.USER
+                    groupState.state = State.OUTSIDE
+                    actionGroupButton.setImageResource(R.drawable.baseline_person_add_disabled_white_24dp)
+                }
+                UserState.INSIDE -> {
+                    mode = Mode.USER
+                    groupState.state = State.INSIDE
+                    actionGroupButton.setImageResource(R.drawable.baseline_group_add_white_24dp)
+                }
+                else -> {
+                    // Save FloatActionButton listener
+                    saveFAB_ActGroup.setOnClickListener {
+                        val replyIntent = Intent()
+                        replyIntent.putExtra("reply-type", 0)
+                        replyIntent.putExtra("reply-group-info", group)
+                        setResult(Activity.RESULT_OK, replyIntent)
+                        finish()
+                    }
+                }
+            }
         }
 
         // add back arrow to toolbar
@@ -165,15 +188,6 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         addContentFAB_ActGroup.setOnClickListener {
             //Put A dummy content
             recyclerViewAdapter.addContent(Content(0,"",""))
-        }
-
-        // Save FloatActionButton listener
-        saveFAB_ActGroup.setOnClickListener {
-            val replyIntent = Intent()
-            replyIntent.putExtra("reply-type", 0)
-            replyIntent.putExtra("reply-group-info", group)
-            setResult(Activity.RESULT_OK, replyIntent)
-            finish()
         }
 
         // Hide add content FloatActionButton

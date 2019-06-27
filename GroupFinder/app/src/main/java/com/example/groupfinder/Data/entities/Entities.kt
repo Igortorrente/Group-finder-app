@@ -21,13 +21,6 @@ data class UserData(
     val password:String? = ""
 ) : Parcelable
 
-// UserRepo classes table
-@Entity
-data class Class(
-    @PrimaryKey @ColumnInfo(name = "class_id") val id: Int,
-    val description: String
-)
-
 @Parcelize
 @Entity(tableName = "Groups")
 data class UserGroups(
@@ -61,3 +54,9 @@ data class Content(
     var description: String,
     val url: String
 ) : Parcelable
+
+@Entity
+data class Class(
+    @PrimaryKey @ColumnInfo(name = "class_id") val id: Int,
+    val description: String
+)
