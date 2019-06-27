@@ -14,11 +14,11 @@ import kotlinx.android.parcel.Parcelize
 data class UserData(
     @PrimaryKey val ra: Int,
     @SerializedName("nome")
-    val name: String,
+    val name: String = "",
     @SerializedName("curso")
-    val course: String,
+    val course: String = "",
     @SerializedName("senha")
-    val password:String
+    val password:String? = ""
 ) : Parcelable
 
 // UserRepo classes table

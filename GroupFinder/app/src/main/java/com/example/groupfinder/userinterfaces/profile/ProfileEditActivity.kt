@@ -16,7 +16,7 @@ import java.util.*
 class ProfileEditActivity : AppCompatActivity(){
     private var userInfoHasChange: Boolean = true
     private var userClassesHasChange: Boolean = false
-    private var classes: List<Class>? = null
+    //private var classes: List<Class>? = null
     private var userInfo: UserData? = null
     private val replyIntent = Intent()
 
@@ -31,7 +31,7 @@ class ProfileEditActivity : AppCompatActivity(){
             courseFieldTextEdit_ActProfileEdit.setText(userInfo?.course)
             RAFieldTextEdit_ActProfileEdit.setText(userInfo?.ra.toString())
 
-            classes = intent.extras?.getParcelableArrayList<Class>("userclasses") as List<Class>
+            //classes = intent.extras?.getParcelableArrayList<Class>("userclasses") as List<Class>
 
             // TODO: Implement This aClasses
         }
@@ -57,7 +57,7 @@ class ProfileEditActivity : AppCompatActivity(){
                     courseFieldTextEdit_ActProfileEdit.text.toString(), "dummy")
                 )
                 // TODO: rework at this
-                replyIntent.putParcelableArrayListExtra("replyuserclasses", classes as ArrayList<out Parcelable>)
+                //replyIntent.putParcelableArrayListExtra("replyuserclasses", classes as ArrayList<out Parcelable>)
                 setResult(Activity.RESULT_OK, replyIntent)
             }
             finish()
