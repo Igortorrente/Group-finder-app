@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.fragment_groups_item.view.*
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
  * specified [OnListFragmentInteractionListener].
- * TODO: Replace the implementation with code for your data type.
  */
 class GroupSearchRecyclerViewAdapter(
     private var mValues: List<UserGroups>,

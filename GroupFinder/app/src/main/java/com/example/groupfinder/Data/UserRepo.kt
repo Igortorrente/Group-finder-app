@@ -16,10 +16,6 @@ import kotlinx.coroutines.withContext
 
 class UserRepo(private val userDao: UserDao, private val context: Context) : android.app.Application(){
 
-    // ***************************************** //
-    // TODO: Introduce Networking at all of this //
-    // ***************************************** //
-
     private var modUserGroups = MutableLiveData<List<UserGroups>>()
 
     private var modAllUserContents = MutableLiveData<List<Content>>()

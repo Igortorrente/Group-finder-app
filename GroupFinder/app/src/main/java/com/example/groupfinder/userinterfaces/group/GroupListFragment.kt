@@ -63,9 +63,10 @@ class GroupListFragment : Fragment() {
                     else -> GridLayoutManager(context, columnCount)
                 }
                 listAdapter = if(userGroups.value != null){
-                    GroupsRecyclerViewAdapter(userGroups.value!!, listener, activity!!)
+                    // TODO: change these dummies
+                    GroupsRecyclerViewAdapter(userGroups.value!!, listener, activity!!,15)
                 }else{
-                    GroupsRecyclerViewAdapter(emptyList(), listener, activity!!)
+                    GroupsRecyclerViewAdapter(emptyList(), listener, activity!!,15)
                 }
                 adapter = listAdapter
             }
@@ -124,7 +125,6 @@ class GroupListFragment : Fragment() {
      * for more information.
      */
     interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         fun onListFragmentInteraction(item: UserGroups?)
     }
 }

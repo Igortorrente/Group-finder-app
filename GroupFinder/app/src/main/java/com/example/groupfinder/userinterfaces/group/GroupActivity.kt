@@ -37,7 +37,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     private var groupState = GroupState(State.VIEW)
     private var infoChange = false
     private var instantChange = false
-    private val contents: MutableList<Content> = arrayListOf()
+    private var contents: MutableList<Content> = arrayListOf()
     private lateinit var contentRecyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: ContentRecyclerViewAdapter
     private lateinit var contentTouchHelper: ItemTouchHelper
@@ -49,6 +49,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         intent.extras?.let {
             val state =  intent.extras?.get("state") as UserState
             group = intent.extras?.getParcelable("group-info") as UserGroups
+            contents = Arrays.asList(intent.extras?.getParcelable("group-contents"))
             updateTextViews()
 
             when (state) {
@@ -68,6 +69,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                         val replyIntent = Intent()
                         replyIntent.putExtra("reply-type", 0)
                         replyIntent.putExtra("reply-group-info", group)
+                        replyIntent.putExtra("reply-group-contents", arrayListOf(contents))
                         setResult(Activity.RESULT_OK, replyIntent)
                         finish()
                     }

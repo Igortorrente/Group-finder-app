@@ -114,7 +114,6 @@ class GroupSearchFragment : Fragment() {
      * for more information.
      */
     interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         fun onListFragmentInteraction(item: UserGroups?)
     }
 }
