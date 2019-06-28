@@ -1,10 +1,11 @@
 package com.example.groupfinder.Data
 
 import android.content.Context
+import android.widget.Toast
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.groupfinder.Data.api.API
+import com.example.groupfinder.Data.api.Utils
 import com.example.groupfinder.Data.api.ApiGroupArgument
 import com.example.groupfinder.Data.api.ApiHandler
 import com.example.groupfinder.Data.database.UserDao
@@ -16,7 +17,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class UserRepo(private val userDao: UserDao, private val context: Context) : android.app.Application(){
+class UserRepo(private val userDao: UserDao, var context: Context) : android.app.Application(){
 
     // ***************************************** //
     // TODO: Introduce Networking at all of this //
@@ -24,13 +25,13 @@ class UserRepo(private val userDao: UserDao, private val context: Context) : and
 
     private var modUserGroups = MutableLiveData<List<UserGroups>>()
 
-    private var modAllUserContents = MutableLiveData<List<Content>>()
+    private var modAllContents = MutableLiveData<List<Content>>()
     private var modUserInfo = MutableLiveData<UserData>()
     private var modSearchGroups = MutableLiveData<List<UserGroups>>()
     private val appPrefs: Prefs = Prefs(context)
 
     private val userGroups: LiveData<List<UserGroups>> get() = modUserGroups
-    private val allUserContent: LiveData<List<Content>> get() = modAllUserContents
+    private val allContent: LiveData<List<Content>> get() = modAllContents
     private val userInfo: LiveData<UserData> get() = modUserInfo
     val searchGroups: LiveData<List<UserGroups>> get() = modSearchGroups
 
@@ -39,24 +40,27 @@ class UserRepo(private val userDao: UserDao, private val context: Context) : and
         //modUserGroups.value = emptyList()
 
         GlobalScope.launch {
-            val groupsListDef = ApiHandler.userGroups(177953)
+            val groupsListDef = ApiHandler.userGroups(getCurrentRA())
+            val ownedGroupsListDef = ApiHandler.userCreatedGroups(getCurrentRA())
 
             withContext(Dispatchers.Main) {
                 try {
                     val groupsListResponse = groupsListDef.await()
+                    val ownedGroupsListResponse = ownedGroupsListDef.await()
 
                     when {
-                        groupsListResponse.code() == 200 -> {
-                            groupsListResponse.body().let {
-                                modUserGroups.value = it
-                            }
+                        groupsListResponse.code() == 200 && ownedGroupsListResponse.code() == 200  -> {
+                            var groupsList = groupsListResponse.body()!! as MutableList<UserGroups>
+                            groupsList.addAll(ownedGroupsListResponse.body()!!)
+                            modUserGroups.value  = groupsList
+
                         }
                         else -> {
-                            //modUserGroups.value = emptyList()
+                            Toast.makeText(context, "Sem Resultados", Toast.LENGTH_SHORT).show()
                         }
                     }
                 } catch (t: Throwable) {
-                    //modUserGroups.value = emptyList()
+                    Toast.makeText(context, t.localizedMessage, Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -69,7 +73,8 @@ class UserRepo(private val userDao: UserDao, private val context: Context) : and
     fun insertGroup(Group: UserGroups): Long{
         GlobalScope.launch {
             val userRa = getCurrentRA()
-            val groupRegisterDef = ApiHandler.groupRegister(ApiGroupArgument(userRa, Group))
+            assert(userRa > 0 && userRa == Group.user_creator)
+            val groupRegisterDef = ApiHandler.groupRegister(userRa, Group)
 
             withContext(Dispatchers.Main) {
                 try {
@@ -80,16 +85,16 @@ class UserRepo(private val userDao: UserDao, private val context: Context) : and
                         200 -> {
                             val groups = modUserGroups.value as MutableList<UserGroups>
                             groups.add(Group)
-                            modUserGroups.postValue(groups)
+                            modUserGroups.value = groups
                         }
                         else -> {
-                            API.showAlertDialog(context, "Erro ao criar grupo",
+                            Utils.showAlertDialog(context, "Erro ao criar grupo",
                                 "Um erro desonhecido($responseCode) ocorreu ao criar o grupo.")
                         }
                     }
                 }
                 catch (t: Throwable) {
-                    API.showAlertDialog(context, "Erro ao criar grupo", t.localizedMessage)
+                    Utils.showAlertDialog(context, "Erro ao criar grupo", t.localizedMessage)
                 }
             }
         }
@@ -100,42 +105,253 @@ class UserRepo(private val userDao: UserDao, private val context: Context) : and
     }
 
     @WorkerThread
-    fun updateGroup(Group: UserGroups): Int {
-        return userDao.updateGroup(Group)
+    fun updateGroup(Group: UserGroups) {
+        GlobalScope.launch {
+            val groupUpdateDef = ApiHandler.groupUpdate(Group)
+
+            withContext(Dispatchers.Main) {
+                try {
+                    val groupUpdateResponse = groupUpdateDef.await()
+                    val responseCode = groupUpdateResponse.code()
+
+                    when (responseCode) {
+                        200 -> {
+                            val groupsList = modUserGroups as MutableList<UserGroups>
+                            val groupIndex = Utils.getGroupIndex(groupsList, Group.id)
+
+                            if (groupIndex >= 0) {
+                                groupsList[groupIndex] = Group
+                                modUserGroups.value = groupsList
+                                Toast.makeText(context, "Sucesso !", Toast.LENGTH_SHORT).show()
+                            }
+
+                        }
+                        else -> {
+                            Utils.showAlertDialog(context, "Erro ao Atualizar Dados", "Um erro desconhecido ($responseCode) ocorreu ao tentar atualizar dados")
+                        }
+                    }
+                }
+                catch (t: Throwable) {
+                    Utils.showAlertDialog(context, "Erro ao Atualizar Dados", t.localizedMessage)
+                }
+            }
+        }
+    }
+
+    @WorkerThread
+    fun enrollGroup(Group: UserGroups) {
+        GlobalScope.launch {
+            val userRa = getCurrentRA()
+            assert(userRa > 0 && userRa != Group.user_creator)
+            val groupEnrollDef = ApiHandler.groupEnroll(userRa, Group)
+
+            withContext(Dispatchers.Main) {
+                try {
+                    val groupRegisterResponse = groupEnrollDef.await()
+                    val responseCode = groupRegisterResponse.code()
+
+                    when (responseCode) {
+                        200 -> {
+                            val groups = modUserGroups.value as MutableList<UserGroups>
+                            groups.add(Group)
+                            modUserGroups.value = groups
+                        }
+                        else -> {
+                            Utils.showAlertDialog(context, "Erro ao entrar em grupo",
+                                "Um erro desonhecido($responseCode) ocorreu ao criar o grupo.")
+                        }
+                    }
+                }
+                catch (t: Throwable) {
+                    Utils.showAlertDialog(context, "Erro ao entrar em grupo", t.localizedMessage)
+                }
+            }
+        }
+    }
+
+    @WorkerThread
+    fun unenrollGroup(Group: UserGroups) {
+        GlobalScope.launch {
+            val userRa = getCurrentRA()
+            assert(userRa > 0 && userRa != Group.user_creator)
+            val groupUnenrollDef = ApiHandler.groupUnenroll(userRa, Group)
+
+            withContext(Dispatchers.Main) {
+                try {
+                    val groupRegisterResponse = groupUnenrollDef.await()
+                    val responseCode = groupRegisterResponse.code()
+
+                    when (responseCode) {
+                        200 -> {
+                            val groupsList = modUserGroups.value as MutableList<UserGroups>
+                            val groupIndex = Utils.getGroupIndex(groupsList, Group.id)
+
+                            if (groupIndex >= 0) {
+                                groupsList.removeAt(groupIndex)
+                                modUserGroups.value = groupsList
+                                Toast.makeText(context, "Sucesso !", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        else -> {
+                            Utils.showAlertDialog(context, "Erro ao sair de  grupo",
+                                "Um erro desonhecido($responseCode) ocorreu ao criar o grupo.")
+                        }
+                    }
+                }
+                catch (t: Throwable) {
+                    Utils.showAlertDialog(context, "Erro ao sair de em grupo", t.localizedMessage)
+                }
+            }
+        }
     }
 
     // Group content
+    @WorkerThread
+    fun getAllContents(): LiveData<List<Content>>{
+        //modUserGroups.value = emptyList()
+
+        GlobalScope.launch {
+            val contentsListDef = ApiHandler.contentFindAll()
+
+            withContext(Dispatchers.Main) {
+                try {
+                    val contentsListResponse = contentsListDef.await()
+                    val responseCode = contentsListResponse.code()
+
+                    when (responseCode) {
+                        200  -> {
+                            modAllContents.value = contentsListResponse.body()
+                        }
+                        else -> {
+                            Toast.makeText(context, "Sem Resultados", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (t: Throwable) {
+                    Toast.makeText(context, t.localizedMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        }
+
+        return allContent
+    }
+
     @WorkerThread
     fun getAllGroupContent(id: Int): LiveData<List<Content>>{
         return userDao.getAllGroupContent(id)
     }
 
     @WorkerThread
-    fun insertGroupContents(content: Content): Long{
-        return userDao.insertGroupContents(content)
+    fun insertGroupContents(content: Content, groupId: Int) {
+        GlobalScope.launch {
+            val contentAddDef = ApiHandler.contentRegister(content.description, content.url, groupId)
+
+            withContext(Dispatchers.Main) {
+                try {
+                    val contentAddResponse = contentAddDef.await()
+                    val responseCode = contentAddResponse.code()
+
+                    when (responseCode) {
+                        200 -> {
+                            // TODO: IMPLEMENT CONTENT ADDITION/REGISTERING SOMEHOW
+
+                        }
+                        else -> {
+                            Toast.makeText(context, "Erro: $responseCode", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                catch (t: Throwable) {
+                    Toast.makeText(context, "Erro: ${t.localizedMessage}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     @WorkerThread
-    fun deleteGroupContents(content: Content): Int {
-        return userDao.deleteGroupContents(content)
+    fun deleteGroupContents(content: Content) {
+        GlobalScope.launch {
+            val contentDelDef = ApiHandler.contentDelete(content.id)
+
+            withContext(Dispatchers.Main) {
+                try {
+                    val contentDelResponse = contentDelDef.await()
+                    val responseCode = contentDelResponse.code()
+
+                    when (responseCode) {
+                        200 -> {
+                            // TODO: IMPLEMENT CONTENT DELETION/REMOVAL SOMEHOW
+
+                        }
+                        else -> {
+                            Toast.makeText(context, "Erro: $responseCode", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                catch (t: Throwable) {
+                    Toast.makeText(context, "Erro: ${t.localizedMessage}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     @WorkerThread
-    fun updateGroupContents(content: Content): Int {
-        return userDao.updateGroupContents(content)
+    fun updateGroupContents(content: Content) {
+        GlobalScope.launch {
+            val contentUpdDef = ApiHandler.contentUpdate(content.id, content)
+
+            withContext(Dispatchers.Main) {
+                try {
+                    val contentUpdResponse = contentUpdDef.await()
+                    val responseCode = contentUpdResponse.code()
+
+                    when (responseCode) {
+                        200 -> {
+                            // TODO: IMPLEMENT CONTENT UPDATING SOMEHOW
+
+                        }
+                        else -> {
+                            Toast.makeText(context, "Erro: $responseCode", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                catch (t: Throwable) {
+                    Toast.makeText(context, "Erro: ${t.localizedMessage}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     fun groupSearch(key: String){
-        val groups = listOf<UserGroups>(UserGroups(0,"lolzinho diamante", "lolzinho diamante", 0,0,
-            0,"oi"),
-            UserGroups(0,"lolzinho chalenger", "lolzinho chalenger", 0,0,
-                0,"oi"),
-            UserGroups(0,"lolzinho prata", "lolzinho prata", 0,0,
-                0,"oi"),
-            UserGroups(0,"lolzinho diamante", "lolzinho diamante", 0,0,
-                15,"oi")
-            )
-        modSearchGroups.value = groups
+        val searchAll = key.isEmpty()
+
+        GlobalScope.launch {
+            val searchDef = if (searchAll) ApiHandler.groupFindAll() else ApiHandler.groupFindBySubject(key)
+
+            withContext(Dispatchers.Main) {
+                try {
+                    val searchResponse = searchDef.await()
+                    val responseCode = searchResponse.code()
+
+                    when (responseCode) {
+                        200 -> {
+                            modSearchGroups.value = searchResponse.body()
+                        }
+                        404 -> {
+                            modSearchGroups.value = emptyList()
+                        }
+                        else -> {
+                            modSearchGroups.value = emptyList()
+                            Toast.makeText(context, "Sem Resultados", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                catch (t: Throwable) {
+                    modSearchGroups.value = emptyList()
+                    Toast.makeText(context, "Sem Resultados", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
 
     }
 
@@ -159,7 +375,7 @@ class UserRepo(private val userDao: UserDao, private val context: Context) : and
 
                     if (responseCode == 200) {
                         userDataResponse.body().let {
-                            modUserInfo.postValue(it)
+                            modUserInfo.value = it
                         }
                     }
                 }
@@ -179,8 +395,30 @@ class UserRepo(private val userDao: UserDao, private val context: Context) : and
     }
 
     @WorkerThread
-    fun updateUserData(UserData: UserData): Int {
-        return userDao.updateUserData(UserData)
+    fun updateUserData(UserData: UserData) {
+        GlobalScope.launch {
+            val userUpdateDef = ApiHandler.userUpdate(UserData)
+
+            withContext(Dispatchers.Main) {
+                try {
+                    val userUpdateResponse = userUpdateDef.await()
+                    val responseCode = userUpdateResponse.code()
+
+                    when (responseCode) {
+                        200 -> {
+                            modUserInfo.value = UserData
+                            Toast.makeText(context, "Sucesso !", Toast.LENGTH_SHORT).show()
+                        }
+                        else -> {
+                            Utils.showAlertDialog(context, "Erro ao Atualizar Dados", "Um erro desconhecido ($responseCode) ocorreu ao tentar atualizar dados")
+                        }
+                    }
+                }
+                catch (t: Throwable) {
+                    Utils.showAlertDialog(context, "Erro ao Atualizar Dados", t.localizedMessage)
+                }
+            }
+        }
     }
 
 }

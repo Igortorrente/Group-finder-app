@@ -15,7 +15,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.groupfinder.Data.Prefs
-import com.example.groupfinder.Data.api.API
+import com.example.groupfinder.Data.api.Utils
 import com.example.groupfinder.Data.api.ApiHandler
 import com.example.groupfinder.Data.entities.UserData
 import com.example.groupfinder.R
@@ -115,7 +115,7 @@ class LoginActivity : AppCompatActivity() {
 
             GlobalScope.launch {
 
-                val newUser = UserData(userRA.toInt(), "", "", API.getSHA512hash(passwordStr))
+                val newUser = UserData(userRA.toInt(), "", "", Utils.getSHA512hash(passwordStr))
                 val userAuthResponseDef = ApiHandler.userAuth(newUser)
 
                 withContext(Dispatchers.Main) {
@@ -135,22 +135,22 @@ class LoginActivity : AppCompatActivity() {
                             }
                             403 -> {
                                 showProgress(false)
-                                API.showAlertDialog(this@LoginActivity, "Erro ao Fazer Login", "Senha incorreta")
+                                Utils.showAlertDialog(this@LoginActivity, "Erro ao Fazer Login", "Senha incorreta")
                             }
                             404 -> {
                                 showProgress(false)
-                                API.showAlertDialog(this@LoginActivity, "Erro ao Fazer Login", "O RA fornecido não está registrado")
+                                Utils.showAlertDialog(this@LoginActivity, "Erro ao Fazer Login", "O RA fornecido não está registrado")
                             }
                             else -> {
                                 showProgress(false)
-                                API.showAlertDialog(this@LoginActivity, "Erro ao Fazer Login", "Um erro desconhecido ($responseCode) ocorreu ao tentar fazer login")
+                                Utils.showAlertDialog(this@LoginActivity, "Erro ao Fazer Login", "Um erro desconhecido ($responseCode) ocorreu ao tentar fazer login")
                             }
                         }
 
                     }
                     catch (t: Throwable) {
                         showProgress(false)
-                        API.showAlertDialog(this@LoginActivity, "Erro ao Fazer Login", t.localizedMessage)
+                        Utils.showAlertDialog(this@LoginActivity, "Erro ao Fazer Login", t.localizedMessage)
                     }
                 }
             }

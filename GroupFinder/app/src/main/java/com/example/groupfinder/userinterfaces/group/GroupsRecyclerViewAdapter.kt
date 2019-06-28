@@ -1,18 +1,23 @@
 package com.example.groupfinder.userinterfaces.group
 
+import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.groupfinder.Data.entities.UserGroups
 import com.example.groupfinder.R
 import com.example.groupfinder.userinterfaces.enums.RequestCode
+import com.example.groupfinder.userinterfaces.enums.UserState
 import com.example.groupfinder.userinterfaces.group.GroupListFragment.OnListFragmentInteractionListener
+import com.example.groupfinder.viewmodels.FinderViewModel
 import kotlinx.android.synthetic.main.fragment_groups_item.view.*
 
 /**
@@ -23,7 +28,8 @@ import kotlinx.android.synthetic.main.fragment_groups_item.view.*
 class GroupsRecyclerViewAdapter(
     private var mValues: List<UserGroups>,
     private val mListener: OnListFragmentInteractionListener?,
-    private val activity: FragmentActivity
+    private val activity: FragmentActivity,
+    private val viewModel: FinderViewModel
 ) : RecyclerView.Adapter<GroupsRecyclerViewAdapter.ViewHolder>() {
 //    private val
     private val mOnClickListener: View.OnClickListener
@@ -36,8 +42,27 @@ class GroupsRecyclerViewAdapter(
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
             val intent = Intent(view.context, GroupActivity::class.java)
-            intent.putExtra("group-info", item)
+
+            var state = UserState.OUTSIDE
+            // TODO: dummy here
+            if(item.user_creator == viewModel.getCurrentRA()){
+                state = UserState.ADMIN
+            } else{
+                if(viewModel.userGroups.value != null && viewModel.userGroups.value!!.isNotEmpty()){
+                    for (i in 0..viewModel.userGroups.value!!.size){
+                        // TODO: dummy here
+                        if(viewModel.userGroups.value!![i].id == item.id){
+                            state = UserState.INSIDE
+                            break
+                        }
+                    }
+                }
+            }
+            intent.putExtra("state", state)
+
+            intent.putExtra("groupArg-info", item)
             startActivityForResult(activity , intent, groupRequestCode, null)
+
         }
     }
 

@@ -30,9 +30,9 @@ data class UserGroups(
     @SerializedName("detalhes")
     val detail: String,
     @SerializedName("data_ini")
-    val data_init: Int,
+    val data_init: String,
     @SerializedName("data_fim")
-    val data_end: Int,
+    val data_end: String,
     // TODO: Probably T need change this to put the name of creator and a image
     @SerializedName("usuario_criador")
     val user_creator: Int,
@@ -51,6 +51,7 @@ data class UserGroups(
 ))
 data class Content(
     @PrimaryKey @ColumnInfo(name = "content_id") val id: Int,
+    @SerializedName("descricao")
     var description: String,
     val url: String
 ) : Parcelable

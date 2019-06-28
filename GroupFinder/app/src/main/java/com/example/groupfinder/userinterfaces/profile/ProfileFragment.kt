@@ -13,11 +13,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.example.groupfinder.Data.api.ApiHandler
+import com.example.groupfinder.Data.api.Utils
 import com.example.groupfinder.Data.entities.UserData
 import com.example.groupfinder.R
 import com.example.groupfinder.userinterfaces.enums.RequestCode
 import com.example.groupfinder.viewmodels.FinderViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class ProfileFragment : Fragment() {
@@ -31,6 +37,8 @@ class ProfileFragment : Fragment() {
         viewModel = activity?.run {
             ViewModelProviders.of(this).get(FinderViewModel::class.java)
         }!!
+
+        viewModel.changeContext(this.context!!)
 
         userData = viewModel.userInfo
 
@@ -70,19 +78,13 @@ class ProfileFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == profileRequestCode){
-            if(resultCode == Activity.RESULT_OK){
+            if(resultCode == Activity.RESULT_OK) {
                 data?.let { data ->
                     val userInfo = data.extras?.getParcelable("reply-user-info") as UserData
                     Log.d("intent-user", userInfo.toString())
-                    nameFieldTextView_FragProfile.text = userInfo.name
-                    courseFieldTextView_FragProfile.text = userInfo.course
-                    RAFieldTextView_FragProfile.text = userInfo.ra.toString()
+                    viewModel.updateUserData(userInfo)
 
-                    nameFieldTextView_FragProfile.refreshDrawableState()
-                    courseFieldTextView_FragProfile.refreshDrawableState()
-                    RAFieldTextView_FragProfile.refreshDrawableState()
                 }
-                Toast.makeText(this.context, "Sucesso !", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this.context, "Nenhuma mudança", Toast.LENGTH_LONG).show()
             }

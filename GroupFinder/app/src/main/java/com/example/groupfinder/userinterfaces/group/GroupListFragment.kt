@@ -1,6 +1,7 @@
 package com.example.groupfinder.userinterfaces.group
 
 import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -31,6 +32,7 @@ class GroupListFragment : Fragment() {
     private var columnCount = 1
     private var listener: OnListFragmentInteractionListener? = null
     private val newGroupRequestCode = RequestCode.NEW_GROUP.number
+    private val groupRequestCode = RequestCode.GROUP.number
     private lateinit var viewModel: FinderViewModel
     private lateinit var userGroups: LiveData<List<UserGroups>>
     private lateinit var listAdapter: GroupsRecyclerViewAdapter
@@ -41,6 +43,8 @@ class GroupListFragment : Fragment() {
         viewModel = activity?.run {
             ViewModelProviders.of(this).get(FinderViewModel::class.java)
         }!!
+
+        viewModel.changeContext(this.context!!)
 
         userGroups = viewModel.userGroups
         Log.d("wtf","observers" + userGroups.hasObservers().toString())
@@ -63,9 +67,9 @@ class GroupListFragment : Fragment() {
                     else -> GridLayoutManager(context, columnCount)
                 }
                 listAdapter = if(userGroups.value != null){
-                    GroupsRecyclerViewAdapter(userGroups.value!!, listener, activity!!)
+                    GroupsRecyclerViewAdapter(userGroups.value!!, listener, activity!!, viewModel)
                 }else{
-                    GroupsRecyclerViewAdapter(emptyList(), listener, activity!!)
+                    GroupsRecyclerViewAdapter(emptyList(), listener, activity!!, viewModel)
                 }
                 adapter = listAdapter
             }
@@ -98,6 +102,7 @@ class GroupListFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        Toast.makeText(activity, "Request Code: $requestCode", Toast.LENGTH_LONG).show()
         if(requestCode == newGroupRequestCode){
             if(resultCode == Activity.RESULT_OK){
                 data?.let { returnedData ->
@@ -106,6 +111,17 @@ class GroupListFragment : Fragment() {
                     viewModel.insertGroup(group)
                 }
                 Toast.makeText(activity, "Sucesso !", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(activity, "Nenhuma mudança", Toast.LENGTH_LONG).show()
+            }
+        }
+        else if (requestCode == groupRequestCode) {
+            if(resultCode == Activity.RESULT_OK){
+                data?.let { returnedData ->
+                    val group = returnedData.extras?.getParcelable("reply-groupArg-info") as UserGroups
+                    Log.d("intent-user", group.toString())
+                    viewModel.updateGroup(group)
+                }
             } else {
                 Toast.makeText(activity, "Nenhuma mudança", Toast.LENGTH_LONG).show()
             }

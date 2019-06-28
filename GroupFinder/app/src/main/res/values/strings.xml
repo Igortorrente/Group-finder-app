@@ -31,14 +31,14 @@
     <string name="error_incorrect_password">A senha é inválida</string>
     <string name="error_field_required">Este campo é obrigatório</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
-    <!-- Strings text related to group Activity -->
+    <!-- Strings text related to groupArg Activity -->
     <string name="text_main_subject">Assunto Principal</string>
     <string name="text_location">Local</string>
     <string name="text_begin">Início</string>
     <string name="text_ends">Fim</string>
     <string name="text_descrition">Descrição</string>
     <string name="text_content">Conteúdo</string>
-    <!-- Strings hints related to group Activity -->
+    <!-- Strings hints related to groupArg Activity -->
     <string name="hint_main_subject">Ex: Física experimental III (F329)</string>
     <string name="hint_location">Ex: Casa branca</string>
     <string name="hint_begin_day">Ex: 23/06/2019</string>
@@ -46,7 +46,7 @@
     <string name="hint_ends">Ex: Qui 23 de Mar 23:59</string>
     <string name="hint_descrition">Ex: Grupo de estudo para a primeira prova</string>
     <string name="hint_content">Física (Haliday) http://bla.com</string>
-    <!-- Default group list item text-->
+    <!-- Default groupArg list item text-->
     <string name="title_activity_login">Sign in</string>
     <string name="default_item_text">Default text</string>
     <string name="text_view">\@string/default_item_text</string>

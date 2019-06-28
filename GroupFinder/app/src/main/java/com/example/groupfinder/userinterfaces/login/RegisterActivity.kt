@@ -15,7 +15,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import com.example.groupfinder.Data.Prefs
-import com.example.groupfinder.Data.api.API
+import com.example.groupfinder.Data.api.Utils
 import com.example.groupfinder.Data.api.ApiHandler
 import com.example.groupfinder.Data.entities.UserData
 
@@ -98,8 +98,8 @@ class RegisterActivity : AppCompatActivity() {
             cancel = true
         }
 
-        val testStr = API.getSHA512hash(passwordStr)
-        //API.showAlertDialog(this, passwordStr, testStr)
+        val testStr = Utils.getSHA512hash(passwordStr)
+        //Utils.showAlertDialog(this, passwordStr, testStr)
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(courseStr)) {
@@ -140,7 +140,7 @@ class RegisterActivity : AppCompatActivity() {
 
             GlobalScope.launch {
 
-                val newUser = UserData(userRA, nameStr, courseStr, API.getSHA512hash(passwordStr))
+                val newUser = UserData(userRA, nameStr, courseStr, Utils.getSHA512hash(passwordStr))
                 val userRegisterResponseDef = ApiHandler.userRegister(newUser)
 
                 withContext(Dispatchers.Main) {
@@ -151,7 +151,7 @@ class RegisterActivity : AppCompatActivity() {
                         when(responseCode) {
                             200 -> {
                                 showProgress(false)
-                                API.showAlertDialog(this@RegisterActivity, "Registro Realizado com Êxito", "Você foi registrado com êxito e agora pode fazer login no GroupFinder.")
+                                Utils.showAlertDialog(this@RegisterActivity, "Registro Realizado com Êxito", "Você foi registrado com êxito e agora pode fazer login no GroupFinder.")
 
                                 val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
                                 this@RegisterActivity.startActivity(intent)
@@ -159,14 +159,14 @@ class RegisterActivity : AppCompatActivity() {
                             }
                             else -> {
                                 showProgress(false)
-                                API.showAlertDialog(this@RegisterActivity, "Erro no Registro", "Um errro desconhecido ($responseCode) ocorreu ao tentar se registrar")
+                                Utils.showAlertDialog(this@RegisterActivity, "Erro no Registro", "Um errro desconhecido ($responseCode) ocorreu ao tentar se registrar")
                             }
                         }
 
                     }
                     catch (t: Throwable) {
                         showProgress(false)
-                        API.showAlertDialog(this@RegisterActivity, "Erro no Registro", t.localizedMessage)
+                        Utils.showAlertDialog(this@RegisterActivity, "Erro no Registro", t.localizedMessage)
                     }
                 }
             }

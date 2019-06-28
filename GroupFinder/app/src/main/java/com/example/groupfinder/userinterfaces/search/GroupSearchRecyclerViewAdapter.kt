@@ -33,6 +33,8 @@ class GroupSearchRecyclerViewAdapter(
     private val mOnClickListener: View.OnClickListener
     private val groupRequestCode = RequestCode.GROUP.number
 
+    // TODO: Make it check searched groups, instead of user groups
+
     init {
         mOnClickListener = View.OnClickListener { view ->
             val item = view.tag as UserGroups
@@ -42,10 +44,10 @@ class GroupSearchRecyclerViewAdapter(
             val intent = Intent(view.context, GroupActivity::class.java)
             var state = UserState.OUTSIDE
             // TODO: dummy here
-            if(item.user_creator == 15){
+            if(item.user_creator == viewModel.getCurrentRA()){
                 state = UserState.ADMIN
             } else{
-                if(viewModel.userGroups.value != null){
+                if(viewModel.userGroups.value != null && viewModel.userGroups.value!!.isNotEmpty()){
                     for (i in 0..viewModel.userGroups.value!!.size){
                         // TODO: dummy here
                         if(viewModel.userGroups.value!![i].id == item.id){
@@ -56,7 +58,7 @@ class GroupSearchRecyclerViewAdapter(
                 }
             }
             intent.putExtra("state", state)
-            intent.putExtra("group-info", item)
+            intent.putExtra("groupArg-info", item)
             ActivityCompat.startActivityForResult(activity, intent, groupRequestCode, null)
         }
     }

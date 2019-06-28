@@ -11,8 +11,10 @@ import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.groupfinder.Data.api.Utils
 import com.example.groupfinder.Data.entities.Content
 import com.example.groupfinder.Data.entities.UserGroups
 import com.example.groupfinder.R
@@ -22,8 +24,11 @@ import com.example.groupfinder.userinterfaces.enums.Caller
 import com.example.groupfinder.userinterfaces.enums.Mode
 import com.example.groupfinder.userinterfaces.enums.State
 import com.example.groupfinder.userinterfaces.enums.UserState
+import com.example.groupfinder.viewmodels.FinderViewModel
 import kotlinx.android.synthetic.main.activity_group.*
+import kotlinx.android.synthetic.main.activity_new_group.*
 import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -42,13 +47,26 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     private lateinit var recyclerViewAdapter: ContentRecyclerViewAdapter
     private lateinit var contentTouchHelper: ItemTouchHelper
 
+    private lateinit var viewModel: FinderViewModel
+
+    private var curInitDate: String? = null
+    private var curEndDate: String? = null
+
+    private val defDateFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group)
 
+        viewModel = this?.run {
+            ViewModelProviders.of(this).get(FinderViewModel::class.java)
+        }!!
+
+        viewModel.changeContext(this)
+
         intent.extras?.let {
             val state =  intent.extras?.get("state") as UserState
-            group = intent.extras?.getParcelable("group-info") as UserGroups
+            group = intent.extras?.getParcelable("groupArg-info") as UserGroups
             updateTextViews()
 
             when (state) {
@@ -67,7 +85,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                     saveFAB_ActGroup.setOnClickListener {
                         val replyIntent = Intent()
                         replyIntent.putExtra("reply-type", 0)
-                        replyIntent.putExtra("reply-group-info", group)
+                        replyIntent.putExtra("reply-groupArg-info", group)
                         setResult(Activity.RESULT_OK, replyIntent)
                         finish()
                     }
@@ -99,9 +117,9 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
 
                     // TODO: Change These dummies
                     group = UserGroups(
-                        0, subjectFieldTextEdit_ActGroup.text.toString(), "dummy",
-                        1, 2,
-                        0, locationFieldTextEdit_ActGroup.text.toString()
+                        0, subjectFieldTextEdit_ActGroup.text.toString(), descriptionFieldTextEdit_ActGroup.text.toString(),
+                        "$curInitDate ${initTimeTextView_ActGroup.text}", "$curEndDate ${endTimeTextView_ActGroup.text}",
+                        viewModel.getCurrentRA(), locationFieldTextEdit_ActGroup.text.toString()
                     )
 
                     if(instantChange){
@@ -127,6 +145,18 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                     subjectFieldTextEdit_ActGroup.setText(group?.subject)
                     descriptionFieldTextEdit_ActGroup.setText(group?.detail)
                     locationFieldTextEdit_ActGroup.setText(group?.location_description)
+
+                    curInitDate = group?.data_init!!.split(" ")[0]
+                    val initDate: Date = defDateFormat.parse(curInitDate)
+                    initDayTextView_ActGroup.text = DateFormat.getDateInstance()?.format(initDate)
+
+                    curEndDate = group?.data_end!!.split(" ")[0]
+                    val endDate: Date = defDateFormat.parse(curEndDate)
+                    endDayTextView_ActGroup.text = DateFormat.getDateInstance()?.format(endDate)
+
+                    initTimeTextView_ActGroup.text = group?.data_init!!.split(" ")[1]
+                    endTimeTextView_ActGroup.text = group?.data_end!!.split(" ")[1]
+
                     // Enable all date/time pickers listeners
                     endDayTextView_ActGroup.setOnClickListener{
                         datePicker.show(supportFragmentManager, "init date picker")
@@ -267,7 +297,18 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     private fun updateTextViews(){
         subjectFieldTextView_ActGroup.text = group?.subject
         locationFieldTextView_ActGroup.text = group?.location_description
-        //descriptionFieldTextEdit_ActGroup.text = group?.detail.toString()
+        descriptionFieldTextView_ActGroup.text = group?.detail
+
+
+        val initDate: Date = defDateFormat.parse(group?.data_init!!.split(" ")[0])
+        initDayTextView_ActGroup.text = DateFormat.getDateInstance()?.format(initDate)
+        //Utils.showAlertDialog(this, group?.data_init!!.split(" ")[0], initDate.toString())
+
+        val endDate: Date = defDateFormat.parse(group?.data_end!!.split(" ")[0])
+        endDayTextView_ActGroup.text = DateFormat.getDateInstance()?.format(endDate)
+
+        initTimeTextView_ActGroup.text = group?.data_init!!.split(" ")[1]
+        endTimeTextView_ActGroup.text = group?.data_end!!.split(" ")[1]
     }
 
     // Data Picker dialog reply callback
@@ -277,8 +318,10 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         calendar.set(Calendar.MONTH, month)
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
         if(dialogCaller == Caller.DATE_INIT){
+            curInitDate = defDateFormat.format(calendar.time)
             initDayTextView_ActGroup.text = DateFormat.getDateInstance()?.format(calendar.time)
         }else {
+            curEndDate = defDateFormat.format(calendar.time)
             endDayTextView_ActGroup.text = DateFormat.getDateInstance()?.format(calendar.time)
         }
         instantChange = true

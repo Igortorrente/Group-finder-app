@@ -17,6 +17,7 @@ import com.example.groupfinder.userinterfaces.dialogs.TimePickDialog
 import com.example.groupfinder.userinterfaces.enums.Caller
 import kotlinx.android.synthetic.main.activity_new_group.*
 import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 class NewGroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
@@ -25,6 +26,11 @@ class NewGroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     private val datePicker = DatePickDialog()
     private val timePicker = TimePickDialog()
     private val replyIntent = Intent()
+
+    private var curInitDate: String? = null
+    private var curEndDate: String? = null
+
+    private val defDateFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,9 +45,9 @@ class NewGroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
 
         addGroupFAB.setOnClickListener {
             //TODO: implement the check return and change these dummies
-            
+
             replyIntent.putExtra("reply-user-info", UserGroups(0,
-                subjectFieldTextEdit_ActNewGroup.text.toString(), descriptionFieldTextEdit_ActNewGroup.text.toString(), 0, 0,
+                subjectFieldTextEdit_ActNewGroup.text.toString(), descriptionFieldTextEdit_ActNewGroup.text.toString(), "$curInitDate ${initTimeTextView_ActNewGroup.text}", "$curEndDate ${endTimeTextView_ActNewGroup.text}",
             Prefs(this).userRa,locationTextEdit_ActNewGroup.text.toString()))
 
             setResult(Activity.RESULT_OK, replyIntent)
@@ -75,8 +81,10 @@ class NewGroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         calendar.set(Calendar.MONTH, month)
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
         if(dialogCaller == Caller.DATE_INIT){
+            curInitDate = defDateFormat.format(calendar.time)
             initDayTextView_ActNewGroup.text = DateFormat.getDateInstance()?.format(calendar.time)
         }else {
+            curEndDate = defDateFormat.format(calendar.time)
             endDayTextView_ActNewGroup.text = DateFormat.getDateInstance()?.format(calendar.time)
         }
     }
