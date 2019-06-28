@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView
+
+<androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/groups_recycler_view"
-        android:name="com.example.groupfinder.myGroupsFragment"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        app:layoutManager="LinearLayoutManager"
-        tools:context=".groupsFragment"
-        tools:listitem="@layout/fragment_groups_item"/>
+        android:paddingBottom="60dp">
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:src="@drawable/baseline_add_white_48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:clickable="true" android:id="@+id/addNewGoupFAB-FragGroups"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp"
+            android:focusable="true"/>
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/groups_recycler_view"
+            android:name="com.example.groupfinder.myGroupsFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="LinearLayoutManager"
+            tools:context=".userinterfaces.group.GroupListFragment"
+            tools:listitem="@layout/fragment_groups_item"
+            android:clipToPadding="false" tools:itemCount="6"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

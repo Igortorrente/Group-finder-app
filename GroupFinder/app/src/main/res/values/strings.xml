@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">GroupFinder</string>
-    <string name="title_groups">Grupos</string>
-    <string name="title_recomendations">Recomendações</string>
+    <string name="title_groups">Meus Grupos</string>
+    <string name="title_recomendations">Sugestões</string>
     <string name="title_Profile">Perfil</string>
     <!-- Strings text related to profile -->
     <string name="text_view_name">Nome</string>
@@ -10,40 +10,58 @@
     <string name="text_view_ra">RA</string>
     <string name="text_view_email">Email</string>
     <string name="text_view_interest">Interesse</string>
-    <!-- Strings hists related to profile -->
+    <!-- Strings hints related to profile -->
     <string name="hint_profile_name_edit_text">Seu nome</string>
     <string name="hint_course_edit_text">Ex: Engenharia de alimentos</string>
-    <string name="hint_ra_edit_text">999999</string>
+    <string name="hint_ra_edit_text">Ex: 999999</string>
     <string name="hint_email_edit_text">Unicamp email: ra999999@dac.unicamp.br</string>
-    <string name="hint_phone_edit_text">(11) 999999999</string>
-    <string name="hint_interest_edit_text">F328</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="hint_phone_edit_text">Ex: (11) 999999999</string>
+    <string name="hint_interest_edit_text">Ex: F328</string>
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
+    <string name="prompt_name">Nome Completo</string>
+    <string name="prompt_email">E-mail</string>
+    <string name="prompt_course">Curso</string>
+    <string name="prompt_user_ra">RA</string>
+    <string name="prompt_password">Senha</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
+    <string name="action_register">Registrar</string>
+    <string name="error_invalid_email">O endereço é inválido</string>
+    <string name="error_invalid_password">A senha é muito curta</string>
+    <string name="error_incorrect_password">A senha é inválida</string>
+    <string name="error_field_required">Este campo é obrigatório</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
-    <!-- Default group list item text-->
+    <!-- Strings text related to groupArg Activity -->
+    <string name="text_main_subject">Assunto Principal</string>
+    <string name="text_location">Local</string>
+    <string name="text_begin">Início</string>
+    <string name="text_ends">Fim</string>
+    <string name="text_descrition">Descrição</string>
+    <string name="text_content">Conteúdo</string>
+    <!-- Strings hints related to groupArg Activity -->
+    <string name="hint_main_subject">Ex: Física experimental III (F329)</string>
+    <string name="hint_location">Ex: Casa branca</string>
+    <string name="hint_begin_day">Ex: 23/06/2019</string>
+    <string name="hint_begin_hour">Ex: 14:00</string>
+    <string name="hint_ends">Ex: Qui 23 de Mar 23:59</string>
+    <string name="hint_descrition">Ex: Grupo de estudo para a primeira prova</string>
+    <string name="hint_content">Física (Haliday) http://bla.com</string>
+    <!-- Default groupArg list item text-->
+    <string name="title_activity_login">Sign in</string>
     <string name="default_item_text">Default text</string>
     <string name="text_view">\@string/default_item_text</string>
     <string name="mainInfoGroupTextView">\@string/default_item_text</string>
     <string name="groupImage">\@string/default_item_text</string>
-    <string-array name="test_groups_names">
-        <item>física III(F328)</item>
-        <item>Calculo II(MA211)</item>
-        <item>Álgebra Linear(MA327)</item>
-    </string-array>
-    <string-array name="test_groups_Description">
-        <item>Blablablabla</item>
-        <item>Blebleble</item>
-        <item>Blobloblo</item>
-    </string-array>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">Search</string>
+    <string name="leavegroup">LeaveGroup</string>
+    <string name="joingroup">JoinGroup</string>
+    <string name="addgroup">addGroup</string>
+    <string name="group_add">group_add</string>
+    <string name="conte_do">Conteúdo</string>
+    <string name="content_hint">Ex: Visit http://italove.today</string>
+    <string name="title_activity_register">Register</string>
 </resources>
