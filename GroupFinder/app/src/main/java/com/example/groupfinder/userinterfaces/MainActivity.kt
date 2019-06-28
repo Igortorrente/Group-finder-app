@@ -1,17 +1,22 @@
 package com.example.groupfinder.userinterfaces
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
 import com.example.groupfinder.Data.Prefs
+import com.example.groupfinder.Data.entities.UserGroups
 import com.example.groupfinder.R
+import com.example.groupfinder.userinterfaces.enums.RequestCode
 import com.example.groupfinder.userinterfaces.group.GroupListFragment
 import com.example.groupfinder.userinterfaces.login.LoginActivity
 import com.example.groupfinder.userinterfaces.profile.ProfileFragment
@@ -119,5 +124,23 @@ class MainActivity : AppCompatActivity() {
 
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val groupRequestCode = RequestCode.GROUP.number
+
+        Toast.makeText(this, "Request Code: $requestCode", Toast.LENGTH_LONG).show()
+        if (requestCode == groupRequestCode) {
+            if(resultCode == Activity.RESULT_OK){
+                data?.let { returnedData ->
+                    val group = returnedData.extras?.getParcelable("reply-groupArg-info") as UserGroups
+                    Log.d("intent-user", group.toString())
+                    viewModel.updateGroup(group)
+                }
+            } else {
+                Toast.makeText(this, "Nenhuma mudança", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 }

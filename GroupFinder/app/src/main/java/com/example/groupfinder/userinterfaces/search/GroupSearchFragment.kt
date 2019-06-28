@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -46,7 +47,8 @@ class GroupSearchFragment : Fragment() {
             listAdapter.searchAllert(newList)
         })
 
-        viewModel.searchGroups("dummy")
+        viewModel.searchGroups("")
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -69,7 +71,29 @@ class GroupSearchFragment : Fragment() {
                 adapter = listAdapter
             }
         }
+
         return view
+    }
+
+    override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        searchView_FragSearchGroup.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText == null || newText!!.isEmpty())
+                    viewModel.searchGroups("")
+
+                return true
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query.let {
+                    viewModel.searchGroups(it!!)
+                }
+
+                return true
+            }
+        })
     }
 
     override fun onAttach(context: Context) {

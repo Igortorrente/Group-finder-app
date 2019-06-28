@@ -46,6 +46,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     private lateinit var contentRecyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: ContentRecyclerViewAdapter
     private lateinit var contentTouchHelper: ItemTouchHelper
+    private var groupID: Int = -1
 
     private lateinit var viewModel: FinderViewModel
 
@@ -67,6 +68,9 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         intent.extras?.let {
             val state =  intent.extras?.get("state") as UserState
             group = intent.extras?.getParcelable("groupArg-info") as UserGroups
+
+            groupID = group?.id!!
+
             updateTextViews()
 
             when (state) {
@@ -83,6 +87,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                 else -> {
                     // Save FloatActionButton listener
                     saveFAB_ActGroup.setOnClickListener {
+                        //Utils.showAlertDialog(this, "Save Dialog", "Save Dialog Opened")
                         val replyIntent = Intent()
                         replyIntent.putExtra("reply-type", 0)
                         replyIntent.putExtra("reply-groupArg-info", group)
@@ -117,7 +122,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
 
                     // TODO: Change These dummies
                     group = UserGroups(
-                        0, subjectFieldTextEdit_ActGroup.text.toString(), descriptionFieldTextEdit_ActGroup.text.toString(),
+                        groupID, subjectFieldTextEdit_ActGroup.text.toString(), descriptionFieldTextEdit_ActGroup.text.toString(),
                         "$curInitDate ${initTimeTextView_ActGroup.text}", "$curEndDate ${endTimeTextView_ActGroup.text}",
                         viewModel.getCurrentRA(), locationFieldTextEdit_ActGroup.text.toString()
                     )
