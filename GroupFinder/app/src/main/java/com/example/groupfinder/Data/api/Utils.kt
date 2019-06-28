@@ -32,6 +32,11 @@ data class UserDataArg(
     val course: String = ""
 )
 
+data class UserUpdArg(
+    val ra: Int,
+    val user: UserDataArg
+)
+
 data class ContentArg(
     @SerializedName("descicao")
     var description: String,
@@ -45,8 +50,13 @@ data class ContentGroupArg(
     var group: Int
 )
 
+data class ContentListArg(
+    var conteudos: List<Content>
+)
+
 class ApiGroupArgument(
     val ra: Int,
+    @SerializedName("group")
     val groupArg: UserGroupArg
 )
 
@@ -118,6 +128,8 @@ class Utils (serverAddress: String){
 
             return -1
         }
+
+        fun blank () { }
     }
 
 

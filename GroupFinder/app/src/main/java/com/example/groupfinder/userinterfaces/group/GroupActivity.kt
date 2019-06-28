@@ -77,12 +77,12 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                 UserState.OUTSIDE -> {
                     mode = Mode.USER
                     groupState.state = State.OUTSIDE
-                    actionGroupButton.setImageResource(R.drawable.baseline_person_add_disabled_white_24dp)
+                    actionGroupButton.setImageResource(R.drawable.baseline_group_add_white_24dp)
                 }
                 UserState.INSIDE -> {
                     mode = Mode.USER
                     groupState.state = State.INSIDE
-                    actionGroupButton.setImageResource(R.drawable.baseline_group_add_white_24dp)
+                    actionGroupButton.setImageResource(R.drawable.baseline_person_add_disabled_white_24dp)
                 }
                 else -> {
                     // Save FloatActionButton listener
@@ -193,13 +193,16 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                 recyclerViewAdapter.reload()
             }else {
                 if(groupState.state == State.INSIDE){
+                    viewModel.unenrollGroup(group!!)
                     // Change de FloatActionButton icon
-                    actionGroupButton.setImageResource(R.drawable.baseline_person_add_disabled_white_24dp)
+                    actionGroupButton.setImageResource(R.drawable.baseline_group_add_white_24dp)
+
                     // Update State
                     groupState.state = State.OUTSIDE
                 }else{
+                    viewModel.enrollGroup(group!!)
                     // Change de FloatActionButton icon
-                    actionGroupButton.setImageResource(R.drawable.baseline_group_add_white_24dp)
+                    actionGroupButton.setImageResource(R.drawable.baseline_person_add_disabled_white_24dp)
                     // Update State
                     groupState.state = State.INSIDE
                 }
@@ -280,7 +283,7 @@ class GroupActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
             val replyIntent = Intent()
             if(groupState.state == State.INSIDE){
                 replyIntent.putExtra("reply-type", 1)
-                setResult(Activity.RESULT_OK, replyIntent)
+                setResult((-1)*Activity.RESULT_OK, replyIntent)
             }else{
                 setResult(Activity.RESULT_CANCELED, replyIntent)
             }

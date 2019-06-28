@@ -20,7 +20,7 @@ interface UserService {
     fun userRegister(@Body user: UserData): Deferred<Response<JsonObject>>
 
     @PUT("user/update")
-    fun userUpdate(@Body user: UserDataArg): Deferred<Response<JsonObject>>
+    fun userUpdate(@Body user: UserUpdArg): Deferred<Response<JsonObject>>
 
     @GET("user/{ra}")
     fun userData(@Path("ra") ra: Int): Deferred<Response<UserData>>

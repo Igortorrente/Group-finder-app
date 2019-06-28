@@ -16,6 +16,9 @@ interface ContentService {
     @GET("/conteudo/all")
     fun contentFindAll(): Deferred<Response<List<Content>>>
 
+    @GET("/conteudo/group/{id}")
+    fun contentFindAllByGroup(@Path("id") id: Int): Deferred<Response<ContentListArg>>
+
     @DELETE("/conteudo/remove/{id}")
     fun contentDelete(@Path("id") id: Int): Deferred<Response<JsonObject>>
 

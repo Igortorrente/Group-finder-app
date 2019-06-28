@@ -54,7 +54,7 @@ class ApiHandler {
         }
 
         fun userUpdate(user: UserData): Deferred<Response<JsonObject>> {
-            return userService.userUpdate(Utils.toUserArg(user))
+            return userService.userUpdate(UserUpdArg(user.ra, Utils.toUserArg(user)))
         }
 
         // GROUP CALLS
@@ -123,6 +123,10 @@ class ApiHandler {
 
         fun contentFindAll(): Deferred<Response<List<Content>>> {
             return contentService.contentFindAll()
+        }
+
+        fun contentFindAllByGroup(id: Int): Deferred<Response<ContentListArg>> {
+            return contentService.contentFindAllByGroup(id)
         }
 
         fun contentDelete(id: Int): Deferred<Response<JsonObject>> {

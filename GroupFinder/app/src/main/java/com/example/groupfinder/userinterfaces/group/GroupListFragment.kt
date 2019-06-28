@@ -102,7 +102,7 @@ class GroupListFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Toast.makeText(activity, "Request Code: $requestCode", Toast.LENGTH_LONG).show()
+        //Toast.makeText(activity, "Request Code: $requestCode", Toast.LENGTH_LONG).show()
         if(requestCode == newGroupRequestCode){
             if(resultCode == Activity.RESULT_OK){
                 data?.let { returnedData ->
