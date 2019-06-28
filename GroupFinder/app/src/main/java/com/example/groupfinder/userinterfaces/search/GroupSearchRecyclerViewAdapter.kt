@@ -40,14 +40,16 @@ class GroupSearchRecyclerViewAdapter(
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
             val intent = Intent(view.context, GroupActivity::class.java)
+
+            // Check user status on group
             var state = UserState.OUTSIDE
-            // TODO: dummy here
+            // TODO: dummy here: change to
+            // item.user_creator == viewModel.userInfo.value?.ra
             if(item.user_creator == 15){
                 state = UserState.ADMIN
             } else{
                 if(viewModel.userGroups.value != null){
                     for (i in 0..viewModel.userGroups.value!!.size){
-                        // TODO: dummy here
                         if(viewModel.userGroups.value!![i].id == item.id){
                             state = UserState.INSIDE
                             break

@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
+import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.groupfinder.Data.entities.UserGroups
 import com.example.groupfinder.R
 import com.example.groupfinder.viewmodels.FinderViewModel
+import kotlinx.android.synthetic.main.fragment_group_search_list.*
 
 
 /**
@@ -41,9 +44,7 @@ class GroupSearchFragment : Fragment() {
         groupsToDisplay.observe(this, Observer { newList ->
             listAdapter.searchAllert(newList)
         })
-
-        viewModel.searchGroups("dummy")
-    }
+}
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                                 savedInstanceState: Bundle?): View? {
@@ -66,6 +67,25 @@ class GroupSearchFragment : Fragment() {
             }
         }
         return view
+    }
+
+
+    override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        // Implements the search listener
+        searchView_FragSearchGroup.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextSubmit(query: String): Boolean {
+                viewModel.searchGroups(query)
+                return false
+            }
+
+        })
     }
 
     override fun onAttach(context: Context) {
