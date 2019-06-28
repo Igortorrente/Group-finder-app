@@ -73,16 +73,13 @@ class ProfileFragment : Fragment() {
             if(resultCode == Activity.RESULT_OK){
                 data?.let { data ->
                     val userInfo = data.extras?.getParcelable("reply-user-info") as UserData
-                    Log.d("intent-user", userInfo.toString())
-                    nameFieldTextView_FragProfile.text = userInfo.name
-                    courseFieldTextView_FragProfile.text = userInfo.course
-                    RAFieldTextView_FragProfile.text = userInfo.ra.toString()
-
-                    nameFieldTextView_FragProfile.refreshDrawableState()
-                    courseFieldTextView_FragProfile.refreshDrawableState()
-                    RAFieldTextView_FragProfile.refreshDrawableState()
+                    if(viewModel.updateUserData(userInfo) == 0){
+                        Log.d("intent-user", userInfo.toString())
+                        Toast.makeText(this.context, "Sucesso !", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(this.context, "Falha em comunicar com o servidor", Toast.LENGTH_LONG).show()
+                    }
                 }
-                Toast.makeText(this.context, "Sucesso !", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this.context, "Nenhuma mudança", Toast.LENGTH_LONG).show()
             }
