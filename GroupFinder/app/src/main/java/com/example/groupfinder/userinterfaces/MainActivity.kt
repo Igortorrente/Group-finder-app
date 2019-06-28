@@ -104,12 +104,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateView(name: String?, context: Context?, attrs: AttributeSet?): View? {
         val result =  super.onCreateView(name, context, attrs)
-        /*
+
         if (Prefs(context!!).userRa < 0) {
             val intent = Intent(context!!, LoginActivity::class.java)
             context!!.startActivity(intent)
         }
-        */
+
         return result
     }
 
@@ -130,15 +130,17 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         val groupRequestCode = RequestCode.GROUP.number
 
-        Toast.makeText(this, "Request Code: $requestCode", Toast.LENGTH_LONG).show()
+        //Toast.makeText(this, "Request Code: $requestCode", Toast.LENGTH_LONG).show()
         if (requestCode == groupRequestCode) {
+
+
             if(resultCode == Activity.RESULT_OK){
                 data?.let { returnedData ->
                     val group = returnedData.extras?.getParcelable("reply-groupArg-info") as UserGroups
                     Log.d("intent-user", group.toString())
                     viewModel.updateGroup(group)
                 }
-            } else {
+            } else if (resultCode == Activity.RESULT_CANCELED){
                 Toast.makeText(this, "Nenhuma mudança", Toast.LENGTH_LONG).show()
             }
         }

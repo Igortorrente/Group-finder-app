@@ -15,14 +15,14 @@ class FinderViewModel(application: Application) : AndroidViewModel(application){
     var context: Context = application
     private val repo: UserRepo = UserRepo(UserDatabase.getDatabase(application).userDataDao(), context)
     var userGroups: LiveData<List<UserGroups>>
-    var allContent: LiveData<List<Content>>
+    //var allContent: LiveData<List<Content>>
     var userInfo: LiveData<UserData>
     var GroupsSearched: LiveData<List<UserGroups>> = repo.searchGroups
 
 
     init {
         userGroups  = repo.getAllUserGroups()
-        allContent = repo.getAllContents()
+        //allContent = repo.getAllContents()
         userInfo = repo.getUserData()
     }
 
@@ -45,15 +45,15 @@ class FinderViewModel(application: Application) : AndroidViewModel(application){
     }
 
     fun updateGroup(Group: UserGroups) {
-        repo.updateGroup(Group)
+        userGroups  = repo.updateGroup(Group)
     }
 
     fun enrollGroup(Group: UserGroups) {
-        return repo.enrollGroup(Group)
+        userGroups = repo.enrollGroup(Group)
     }
 
     fun unenrollGroup(Group: UserGroups) {
-        return repo.unenrollGroup(Group)
+        userGroups = repo.unenrollGroup(Group)
     }
 
     fun searchGroups(key: String){

@@ -48,7 +48,7 @@ class GroupSearchRecyclerViewAdapter(
                 state = UserState.ADMIN
             } else{
                 if(viewModel.userGroups.value != null && viewModel.userGroups.value!!.isNotEmpty()){
-                    for (i in 0..viewModel.userGroups.value!!.size){
+                    for (i in viewModel.userGroups.value!!.indices){
                         // TODO: dummy here
                         if(viewModel.userGroups.value!![i].id == item.id){
                             state = UserState.INSIDE

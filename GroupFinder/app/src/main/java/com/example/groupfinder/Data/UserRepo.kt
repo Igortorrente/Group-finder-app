@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.groupfinder.Data.api.Utils
 import com.example.groupfinder.Data.api.ApiGroupArgument
 import com.example.groupfinder.Data.api.ApiHandler
+import com.example.groupfinder.Data.api.ContentListArg
 import com.example.groupfinder.Data.database.UserDao
 import com.example.groupfinder.Data.entities.Content
 import com.example.groupfinder.Data.entities.UserData
@@ -16,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 
 class UserRepo(private val userDao: UserDao, var context: Context) : android.app.Application(){
 
@@ -25,13 +27,20 @@ class UserRepo(private val userDao: UserDao, var context: Context) : android.app
 
     private var modUserGroups = MutableLiveData<List<UserGroups>>()
 
-    private var modAllContents = MutableLiveData<List<Content>>()
+
     private var modUserInfo = MutableLiveData<UserData>()
     private var modSearchGroups = MutableLiveData<List<UserGroups>>()
+
+    private var modGroupContents = MutableLiveData<TreeMap<Int, List<Content>>>()
+    private var modAllContents = MutableLiveData<TreeMap<Content, Int>>()
+
     private val appPrefs: Prefs = Prefs(context)
 
+    private val groupContents: LiveData<TreeMap<Int, List<Content>>> get() = modGroupContents
+    private val allContents: LiveData<TreeMap<Content, Int>> get() = modAllContents
+
     private val userGroups: LiveData<List<UserGroups>> get() = modUserGroups
-    private val allContent: LiveData<List<Content>> get() = modAllContents
+    private val allContent: LiveData<TreeMap<Content, Int>> get() = modAllContents
     private val userInfo: LiveData<UserData> get() = modUserInfo
     val searchGroups: LiveData<List<UserGroups>> get() = modSearchGroups
 
@@ -56,7 +65,7 @@ class UserRepo(private val userDao: UserDao, var context: Context) : android.app
 
                         }
                         else -> {
-                            Toast.makeText(context, "Sem Resultados", Toast.LENGTH_SHORT).show()
+                            Utils.blank()
                         }
                     }
                 } catch (t: Throwable) {
@@ -105,7 +114,7 @@ class UserRepo(private val userDao: UserDao, var context: Context) : android.app
     }
 
     @WorkerThread
-    fun updateGroup(Group: UserGroups) {
+    fun updateGroup(Group: UserGroups): LiveData<List<UserGroups>> {
         GlobalScope.launch {
             val groupUpdateDef = ApiHandler.groupUpdate(Group)
 
@@ -116,7 +125,7 @@ class UserRepo(private val userDao: UserDao, var context: Context) : android.app
 
                     when (responseCode) {
                         200 -> {
-                            val groupsList = modUserGroups as MutableList<UserGroups>
+                            val groupsList = modUserGroups.value as MutableList<UserGroups>
                             val groupIndex = Utils.getGroupIndex(groupsList, Group.id)
 
                             if (groupIndex >= 0) {
@@ -136,10 +145,12 @@ class UserRepo(private val userDao: UserDao, var context: Context) : android.app
                 }
             }
         }
+
+        return userGroups
     }
 
     @WorkerThread
-    fun enrollGroup(Group: UserGroups) {
+    fun enrollGroup(Group: UserGroups): LiveData<List<UserGroups>> {
         GlobalScope.launch {
             val userRa = getCurrentRA()
             assert(userRa > 0 && userRa != Group.user_creator)
@@ -167,10 +178,12 @@ class UserRepo(private val userDao: UserDao, var context: Context) : android.app
                 }
             }
         }
+
+        return userGroups
     }
 
     @WorkerThread
-    fun unenrollGroup(Group: UserGroups) {
+    fun unenrollGroup(Group: UserGroups): LiveData<List<UserGroups>> {
         GlobalScope.launch {
             val userRa = getCurrentRA()
             assert(userRa > 0 && userRa != Group.user_creator)
@@ -203,42 +216,39 @@ class UserRepo(private val userDao: UserDao, var context: Context) : android.app
                 }
             }
         }
+
+        return userGroups
     }
 
     // Group content
-    @WorkerThread
-    fun getAllContents(): LiveData<List<Content>>{
-        //modUserGroups.value = emptyList()
 
+    @WorkerThread
+    fun contentFindAllByGroup(id: Int) {
         GlobalScope.launch {
-            val contentsListDef = ApiHandler.contentFindAll()
+            val contentAddDef = ApiHandler.contentFindAllByGroup(id)
 
             withContext(Dispatchers.Main) {
                 try {
-                    val contentsListResponse = contentsListDef.await()
-                    val responseCode = contentsListResponse.code()
+                    val contentListResponse = contentAddDef.await()
+                    val responseCode = contentListResponse.code()
 
                     when (responseCode) {
-                        200  -> {
-                            modAllContents.value = contentsListResponse.body()
+                        200 -> {
+                            val contentGroupMap = modGroupContents.value
+
+                            contentGroupMap!![id] = contentListResponse.body()!!.conteudos
+
                         }
                         else -> {
-                            Toast.makeText(context, "Sem Resultados", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Erro: $responseCode", Toast.LENGTH_SHORT).show()
                         }
                     }
-                } catch (t: Throwable) {
-                    Toast.makeText(context, t.localizedMessage, Toast.LENGTH_SHORT).show()
+                }
+                catch (t: Throwable) {
+                    Toast.makeText(context, "Erro: ${t.localizedMessage}", Toast.LENGTH_SHORT).show()
                 }
             }
-
         }
-
-        return allContent
-    }
-
-    @WorkerThread
-    fun getAllGroupContent(id: Int): LiveData<List<Content>>{
-        return userDao.getAllGroupContent(id)
     }
 
     @WorkerThread
